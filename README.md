@@ -1,6 +1,6 @@
 # FHouse Project :house:
 
-This repository a detailed FHouse application that implements MVP architecture.
+This repository a detailed FHouse application that implements MVP architecture and Firebase.
 
 # Branch
 
