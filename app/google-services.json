@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "430858269543",
+    "project_id": "fhouse-a1316",
+    "storage_bucket": "fhouse-a1316.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:430858269543:android:c4910e57ae81f83118b5c2",
+        "android_client_info": {
+          "package_name": "com.habp.fhouse"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "430858269543-54q9ajb61avigvrdrldvrggphg1l7vil.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5Wgt3hnQQGmA9EwFz-qH_P3c_ZPGbD-A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "430858269543-54q9ajb61avigvrdrldvrggphg1l7vil.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
