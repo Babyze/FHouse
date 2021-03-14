@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">FHouse</string>
+    <string name="firsttime_next">Next</string>
 </resources>
