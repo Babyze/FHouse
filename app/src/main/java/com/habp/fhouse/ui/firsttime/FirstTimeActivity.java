@@ -15,23 +15,13 @@ public class FirstTimeActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
     private FirstTimeAdapter firstTimeAdapter;
+    private PreferenceHelper preferenceHelper;
     private int[] layouts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_time);
-
-        SharedPreferences sharedPreferences = getSharedPreferences("FHouse", MODE_PRIVATE);
-        boolean isFirstRun = sharedPreferences.getBoolean("isFirstRun", true);
-
-        if(!isFirstRun) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-        } else {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean("isFirstRun", false).apply();
-        }
 
         viewPager = findViewById(R.id.welcomePager);
 
@@ -49,8 +39,9 @@ public class FirstTimeActivity extends AppCompatActivity {
         if(viewPager.getCurrentItem() + 1 < layouts.length) {
             viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
         } else {
-            SharedPreferences.Editor editor = getSharedPreferences("FHouse", MODE_PRIVATE).edit();
-            editor.putBoolean("isFirstRun", false).apply();
+            preferenceHelper =
+                    new PreferenceHelper(getSharedPreferences(getString("fhouse_pref_name"), MODE_PRIVATE));
+            preferenceHelper.setFirstTime(false);
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
