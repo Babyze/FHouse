@@ -40,7 +40,7 @@ public class FirstTimeActivity extends AppCompatActivity {
             viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
         } else {
             preferenceHelper =
-                    new PreferenceHelper(getSharedPreferences(getString("fhouse_pref_name"), MODE_PRIVATE));
+                    new PreferenceHelper(getSharedPreferences(getString(R.string.fhouse_pref_name), MODE_PRIVATE));
             preferenceHelper.setFirstTime(false);
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
