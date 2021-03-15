@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.habp.fhouse.MainActivity;
 import com.habp.fhouse.R;
+import com.habp.fhouse.util.PreferenceHelper;
 
 public class FirstTimeActivity extends AppCompatActivity {
 
@@ -41,7 +42,7 @@ public class FirstTimeActivity extends AppCompatActivity {
         } else {
             preferenceHelper =
                     new PreferenceHelper(getSharedPreferences(getString(R.string.fhouse_pref_name), MODE_PRIVATE));
-            preferenceHelper.setFirstTime(false);
+            preferenceHelper.setFirstTime(false, getString(R.string.is_first_run));
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
