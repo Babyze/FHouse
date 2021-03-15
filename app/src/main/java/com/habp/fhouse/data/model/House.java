@@ -2,28 +2,21 @@ package com.habp.fhouse.data.model;
 
 public class House {
     private String ownerID;
-    private String nameHouse;
-    private int photo;
+    private String houseID;
+    private String houseName;
+    private String photoPath;
     private String address;
-    private String area;
 
 
     public House() {
     }
 
-    public House(String ownerID, String nameHouse, int photo, String address, String area) {
+    public House(String ownerID, String houseID, String houseName, String photoPath, String address) {
         this.ownerID = ownerID;
-        this.nameHouse = nameHouse;
-        this.photo = photo;
+        this.houseID = houseID;
+        this.houseName = houseName;
+        this.photoPath = photoPath;
         this.address = address;
-        this.area = area;
-    }
-    public int getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(int photo) {
-        this.photo = photo;
     }
 
     public String getOwnerID() {
@@ -34,12 +27,28 @@ public class House {
         this.ownerID = ownerID;
     }
 
-    public String getNameHouse() {
-        return nameHouse;
+    public String getHouseID() {
+        return houseID;
     }
 
-    public void setNameHouse(String nameHouse) {
-        this.nameHouse = nameHouse;
+    public void setHouseID(String houseID) {
+        this.houseID = houseID;
+    }
+
+    public String getHouseName() {
+        return houseName;
+    }
+
+    public void setHouseName(String houseName) {
+        this.houseName = houseName;
+    }
+
+    public String getPhotoPath() {
+        return photoPath;
+    }
+
+    public void setPhotoPath(String photoPath) {
+        this.photoPath = photoPath;
     }
 
     public String getAddress() {
@@ -48,13 +57,5 @@ public class House {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getArea() {
-        return area;
-    }
-
-    public void setArea(String area) {
-        this.area = area;
     }
 }

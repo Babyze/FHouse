@@ -1,10 +1,13 @@
-package com.habp.fhouse.ui.home_management;
+package com.habp.fhouse.ui.house_management;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.habp.fhouse.R;
 import com.habp.fhouse.data.model.House;
 
@@ -50,6 +53,13 @@ public class HouseAdapter extends BaseAdapter {
             LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
             view = inflater.inflate(R.layout.house_manage_item, viewGroup, false);
         }
-        return null;
+        House itemHouse = listHouse.get(i);
+        Glide.with(view).load(itemHouse.getPhotoPath()).into((ImageView) view.findViewById(R.id.imgHouse));
+        TextView txtName = view.findViewById(R.id.txtName);
+        TextView txtAddress = view.findViewById(R.id.txtAddress);
+        txtName.setText(itemHouse.getHouseName());
+        txtAddress.setText(itemHouse.getAddress());
+
+        return view;
     }
 }
