@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.habp.fhouse.MainActivity;
 import com.habp.fhouse.R;
+import com.habp.fhouse.util.PreferenceHelper;
 
 public class FirstTimeActivity extends AppCompatActivity {
 
