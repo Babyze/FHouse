@@ -15,17 +15,15 @@ import java.util.Map;
 
 public class RoomFirestoreRepository {
     private CollectionReference collection;
-    private FirebaseAuth firebaseAuth;
 
-    public RoomFirestoreRepository(FirebaseFirestore firebaseFirestore, FirebaseAuth firebaseAuth) {
+    public RoomFirestoreRepository(FirebaseFirestore firebaseFirestore) {
         this.collection = firebaseFirestore.collection(DatabaseConstraints.ROOM_COLLECTION_NAME);
-        this.firebaseAuth = firebaseAuth;
     }
 
     public void createRoom(Room room, CallBack<Boolean> callBack) {
         isRoomExist(room.getRoomId(), isRoomExist -> {
             if(!isRoomExist) {
-                collection.document(room.getRoomId() + firebaseAuth.getUid())
+                collection.document(room.getRoomId())
                         .set(room);
             }
             callBack.onSuccessListener(!isRoomExist);
@@ -33,12 +31,12 @@ public class RoomFirestoreRepository {
     }
 
     private void isRoomExist(String roomId, CallBack<Boolean> callBack) {
-        collection.document(roomId + firebaseAuth.getUid()).get()
+        collection.document(roomId).get()
                 .addOnCompleteListener(task -> callBack.onSuccessListener(task.getResult().exists()));
     }
 
     public void getRoom(String roomId, CallBack<Room> callback) {
-        collection.document(roomId + firebaseAuth.getUid())
+        collection.document(roomId)
                 .get().addOnCompleteListener(task -> {
                     Room room = task.getResult().toObject(Room.class);
                     callback.onSuccessListener(room);
@@ -58,12 +56,12 @@ public class RoomFirestoreRepository {
 
     public void updateRoom(Room room, CallBack<Boolean> callBack) {
         Map<String, Object> map = ConvertHelper.convertObjectToMap(room);
-        collection.document(room.getRoomId() + firebaseAuth.getUid())
+        collection.document(room.getRoomId())
                 .update(map).addOnCompleteListener(task -> callBack.onSuccessListener(task.isSuccessful()));
     }
 
     public void deleteRoom(String roomId, CallBack<Boolean> callBack) {
-        collection.document(roomId + firebaseAuth.getUid()).delete()
+        collection.document(roomId).delete()
                 .addOnCompleteListener(task -> callBack.onSuccessListener(task.isSuccessful()));
     }
 }
