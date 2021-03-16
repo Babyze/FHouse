@@ -1,4 +1,4 @@
-package com.habp.fhouse.ui.house_management;
+package com.habp.fhouse.ui.boarding;
 
 import android.view.LayoutInflater;
 import android.view.View;

@@ -6,11 +6,13 @@ import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.habp.fhouse.ui.article.ArticleFragment;
 import com.habp.fhouse.ui.home.HomeFragment;
-import com.habp.fhouse.ui.house_management.HouseManagementFragment;
+import com.habp.fhouse.ui.boarding.HouseManagementFragment;
 import com.habp.fhouse.ui.profile.ProfileFragment;
 import com.habp.fhouse.ui.wishlist.WishlistFragment;
 
