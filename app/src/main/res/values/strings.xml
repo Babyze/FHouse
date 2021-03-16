@@ -3,4 +3,5 @@
     <string name="firsttime_next">Next</string>
     <string name="fhouse_pref_name">FHouse</string>
     <string name="is_first_run">isFirstRun</string>
+    <string name="signup_signin"><i><u>Sign In</u></i></string>
 </resources>
