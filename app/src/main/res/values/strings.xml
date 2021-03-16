@@ -3,7 +3,6 @@
     <string name="firsttime_next">Next</string>
     <string name="fhouse_pref_name">FHouse</string>
     <string name="is_first_run">isFirstRun</string>
-    <string name="login_signup">
-        <u>Sign up</u>
-    </string>
+    <string name="login_signup">Sign up</string>
+    <string name="signup_signin">Sign In</string>
 </resources>

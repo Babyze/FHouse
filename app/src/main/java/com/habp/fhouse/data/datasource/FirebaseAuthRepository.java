@@ -1,5 +1,12 @@
 package com.habp.fhouse.data.datasource;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -7,20 +14,20 @@ import com.habp.fhouse.data.model.User;
 import com.habp.fhouse.util.CallBack;
 import com.habp.fhouse.util.DatabaseConstraints;
 
-public class FirebaseAuthRemote {
+public class FirebaseAuthRepository {
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
 
-    public FirebaseAuthRemote(FirebaseAuth firebaseAuth, FirebaseFirestore firebaseFirestore) {
+    public FirebaseAuthRepository(FirebaseAuth firebaseAuth, FirebaseFirestore firebaseFirestore) {
         this.firebaseAuth = firebaseAuth;
         this.firebaseFirestore = firebaseFirestore;
     }
 
-    public FirebaseAuthRemote(FirebaseAuth firebaseAuth) {
+    public FirebaseAuthRepository(FirebaseAuth firebaseAuth) {
         this.firebaseAuth = firebaseAuth;
     }
 
-    public FirebaseAuthRemote(FirebaseFirestore firebaseFirestore) {
+    public FirebaseAuthRepository(FirebaseFirestore firebaseFirestore) {
         this.firebaseFirestore = firebaseFirestore;
     }
 
@@ -37,7 +44,7 @@ public class FirebaseAuthRemote {
                         firebaseFirestore.collection(DatabaseConstraints.USER_COLLECTION_NAME)
                                 .document(user.getUserId())
                                 .set(user)
-                                .addOnCompleteListener(dbTask -> callBack.onSuccessListener(true));
+                                .addOnCompleteListener(dbTask -> callBack.onSuccessListener(dbTask.isSuccessful()));
                     }
                 });
     }
