@@ -7,4 +7,6 @@ public class DatabaseConstraints {
     public static final String HOUSE_COLLECTION_NAME = "house";
     public static final String ROOM_COLLECTION_NAME = "room";
     public static final String BED_COLLECTION_NAME = "bed";
+    public static final String USER_ID_KEY_NAME = "userId";
+    public static final String HOUSE_ID_KEY_NAME = "houseId";
 }
