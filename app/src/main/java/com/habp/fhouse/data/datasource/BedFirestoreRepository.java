@@ -1,5 +1,4 @@
 package com.habp.fhouse.data.datasource;
 
-public class FirebaseFirestoreRemote {
-
+public class BedFirestoreRepository {
 }
