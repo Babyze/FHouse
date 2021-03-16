@@ -1,5 +1,6 @@
 package com.habp.fhouse.data.datasource;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -14,30 +15,33 @@ import java.util.Map;
 
 public class BedFirestoreRepository {
     private CollectionReference collection;
+    private FirebaseAuth firebaseAuth;
 
-    public BedFirestoreRepository(FirebaseFirestore firebaseFirestore) {
+    public BedFirestoreRepository(FirebaseFirestore firebaseFirestore, FirebaseAuth firebaseAuth) {
         this.collection = firebaseFirestore.collection(DatabaseConstraints.ROOM_COLLECTION_NAME);
+        this.firebaseAuth = firebaseAuth;
     }
 
     public void createBed(Bed bed, CallBack<Boolean> callBack) {
         isBedExist(bed.getBedId(), isBedExist -> {
             if(!isBedExist) {
                 collection.document(bed.getBedId())
-                        .set(bed);
+                        .set(bed + firebaseAuth.getUid());
             }
             callBack.onSuccessListener(!isBedExist);
         });
     }
 
     private void isBedExist(String bedId, CallBack<Boolean> callBack) {
-        collection.document(bedId).get()
+        collection.document(bedId + firebaseAuth.getUid()).get()
                 .addOnCompleteListener(task -> callBack.onSuccessListener(task.getResult().exists()));
     }
 
     public void getBed(String bedId, CallBack<Bed> callback) {
-        collection.document(bedId).get().addOnCompleteListener(task -> {
-            Bed bed = task.getResult().toObject(Bed.class);
-            callback.onSuccessListener(bed);
+        collection.document(bedId + firebaseAuth.getUid())
+                .get().addOnCompleteListener(task -> {
+                    Bed bed = task.getResult().toObject(Bed.class);
+                    callback.onSuccessListener(bed);
         });
     }
 
@@ -54,12 +58,12 @@ public class BedFirestoreRepository {
 
     public void updateBed(Bed bed, CallBack<Boolean> callBack) {
         Map<String, Object> map = ConvertHelper.convertObjectToMap(bed);
-        collection.document(bed.getBedId())
+        collection.document(bed.getBedId() + firebaseAuth.getUid())
                 .update(map).addOnCompleteListener(task -> callBack.onSuccessListener(task.isSuccessful()));
     }
 
     public void deleteBed(String bedId, CallBack<Boolean> callBack) {
-        collection.document(bedId).delete()
+        collection.document(bedId + firebaseAuth.getUid()).delete()
                 .addOnCompleteListener(task -> callBack.onSuccessListener(task.isSuccessful()));
     }
 }

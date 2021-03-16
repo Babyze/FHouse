@@ -10,4 +10,5 @@ public class DatabaseConstraints {
     public static final String USER_ID_KEY_NAME = "userId";
     public static final String HOUSE_ID_KEY_NAME = "houseId";
     public static final String ROOM_ID_KEY_NAME = "houseId";
+    public static final String IMAGE_PATH = "images";
 }

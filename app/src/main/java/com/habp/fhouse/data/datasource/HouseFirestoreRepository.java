@@ -31,14 +31,14 @@ public class HouseFirestoreRepository {
         isHouseExist(house.getHouseId(), isExist -> {
             if(!isExist) {
                 collection.document(house.getHouseId())
-                        .set(house);
+                        .set(house + firebaseAuth.getUid());
             }
             callBack.onSuccessListener(!isExist);
         });
     }
 
     private void isHouseExist(String houseId, CallBack<Boolean> callBack) {
-        collection.document(houseId).get()
+        collection.document(houseId + firebaseAuth.getUid()).get()
                 .addOnCompleteListener(task -> {
                     callBack.onSuccessListener(task.getResult().exists());
                 });
@@ -59,7 +59,7 @@ public class HouseFirestoreRepository {
     }
 
     public void getHouse(String houseId, CallBack<House> callBack) {
-        collection.document(houseId)
+        collection.document(houseId + firebaseAuth.getUid())
                 .get().addOnCompleteListener(task -> {
                     House house = new House();
                     if(task.isSuccessful()) {
@@ -71,13 +71,13 @@ public class HouseFirestoreRepository {
 
     public void updateHouse(House house, CallBack<Boolean> callBack) {
         Map<String, Object> houseData = ConvertHelper.convertObjectToMap(house);
-        collection.document(house.getHouseId())
+        collection.document(house.getHouseId() + firebaseAuth.getUid())
                 .update(houseData)
                 .addOnCompleteListener(task -> callBack.onSuccessListener(task.isSuccessful()));
     }
 
     public void deleteHouse(String houseId, CallBack<Boolean> callBack) {
-        collection.document(houseId)
+        collection.document(houseId + firebaseAuth.getUid())
                 .delete().addOnCompleteListener(task -> callBack.onSuccessListener(task.isSuccessful()));
     }
  }
