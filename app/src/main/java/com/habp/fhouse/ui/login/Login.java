@@ -9,14 +9,14 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
+
 import com.habp.fhouse.MainActivity;
 import com.habp.fhouse.R;
-import com.habp.fhouse.data.repository.FirebaseAuthRepository;
+import com.habp.fhouse.data.datasource.FirebaseAuthRemote;
 
 public class Login extends AppCompatActivity implements LoginContract.View {
     TextInputLayout edtEmail, edtPassword;
-    private FirebaseAuthRepository firebaseAuthRepository;
+    private FirebaseAuthRemote firebaseAuthRemote;
     private LoginPresenter loginPresenter;
 
     @Override
@@ -25,8 +25,8 @@ public class Login extends AppCompatActivity implements LoginContract.View {
         setContentView(R.layout.activity_login);
         // Làm việc với DB, dùng: 
         // FirebaseFirestore.getInstance(); nhét vào FirebaseAuthRepository
-        firebaseAuthRepository = new FirebaseAuthRepository(FirebaseAuth.getInstance());
-        loginPresenter = new LoginPresenter(firebaseAuthRepository, this);
+        firebaseAuthRemote = new FirebaseAuthRemote(FirebaseAuth.getInstance());
+        loginPresenter = new LoginPresenter(firebaseAuthRemote, this);
         edtEmail = findViewById(R.id.edtEmail);
         edtPassword = findViewById(R.id.edtPassword);
     }
