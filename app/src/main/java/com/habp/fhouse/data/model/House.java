@@ -1,16 +1,16 @@
 package com.habp.fhouse.data.model;
 
 public class House {
-    private String houseId, houseName, houseAddress, photoPath, OwnerId;
+    private String houseId, houseName, houseAddress, photoPath, userId;
 
     public House() {}
 
-    public House(String houseId, String houseName, String houseAddress, String photoPath, String ownerId) {
+    public House(String houseId, String houseName, String houseAddress, String photoPath, String userId) {
         this.houseId = houseId;
         this.houseName = houseName;
         this.houseAddress = houseAddress;
         this.photoPath = photoPath;
-        OwnerId = ownerId;
+        this.userId = userId;
     }
 
     public String getHouseId() {
@@ -45,11 +45,11 @@ public class House {
         this.photoPath = photoPath;
     }
 
-    public String getOwnerId() {
-        return OwnerId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setOwnerId(String ownerId) {
-        OwnerId = ownerId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }
