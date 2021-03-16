@@ -1,7 +1,11 @@
 package com.habp.fhouse.data.model;
 
+import java.io.Serializable;
+
 public class User {
     private String userId, fullName, email, address, photoPath, phone;
+
+    public User() {}
 
     public User(String userId, String fullName, String email, String address, String photoPath, String phone) {
         this.userId = userId;
@@ -58,5 +62,17 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId='" + userId + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", photoPath='" + photoPath + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
     }
 }
