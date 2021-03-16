@@ -14,7 +14,7 @@ import com.habp.fhouse.MainActivity;
 import com.habp.fhouse.R;
 import com.habp.fhouse.data.datasource.FirebaseAuthRemote;
 
-public class Login extends AppCompatActivity implements LoginContract.View {
+public class LoginActivity extends AppCompatActivity implements LoginContract.View {
     TextInputLayout edtEmail, edtPassword;
     private FirebaseAuthRemote firebaseAuthRemote;
     private LoginPresenter loginPresenter;
@@ -61,7 +61,7 @@ public class Login extends AppCompatActivity implements LoginContract.View {
     @Override
     public void onLoginSuccess() {
         // Sang activity khác
-        Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "LoginActivity Success", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
