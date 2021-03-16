@@ -1,13 +1,13 @@
-package com.habp.fhouse.ui.login;
+package com.habp.fhouse.ui.sign;
 
-import com.habp.fhouse.data.datasource.FirebaseAuthRemote;
+import com.habp.fhouse.data.datasource.FirebaseAuthRepository;
 
-public class LoginPresenter implements LoginContract.Presenter {
-    private FirebaseAuthRemote firebaseAuthRemote;
-    private LoginContract.View mView;
+public class SignInPresenter implements SignInContract.Presenter {
+    private FirebaseAuthRepository firebaseAuthRepository;
+    private SignInContract.View mView;
 
-    public LoginPresenter(FirebaseAuthRemote firebaseAuthRemote, LoginContract.View mView) {
-        this.firebaseAuthRemote = firebaseAuthRemote;
+    public SignInPresenter(FirebaseAuthRepository firebaseAuthRepository, SignInContract.View mView) {
+        this.firebaseAuthRepository = firebaseAuthRepository;
         this.mView = mView;
     }
 
@@ -22,7 +22,7 @@ public class LoginPresenter implements LoginContract.Presenter {
             return;
         }
 
-        firebaseAuthRemote.signIn(email, password, isSuccess -> {
+        firebaseAuthRepository.signIn(email, password, isSuccess -> {
             if (isSuccess) {
                 mView.onLoginSuccess();
             } else {

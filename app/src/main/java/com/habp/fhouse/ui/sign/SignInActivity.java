@@ -1,4 +1,4 @@
-package com.habp.fhouse.ui.login;
+package com.habp.fhouse.ui.sign;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,21 +12,22 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import com.habp.fhouse.MainActivity;
 import com.habp.fhouse.R;
-import com.habp.fhouse.data.datasource.FirebaseAuthRemote;
+import com.habp.fhouse.data.datasource.FirebaseAuthRepository;
+import com.habp.fhouse.ui.signup.SignUpActivity;
 
-public class LoginActivity extends AppCompatActivity implements LoginContract.View {
+public class SignInActivity extends AppCompatActivity implements SignInContract.View {
     TextInputLayout edtEmail, edtPassword;
-    private FirebaseAuthRemote firebaseAuthRemote;
-    private LoginPresenter loginPresenter;
+    private FirebaseAuthRepository firebaseAuthRepository;
+    private SignInPresenter loginPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        // Làm việc với DB, dùng: 
-        // FirebaseFirestore.getInstance(); nhét vào FirebaseAuthRepository
-        firebaseAuthRemote = new FirebaseAuthRemote(FirebaseAuth.getInstance());
-        loginPresenter = new LoginPresenter(firebaseAuthRemote, this);
+
+        firebaseAuthRepository = new FirebaseAuthRepository(FirebaseAuth.getInstance());
+        loginPresenter = new SignInPresenter(firebaseAuthRepository, this);
+
         edtEmail = findViewById(R.id.edtEmail);
         edtPassword = findViewById(R.id.edtPassword);
     }
@@ -41,8 +42,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     }
 
     public void clickToSignUp(View view) {
-//        Intent intent = new Intent(this, RegisterActivity.class);
-//        startActivity(intent);
+        Intent intent = new Intent(this, SignUpActivity.class);
+        startActivity(intent);
     }
 
     public void clickToSignInAccount(View view) {
@@ -60,8 +61,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
     @Override
     public void onLoginSuccess() {
-        // Sang activity khác
-        Toast.makeText(this, "LoginActivity Success", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Login Activity Success", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
@@ -69,18 +69,15 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     @Override
     public void onLoginFailed(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-        return;
     }
 
     @Override
     public void onInvalidEmail(String message) {
         edtEmail.setError(message);
-        return;
     }
 
     @Override
     public void onInvalidPassword(String message) {
         edtPassword.setError(message);
-        return;
     }
 }

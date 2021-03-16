@@ -1,6 +1,6 @@
-package com.habp.fhouse.ui.login;
+package com.habp.fhouse.ui.sign;
 
-public interface LoginContract {
+public interface SignInContract {
     interface View {
         void onLoginSuccess();
         void onLoginFailed(String message);
