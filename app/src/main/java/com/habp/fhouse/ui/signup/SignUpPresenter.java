@@ -19,7 +19,7 @@ public class SignUpPresenter implements SignUpContract.Presenter {
             return;
         }
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            mView.onInvalidEmail("valid Email address");
+            mView.onInvalidEmail("Invalid Email address");
         }
         // Check Password
         if (password.length() < 6) {
@@ -37,12 +37,12 @@ public class SignUpPresenter implements SignUpContract.Presenter {
         }
         // Check name
         if (name.length() == 0) {
-            mView.onInvalidConfirmPassword("Name is required");
+            mView.onInvalidName("Name is required");
             return;
         }
         // Check phone number
         if (phoneNumber.length() != 10) {
-            mView.onInvalidConfirmPassword("Phone number is required. Has to be 10 numbers");
+            mView.onInvalidPhoneNumber("Phone number has to be 10 numbers");
             return;
         }
         firebaseAuthRepository.signUp(email, password, name, phoneNumber, isSuccess -> {

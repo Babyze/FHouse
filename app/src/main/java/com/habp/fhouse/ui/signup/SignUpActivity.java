@@ -67,25 +67,30 @@ public class SignUpActivity extends AppCompatActivity implements SignUpContract.
     @Override
     public void onInvalidEmail(String message) {
         edtEmail.setError(message);
+        return;
     }
 
     @Override
     public void onInvalidPassword(String message) {
         edtPassword.setError(message);
+        return;
     }
 
     @Override
     public void onInvalidConfirmPassword(String message) {
         edtConfirmPsw.setError(message);
+        return;
     }
 
     @Override
     public void onInvalidName(String message) {
         edtName.setError(message);
+        return;
     }
 
     @Override
     public void onInvalidPhoneNumber(String message) {
         edtPhoneNumber.setError(message);
+        return;
     }
 }
