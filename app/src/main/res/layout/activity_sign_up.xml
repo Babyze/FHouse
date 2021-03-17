@@ -10,7 +10,7 @@
         android:id="@+id/imageView10"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="70dp"
+        android:layout_marginBottom="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -59,7 +59,7 @@
         android:id="@+id/edtEmail"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="74dp"
         android:layout_marginStart="35dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="35dp"
@@ -69,7 +69,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="52dp"
             android:background="@color/white"
             android:hint="Email"
             android:inputType="textEmailAddress"
@@ -80,7 +80,7 @@
         android:id="@+id/edtPassword"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="74dp"
         android:layout_marginStart="35dp"
         android:layout_marginEnd="35dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -90,7 +90,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="52dp"
             android:background="@color/white"
             android:hint="Password"
             android:textSize="15dp"
@@ -101,7 +101,7 @@
         android:id="@+id/edtConfirmPsw"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="74dp"
         android:layout_marginStart="35dp"
         android:layout_marginEnd="35dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -111,7 +111,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="52dp"
             android:background="@color/white"
             android:hint="Confirm password"
             android:inputType="textPassword"
@@ -122,7 +122,7 @@
         android:id="@+id/edtName"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="74dp"
         android:layout_marginStart="35dp"
         android:layout_marginEnd="35dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -131,7 +131,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="52dp"
             android:background="@color/white"
             android:hint="Name"
             android:textSize="15dp" />
@@ -141,7 +141,7 @@
         android:id="@+id/edtPhoneNumber"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="74dp"
         android:layout_marginStart="35dp"
         android:layout_marginEnd="35dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -150,7 +150,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="52dp"
             android:background="@color/white"
             android:hint="Phone Number"
             android:inputType="number"
@@ -176,7 +176,7 @@
         android:id="@+id/btnSignUp"
         android:layout_width="170dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="10dp"
         android:backgroundTint="@color/white"
         android:onClick="clickToSignUp"
         android:text="Sign Up"
