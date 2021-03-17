@@ -16,18 +16,18 @@ public class FirebaseStorageRemote {
         this.firebaseStorage = firebaseStorage;
     }
 
-    public void uploadImage(byte[] imageData, String imagePath, CallBack<Boolean> callBack) {
+    public void uploadImage(byte[] imageData, String imageName, CallBack<Boolean> callBack) {
         StorageReference storageReference = firebaseStorage.getReference();
-        StorageReference imageSto = storageReference.child(imagePath);
+        StorageReference imageSto = storageReference.child(DatabaseConstraints.BOARDING_IMAGE_PATH + "/" + imageName + ".jpg");
         imageSto.putBytes(imageData)
                 .addOnSuccessListener(task -> callBack.onSuccessListener(true))
                 .addOnFailureListener(task -> callBack.onSuccessListener(false));
     }
 
-    public void uploadImage(File imageFile, String imagePath, CallBack<Boolean> callBack) {
+    public void uploadImage(File imageFile, String imageName, CallBack<Boolean> callBack) {
         Uri imageUri = Uri.fromFile(imageFile);
         StorageReference storageReference = firebaseStorage.getReference();
-        StorageReference imageSto = storageReference.child(imagePath);
+        StorageReference imageSto = storageReference.child(DatabaseConstraints.BOARDING_IMAGE_PATH + "/" + imageName + ".jpg");
         imageSto.putFile(imageUri)
                 .addOnSuccessListener(task -> callBack.onSuccessListener(true))
                 .addOnFailureListener(task -> callBack.onSuccessListener(false));
