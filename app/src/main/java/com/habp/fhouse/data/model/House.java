@@ -13,6 +13,13 @@ public class House {
         this.userId = userId;
     }
 
+    public House(String houseId, String houseName, String houseAddress, String userId) {
+        this.houseId = houseId;
+        this.houseName = houseName;
+        this.houseAddress = houseAddress;
+        this.userId = userId;
+    }
+
     public String getHouseId() {
         return houseId;
     }

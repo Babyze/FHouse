@@ -12,6 +12,12 @@ public class Room {
         this.houseId = houseId;
     }
 
+    public Room(String roomId, String roomName, String houseId) {
+        this.roomId = roomId;
+        this.roomName = roomName;
+        this.houseId = houseId;
+    }
+
     public String getRoomId() {
         return roomId;
     }

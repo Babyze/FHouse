@@ -13,6 +13,12 @@ public class Bed {
         this.roomId = roomId;
     }
 
+    public Bed(String bedId, String bedName, String roomId) {
+        this.bedId = bedId;
+        this.bedName = bedName;
+        this.roomId = roomId;
+    }
+
     public String getBedId() {
         return bedId;
     }
