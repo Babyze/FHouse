@@ -65,6 +65,17 @@ public class WishListFirestoreRepository {
                 });
     }
 
+    public void getWishList(String userId, String articleId, CallBack<WishList> callBack) {
+        collection.whereEqualTo(DatabaseConstraints.USER_ID_KEY_NAME, userId)
+                .whereEqualTo(DatabaseConstraints.ARTICLE_ID_KEY_NAME, articleId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    for(DocumentSnapshot doc : task.getResult()) {
+                        callBack.onSuccessListener(doc.toObject(WishList.class));
+                    }
+                });
+    }
+
     public void deleteWishList(String wishListId, CallBack<Boolean> callBack) {
         collection.document(wishListId).delete().addOnCompleteListener(task -> callBack.onSuccessListener(task.isSuccessful()));
     }

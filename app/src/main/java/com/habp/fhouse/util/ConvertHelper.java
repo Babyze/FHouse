@@ -7,7 +7,10 @@ import android.widget.ImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
+import java.text.NumberFormat;
+import java.util.Currency;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class ConvertHelper {
@@ -34,6 +37,12 @@ public class ConvertHelper {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
         return baos.toByteArray();
+    }
+
+    public static String convertToMoneyFormat(float price) {
+        NumberFormat format = NumberFormat.getCurrencyInstance(Locale.getDefault());
+        format.setCurrency(Currency.getInstance("VND"));
+        return format.format(price);
     }
 
 }

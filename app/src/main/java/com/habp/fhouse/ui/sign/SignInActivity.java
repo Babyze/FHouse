@@ -61,9 +61,8 @@ public class SignInActivity extends AppCompatActivity implements SignInContract.
 
     @Override
     public void onLoginSuccess() {
-        Toast.makeText(this, "Login Activity Success", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     @Override

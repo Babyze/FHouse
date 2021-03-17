@@ -34,4 +34,6 @@ public class WishList implements Serializable {
         this.userId = userId;
         this.articleId = articleId;
     }
+
+    public WishList() { }
 }
