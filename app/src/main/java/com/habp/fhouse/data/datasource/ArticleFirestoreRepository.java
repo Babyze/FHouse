@@ -23,8 +23,8 @@ public class ArticleFirestoreRepository {
         this.collection = firebaseFirestore.collection(DatabaseConstraints.ARTCILE_COLLECTION_NAME);
     }
 
-    public ArticleFirestoreRepository(CollectionReference collection, FirebaseAuth firebaseAuth) {
-        this.collection = collection;
+    public ArticleFirestoreRepository(FirebaseFirestore firebaseFirestore, FirebaseAuth firebaseAuth) {
+        this.collection = firebaseFirestore.collection(DatabaseConstraints.ARTCILE_COLLECTION_NAME);
         this.firebaseAuth = firebaseAuth;
     }
 
