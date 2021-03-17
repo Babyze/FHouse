@@ -19,7 +19,8 @@ public class ConvertHelper {
             for (Field field : allFields) {
                 field.setAccessible(true);
                 Object value = field.get(object);
-                map.put(field.getName(), value);
+                if(value != null)
+                    map.put(field.getName(), value);
             }
         } catch (Exception e) {
             Log.d("ConvertHelper", e.getMessage());

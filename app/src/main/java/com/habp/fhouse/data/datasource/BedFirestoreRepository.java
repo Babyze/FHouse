@@ -1,9 +1,10 @@
 package com.habp.fhouse.data.datasource;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.habp.fhouse.data.model.Article;
 import com.habp.fhouse.data.model.Bed;
 import com.habp.fhouse.util.CallBack;
 import com.habp.fhouse.util.ConvertHelper;
@@ -17,7 +18,7 @@ public class BedFirestoreRepository {
     private CollectionReference collection;
 
     public BedFirestoreRepository(FirebaseFirestore firebaseFirestore) {
-        this.collection = firebaseFirestore.collection(DatabaseConstraints.ROOM_COLLECTION_NAME);
+        this.collection = firebaseFirestore.collection(DatabaseConstraints.BED_COLLECTION_NAME);
     }
 
     public void createBed(Bed bed, CallBack<Boolean> callBack) {
@@ -44,11 +45,14 @@ public class BedFirestoreRepository {
     }
 
     public void getBedList(String roomId, CallBack<List<Bed>> callBack) {
+        FirebaseStorageRemote firebaseStorageRemote = new FirebaseStorageRemote(FirebaseStorage.getInstance());
         collection.whereEqualTo(DatabaseConstraints.ROOM_ID_KEY_NAME, roomId)
                 .get().addOnCompleteListener(task -> {
             List<Bed> beds = new ArrayList<>();
             for(DocumentSnapshot documentSnapshot : task.getResult()) {
-                beds.add(documentSnapshot.toObject(Bed.class));
+                Bed bed = documentSnapshot.toObject(Bed.class);
+                firebaseStorageRemote.getImageURL(bed.getPhotoPath(), imageURL -> bed.setPhotoPath(imageURL.toString()));
+                beds.add(bed);
             }
             callBack.onSuccessListener(beds);
         });
@@ -61,6 +65,12 @@ public class BedFirestoreRepository {
     }
 
     public void deleteBed(String bedId, CallBack<Boolean> callBack) {
+        ArticleFirestoreRepository articleFirestoreRepository = new ArticleFirestoreRepository(FirebaseFirestore.getInstance());
+        articleFirestoreRepository.getArticleListByBedId(bedId, articleList -> {
+            for(Article article : articleList) {
+                articleFirestoreRepository.deleteArticle(article.getArticleId(), task -> {});
+            }
+        });
         collection.document(bedId).delete()
                 .addOnCompleteListener(task -> callBack.onSuccessListener(task.isSuccessful()));
     }
