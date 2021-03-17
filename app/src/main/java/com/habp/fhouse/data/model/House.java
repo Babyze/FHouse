@@ -1,6 +1,8 @@
 package com.habp.fhouse.data.model;
 
-public class House {
+import java.io.Serializable;
+
+public class House implements Serializable {
     private String houseId, houseName, houseAddress, photoPath, userId;
 
     public House() {}
@@ -10,6 +12,13 @@ public class House {
         this.houseName = houseName;
         this.houseAddress = houseAddress;
         this.photoPath = photoPath;
+        this.userId = userId;
+    }
+
+    public House(String houseId, String houseName, String houseAddress, String userId) {
+        this.houseId = houseId;
+        this.houseName = houseName;
+        this.houseAddress = houseAddress;
         this.userId = userId;
     }
 

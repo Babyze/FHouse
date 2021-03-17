@@ -1,9 +1,11 @@
 package com.habp.fhouse.data.datasource;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.habp.fhouse.data.model.Article;
+import com.habp.fhouse.data.model.Bed;
 import com.habp.fhouse.data.model.Room;
 import com.habp.fhouse.util.CallBack;
 import com.habp.fhouse.util.ConvertHelper;
@@ -44,11 +46,16 @@ public class RoomFirestoreRepository {
     }
 
     public void getRoomList(String houseId, CallBack<List<Room>> callBack) {
+        FirebaseStorageRemote firebaseStorageRemote = new FirebaseStorageRemote(FirebaseStorage.getInstance());
         collection.whereEqualTo(DatabaseConstraints.HOUSE_ID_KEY_NAME, houseId)
                 .get().addOnCompleteListener(task -> {
                     List<Room> rooms = new ArrayList<>();
                     for(DocumentSnapshot documentSnapshot : task.getResult()) {
-                        rooms.add(documentSnapshot.toObject(Room.class));
+                        Room room = documentSnapshot.toObject(Room.class);
+                        firebaseStorageRemote.getImageURL(room.getPhotoPath(), imageURL -> {
+                            room.setPhotoPath(imageURL.toString());
+                            rooms.add(room);
+                        });
                     }
                     callBack.onSuccessListener(rooms);
         });
@@ -61,6 +68,24 @@ public class RoomFirestoreRepository {
     }
 
     public void deleteRoom(String roomId, CallBack<Boolean> callBack) {
+        BedFirestoreRepository bedFirestoreRepository = new BedFirestoreRepository(FirebaseFirestore.getInstance());
+        ArticleFirestoreRepository articleFirestoreRepository = new ArticleFirestoreRepository(FirebaseFirestore.getInstance());
+
+        bedFirestoreRepository.getBedList(roomId, bedList -> {
+            for(Bed bed : bedList) {
+                bedFirestoreRepository.deleteBed(bed.getBedId(), isSuccess -> {});
+                articleFirestoreRepository.getArticleListByBedId(bed.getBedId(), articleList -> {
+                    for(Article article : articleList) {
+                        articleFirestoreRepository.deleteArticle(article.getArticleId(), task -> {});
+                    }
+                });
+            }
+        });
+        articleFirestoreRepository.getArticleListByRoomId(roomId, articleList -> {
+            for(Article article : articleList) {
+                articleFirestoreRepository.deleteArticle(article.getArticleId(), task -> {});
+            }
+        });
         collection.document(roomId).delete()
                 .addOnCompleteListener(task -> callBack.onSuccessListener(task.isSuccessful()));
     }
