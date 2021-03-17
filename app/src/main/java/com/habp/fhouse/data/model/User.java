@@ -3,6 +3,8 @@ package com.habp.fhouse.data.model;
 public class User {
     private String userId, fullName, email, address, photoPath, phone;
 
+    public User() {}
+
     public User(String userId, String fullName, String email, String address, String photoPath, String phone) {
         this.userId = userId;
         this.fullName = fullName;

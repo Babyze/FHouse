@@ -1,15 +1,13 @@
 package com.habp.fhouse.ui.signup;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.habp.fhouse.data.datasource.FirebaseAuthRemote;
+import com.habp.fhouse.data.datasource.FirebaseAuthRepository;
 
 public class SignUpPresenter implements SignUpContract.Presenter {
-    private FirebaseAuthRemote firebaseAuthRemote;
+    private FirebaseAuthRepository firebaseAuthRepository;
     private SignUpContract.View mView;
 
-    public SignUpPresenter(FirebaseAuthRemote firebaseAuthRemote, SignUpContract.View mView) {
-        this.firebaseAuthRemote = firebaseAuthRemote;
+    public SignUpPresenter(FirebaseAuthRepository firebaseAuthRepository, SignUpContract.View mView) {
+        this.firebaseAuthRepository = firebaseAuthRepository;
         this.mView = mView;
     }
 
@@ -47,12 +45,11 @@ public class SignUpPresenter implements SignUpContract.Presenter {
             mView.onInvalidConfirmPassword("Phone number is required. Has to be 10 numbers");
             return;
         }
-        // Call API
-        firebaseAuthRemote.signUp(email, password, name, phoneNumber, isSuccess -> {
+        firebaseAuthRepository.signUp(email, password, name, phoneNumber, isSuccess -> {
             if (isSuccess) {
                 mView.onSignUpSuccess();
             } else {
-                mView.onSignUpFailed("Sign up failed");
+                mView.onSignUpFailed("Your email is exist");
             }
         });
     }

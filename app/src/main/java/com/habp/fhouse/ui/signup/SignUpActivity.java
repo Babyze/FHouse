@@ -12,18 +12,18 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.habp.fhouse.MainActivity;
 import com.habp.fhouse.R;
-import com.habp.fhouse.data.datasource.FirebaseAuthRemote;
+import com.habp.fhouse.data.datasource.FirebaseAuthRepository;
 
 public class SignUpActivity extends AppCompatActivity implements SignUpContract.View {
-    private FirebaseAuthRemote firebaseAuthRemote;
+    private FirebaseAuthRepository firebaseAuthRepository;
     private SignUpPresenter signUpPresenter;
     private TextInputLayout edtEmail, edtPassword, edtConfirmPsw, edtName, edtPhoneNumber;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        firebaseAuthRemote = new FirebaseAuthRemote(FirebaseAuth.getInstance(), FirebaseFirestore.getInstance());
-        signUpPresenter = new SignUpPresenter(firebaseAuthRemote, this);
+        firebaseAuthRepository = new FirebaseAuthRepository(FirebaseAuth.getInstance(), FirebaseFirestore.getInstance());
+        signUpPresenter = new SignUpPresenter(firebaseAuthRepository, this);
         edtEmail = findViewById(R.id.edtEmail);
         edtPassword = findViewById(R.id.edtPassword);
         edtConfirmPsw = findViewById(R.id.edtConfirmPsw);
@@ -66,13 +66,11 @@ public class SignUpActivity extends AppCompatActivity implements SignUpContract.
     @Override
     public void onInvalidEmail(String message) {
         edtEmail.setError(message);
-        return;
     }
 
     @Override
     public void onInvalidPassword(String message) {
         edtPassword.setError(message);
-        return;
     }
 
     @Override
@@ -83,12 +81,10 @@ public class SignUpActivity extends AppCompatActivity implements SignUpContract.
     @Override
     public void onInvalidName(String message) {
         edtName.setError(message);
-        return;
     }
 
     @Override
     public void onInvalidPhoneNumber(String message) {
         edtPhoneNumber.setError(message);
-        return;
     }
 }
