@@ -32,6 +32,15 @@ public class UserFirestoreRepository {
                 });
     }
 
+    public void getUserInfo(String userId, CallBack<User> callBack) {
+        firebaseFirestore.collection(DatabaseConstraints.USER_COLLECTION_NAME)
+                .document(userId)
+                .get().addOnCompleteListener(task -> {
+            User user = task.getResult().toObject(User.class);
+            callBack.onSuccessListener(user);
+        });
+    }
+
     public void updateUser(User user, CallBack<Boolean> callback) {
         Map<String, Object> data = ConvertHelper.convertObjectToMap(user);
         firebaseFirestore.collection(DatabaseConstraints.USER_COLLECTION_NAME)
