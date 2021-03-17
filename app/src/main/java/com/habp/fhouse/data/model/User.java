@@ -1,6 +1,8 @@
 package com.habp.fhouse.data.model;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private String userId, fullName, email, address, photoPath, phone;
 
     public User() {}

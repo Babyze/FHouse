@@ -1,6 +1,8 @@
 package com.habp.fhouse.data.model;
 
-public class Room {
+import java.io.Serializable;
+
+public class Room implements Serializable {
     private String roomId, roomName, photoPath, houseId;
 
     public Room() { }
