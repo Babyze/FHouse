@@ -30,7 +30,7 @@ public class ArticleFirestoreRepository {
 
     public void createNewArticle(Article article, CallBack<Boolean> callBack) {
         Map<String, Object> map = ConvertHelper.convertObjectToMap(article);
-        map.put("createAt", FieldValue.serverTimestamp());
+        map.put(DatabaseConstraints.ARTICLE_TIME_KEY_NAME, FieldValue.serverTimestamp());
         collection.document(article.getArticleId())
                 .set(map).addOnCompleteListener(task -> callBack.onSuccessListener(task.isSuccessful()));
     }

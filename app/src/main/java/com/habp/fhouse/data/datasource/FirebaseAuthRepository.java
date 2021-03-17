@@ -40,7 +40,7 @@ public class FirebaseAuthRepository {
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()) {
-                        User user = new User(getUserId(), name, email, "", "", phone);
+                        User user = new User(getUserId(), name, email, "", DatabaseConstraints.PROFILE_DEFAULT_IMAGE_PATH, phone);
                         firebaseFirestore.collection(DatabaseConstraints.USER_COLLECTION_NAME)
                                 .document(user.getUserId())
                                 .set(user)
