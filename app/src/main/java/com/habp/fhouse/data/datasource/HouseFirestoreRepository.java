@@ -55,8 +55,10 @@ public class HouseFirestoreRepository {
                     if(snapshots != null) {
                        for(DocumentSnapshot documentSnapshot : snapshots.getDocuments()) {
                            House house = documentSnapshot.toObject(House.class);
-                           firebaseStorageRemote.getImageURL(house.getPhotoPath(), imageURL -> house.setPhotoPath(imageURL.toString()));
-                           houses.add(house);
+                           firebaseStorageRemote.getImageURL(house.getPhotoPath(), imageURL -> {
+                               house.setPhotoPath(imageURL.toString());
+                               houses.add(house);
+                           });
                        }
                     }
                     callBack.onSuccessListener(houses);

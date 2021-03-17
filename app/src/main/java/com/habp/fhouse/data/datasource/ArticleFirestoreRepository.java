@@ -54,8 +54,10 @@ public class ArticleFirestoreRepository {
                 .addOnCompleteListener(task -> {
                    for(DocumentSnapshot doc : task.getResult()) {
                        Article article = doc.toObject(Article.class);
-                       houseFirestoreRepository.getHouse(article.getHouseId(), house -> article.setHouseAddress(house.getHouseAddress()));
-                       articleList.add(article);
+                       houseFirestoreRepository.getHouse(article.getHouseId(), house -> {
+                           article.setHouseAddress(house.getHouseAddress());
+                           articleList.add(article);
+                       });
                    }
                    callBack.onSuccessListener(articleList);
                 });
@@ -70,8 +72,10 @@ public class ArticleFirestoreRepository {
                 .addOnCompleteListener(task -> {
                     for(DocumentSnapshot doc : task.getResult()) {
                         Article article = doc.toObject(Article.class);
-                        houseFirestoreRepository.getHouse(article.getHouseId(), house -> article.setHouseAddress(house.getHouseAddress()));
-                        articleList.add(article);
+                        houseFirestoreRepository.getHouse(article.getHouseId(), house -> {
+                            article.setHouseAddress(house.getHouseAddress());
+                            articleList.add(article);
+                        });
                     }
                     callBack.onSuccessListener(articleList);
                 });

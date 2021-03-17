@@ -52,8 +52,10 @@ public class RoomFirestoreRepository {
                     List<Room> rooms = new ArrayList<>();
                     for(DocumentSnapshot documentSnapshot : task.getResult()) {
                         Room room = documentSnapshot.toObject(Room.class);
-                        firebaseStorageRemote.getImageURL(room.getPhotoPath(), imageURL -> room.setPhotoPath(imageURL.toString()));
-                        rooms.add(room);
+                        firebaseStorageRemote.getImageURL(room.getPhotoPath(), imageURL -> {
+                            room.setPhotoPath(imageURL.toString());
+                            rooms.add(room);
+                        });
                     }
                     callBack.onSuccessListener(rooms);
         });

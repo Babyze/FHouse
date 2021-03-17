@@ -51,8 +51,10 @@ public class BedFirestoreRepository {
             List<Bed> beds = new ArrayList<>();
             for(DocumentSnapshot documentSnapshot : task.getResult()) {
                 Bed bed = documentSnapshot.toObject(Bed.class);
-                firebaseStorageRemote.getImageURL(bed.getPhotoPath(), imageURL -> bed.setPhotoPath(imageURL.toString()));
-                beds.add(bed);
+                firebaseStorageRemote.getImageURL(bed.getPhotoPath(), imageURL -> {
+                    bed.setPhotoPath(imageURL.toString());
+                    beds.add(bed);
+                });
             }
             callBack.onSuccessListener(beds);
         });
