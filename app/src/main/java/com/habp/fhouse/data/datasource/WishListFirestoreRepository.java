@@ -38,6 +38,18 @@ public class WishListFirestoreRepository {
                 .addOnCompleteListener(task -> callback.onSuccessListener(task.isSuccessful()));
     }
 
+    public void getWishListByArticleId(String articleId, CallBack<List<WishList>> callBack) {
+        List<WishList> wishLists = new ArrayList<>();
+        collection.whereEqualTo(DatabaseConstraints.ARTICLE_ID_KEY_NAME, articleId)
+                .get()
+                .addOnCompleteListener(data -> {
+                   for(DocumentSnapshot doc : data.getResult()) {
+                       wishLists.add(doc.toObject(WishList.class));
+                   }
+                   callBack.onSuccessListener(wishLists);
+                });
+    }
+
     public void getArticleWishListByUserId(String userId, CallBack<List<Article>> callBack) {
         List<Article> articleList = new ArrayList<>();
         ArticleFirestoreRepository articleFirestoreRepository = new ArticleFirestoreRepository(firebaseFirestore,firebaseAuth);

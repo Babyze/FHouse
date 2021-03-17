@@ -8,6 +8,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.habp.fhouse.data.model.Article;
+import com.habp.fhouse.data.model.WishList;
 import com.habp.fhouse.util.CallBack;
 import com.habp.fhouse.util.ConvertHelper;
 import com.habp.fhouse.util.DatabaseConstraints;
@@ -45,6 +46,12 @@ public class ArticleFirestoreRepository {
     }
 
     public void deleteArticle(String articleId, CallBack<Boolean> callback) {
+        WishListFirestoreRepository wishListFirestoreRepository = new WishListFirestoreRepository(firebaseFirestore);
+        wishListFirestoreRepository.getWishListByArticleId(articleId, wishlists -> {
+            for(WishList wishList : wishlists) {
+                wishListFirestoreRepository.deleteWishList(wishList.getWishListId(), isSuccess -> {});
+            }
+        });
         collection.document(articleId).delete()
                 .addOnCompleteListener(task -> callback.onSuccessListener(task.isSuccessful()));
     }
