@@ -47,8 +47,8 @@ public class SignUpActivity extends AppCompatActivity implements SignUpContract.
     }
 
     public void clickToSignIn(View view) {
-//        Intent intent = new Intent(this, Login.class);
-//        startActivity(intent);
+        Intent intent = new Intent(this, SignIn.class);
+        startActivity(intent);
     }
 
     @Override
