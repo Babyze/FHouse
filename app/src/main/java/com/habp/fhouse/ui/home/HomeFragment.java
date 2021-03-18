@@ -25,9 +25,11 @@ import com.habp.fhouse.R;
 import com.habp.fhouse.data.datasource.ArticleFirestoreRepository;
 import com.habp.fhouse.data.datasource.UserFirestoreRepository;
 import com.habp.fhouse.data.model.Article;
+import com.habp.fhouse.data.model.ArticleSnap;
 import com.habp.fhouse.data.model.User;
 import com.habp.fhouse.ui.articledetail.ArticleDetailActivity;
 import com.habp.fhouse.ui.search.SearchActivity;
+import com.habp.fhouse.util.ListHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,9 +43,8 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     private SwipeRefreshLayout swipeArticle;
     private ArticleAdapter adapter;
     private HomePresenter homePresenter;
+    private ArticleSnap articleSnap;
     private List<Article> listArticleInHomePage;
-    private int currentResult = 7;
-    private final int nextResult = 7;
 
     @Nullable
     @Override
@@ -91,8 +92,11 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         homePresenter = new HomePresenter(articleFirestoreRepository, userFirestoreRepository, this);
 
         homePresenter.loadUserInfo();
-        homePresenter.loadArticle(currentResult, articles -> {
-            showArticle(articles);
+        homePresenter.loadArticle(null, articleSnap -> {
+            this.articleSnap = articleSnap;
+            showArticle(false, articleSnap.getArticleList());
+            adapter.setListArticle(listArticleInHomePage);
+            lvHomePage.setAdapter(adapter);
         });
     }
 
@@ -104,13 +108,9 @@ public class HomeFragment extends Fragment implements HomeContract.View {
                 int totalItem = adapter.getCount() - 1;
                 if(lastScrollItemPosition >= totalItem && scrollState == SCROLL_STATE_IDLE) {
                     Toast.makeText(getContext(), "Loading more boarding", Toast.LENGTH_SHORT).show();
-                    currentResult += nextResult;
-                    homePresenter.loadArticle(currentResult, articles -> {
-                        showArticle(articles);
-                        if(currentResult - nextResult == 0)
-                            lvHomePage.setSelection(nextResult);
-                        else
-                            lvHomePage.setSelection(currentResult - nextResult);
+                    homePresenter.loadArticle(articleSnap.getLastSnap(), articleSnap -> {
+                        HomeFragment.this.articleSnap = articleSnap;
+                        showArticle(true, articleSnap.getArticleList());
                     });
                 }
             }
@@ -126,9 +126,9 @@ public class HomeFragment extends Fragment implements HomeContract.View {
             @Override
             public void onRefresh() {
                 Toast.makeText(getActivity(), "Please wait", Toast.LENGTH_SHORT).show();
-                currentResult = nextResult;
-                homePresenter.loadArticle(currentResult, articles -> {
-                    showArticle(articles);
+                homePresenter.loadArticle(null, articleSnap -> {
+                    HomeFragment.this.articleSnap = articleSnap;
+                    showArticle(false, articleSnap.getArticleList());
                     swipeArticle.setRefreshing(false);
                 });
             }
@@ -165,10 +165,16 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     }
 
     @Override
-    public void showArticle(List<Article> articles) {
-        listArticleInHomePage = articles;
-        adapter.setListArticle(listArticleInHomePage);
-        lvHomePage.setAdapter(adapter);
+    public void showArticle(boolean isLoadMore, List<Article> articles) {
+        if(articles != null) {
+            if(isLoadMore) {
+                listArticleInHomePage = ListHelper.addCollection(listArticleInHomePage, articles);
+            } else {
+                listArticleInHomePage = articles;
+                adapter.setListArticle(listArticleInHomePage);
+            }
+        }
+        adapter.notifyDataSetChanged();
     }
 
     @Override

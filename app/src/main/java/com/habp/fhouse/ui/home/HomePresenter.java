@@ -4,13 +4,11 @@ package com.habp.fhouse.ui.home;
 import android.text.Editable;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.habp.fhouse.data.datasource.ArticleFirestoreRepository;
 import com.habp.fhouse.data.datasource.UserFirestoreRepository;
-import com.habp.fhouse.data.model.Article;
+import com.habp.fhouse.data.model.ArticleSnap;
 import com.habp.fhouse.util.CallBack;
-
-import java.util.List;
 
 public class HomePresenter implements HomeContract.Presenter {
     private ArticleFirestoreRepository articleFirestoreRepository;
@@ -35,10 +33,14 @@ public class HomePresenter implements HomeContract.Presenter {
     }
 
     @Override
-    public void loadArticle(int nextResult, CallBack<List<Article>> callBack) {
-        articleFirestoreRepository.getNewestArticleList(nextResult, articleList -> {
-            callBack.onSuccessListener(articleList);
-        });
+    public void loadArticle(DocumentSnapshot snap, CallBack<ArticleSnap> callBack) {
+        if(snap != null) {
+            articleFirestoreRepository.getNewestArticleList(snap, articleSnap -> callBack.onSuccessListener(articleSnap));
+        } else {
+            articleFirestoreRepository.getNewestArticleList(articleSnap -> {
+                callBack.onSuccessListener(articleSnap);
+            });
+        }
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.habp.fhouse.data.model.Article;
+import com.habp.fhouse.data.model.ArticleSnap;
 import com.habp.fhouse.data.model.WishList;
 import com.habp.fhouse.util.CallBack;
 import com.habp.fhouse.util.ConvertHelper;
@@ -80,15 +81,19 @@ public class ArticleFirestoreRepository {
                 });
     }
 
-    public void getNewestArticleList(int nextResult, CallBack<List<Article>> callBack) {
-        HouseFirestoreRepository houseFirestoreRepository = new HouseFirestoreRepository(FirebaseFirestore.getInstance(), firebaseAuth);
+    public void getNewestArticleList(CallBack<ArticleSnap> callBack) {
+        HouseFirestoreRepository houseFirestoreRepository
+                = new HouseFirestoreRepository(FirebaseFirestore.getInstance(), firebaseAuth);
+        ArticleSnap articleSnap = new ArticleSnap();
         List<Article> articleList = new ArrayList<>();
         collection.orderBy(DatabaseConstraints.ARTICLE_TIME_KEY_NAME, Query.Direction.ASCENDING)
-                .limit(nextResult)
+                .limit(7)
                 .get()
                 .addOnCompleteListener(task -> {
                     QuerySnapshot snap = task.getResult();
                     if(snap != null) {
+                        DocumentSnapshot lastSnap = snap.getDocuments().get(snap.size() - 1);
+                        articleSnap.setLastSnap(lastSnap);
                         for(DocumentSnapshot doc : snap.getDocuments()) {
                             Article article = doc.toObject(Article.class);
                             houseFirestoreRepository.getHouse(article.getHouseId(), house -> {
@@ -99,17 +104,60 @@ public class ArticleFirestoreRepository {
                                         getWishListId(article.getArticleId(), firebaseAuth.getUid(), wishlistId -> {
                                             article.setWishListId(wishlistId);
                                             articleList.add(article);
-                                            callBack.onSuccessListener(articleList);
+                                            articleSnap.setArticleList(articleList);
+                                            System.out.println(articleSnap.getArticleList().size() + " AAA");
+                                            callBack.onSuccessListener(articleSnap);
                                         });
                                     } else {
-                                        articleList.add(article);
-                                        callBack.onSuccessListener(articleList);
+                                        articleSnap.setArticleList(articleList);
+                                        callBack.onSuccessListener(articleSnap);
                                     }
                                 });
                             });
                         }
                     } else {
-                        callBack.onSuccessListener(articleList);
+                        callBack.onSuccessListener(articleSnap);
+                    }
+                });
+    }
+
+    public void getNewestArticleList(DocumentSnapshot lastSnap, CallBack<ArticleSnap> callBack) {
+        HouseFirestoreRepository houseFirestoreRepository = new HouseFirestoreRepository(FirebaseFirestore.getInstance(), firebaseAuth);
+        ArticleSnap articleSnap = new ArticleSnap();
+        List<Article> articleList = new ArrayList<>();
+        collection.orderBy(DatabaseConstraints.ARTICLE_TIME_KEY_NAME, Query.Direction.ASCENDING)
+                .startAfter(lastSnap)
+                .limit(7)
+                .get()
+                .addOnCompleteListener(task -> {
+                    QuerySnapshot snap = task.getResult();
+                    if(snap != null) {
+                        if(snap.size() > 1) {
+                            DocumentSnapshot lastSnapDB = snap.getDocuments().get(snap.size() - 1);
+                            articleSnap.setLastSnap(lastSnapDB);
+                        }
+                        for(DocumentSnapshot doc : snap.getDocuments()) {
+                            Article article = doc.toObject(Article.class);
+                            houseFirestoreRepository.getHouse(article.getHouseId(), house -> {
+                                article.setHouseAddress(house.getHouseAddress());
+                                getBoardingImageURL(article.getArticleType(), article, imageURL -> {
+                                    article.setPhotoPath(imageURL);
+                                    if(firebaseAuth.getCurrentUser() != null) {
+                                        getWishListId(article.getArticleId(), firebaseAuth.getUid(), wishlistId -> {
+                                            article.setWishListId(wishlistId);
+                                            articleList.add(article);
+                                            articleSnap.setArticleList(articleList);
+                                            callBack.onSuccessListener(articleSnap);
+                                        });
+                                    } else {
+                                        articleSnap.setArticleList(articleList);
+                                        callBack.onSuccessListener(articleSnap);
+                                    }
+                                });
+                            });
+                        }
+                    } else {
+                        callBack.onSuccessListener(articleSnap);
                     }
                 });
     }
