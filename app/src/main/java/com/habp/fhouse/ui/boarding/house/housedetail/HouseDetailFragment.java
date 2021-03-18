@@ -164,7 +164,8 @@ public class HouseDetailFragment extends Fragment implements RoomContract.View {
                     Room roomCurrent = listRoom.get(i);
                     if (roomCurrent != null) {
                         Bundle bundle = new Bundle();
-                        bundle.putString("id", roomCurrent.getRoomId());
+                        bundle.putSerializable("currentRoom", roomCurrent);
+                        bundle.putSerializable("currentHouse", currentHouse);
                         Fragment roomDetail = new RoomDetailFragment();
                         roomDetail.setArguments(bundle);
                         FragmentManager fragmentManager = getFragmentManager();

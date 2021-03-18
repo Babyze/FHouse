@@ -19,5 +19,4 @@ public class RoomPresenter implements  RoomContract.Presenter{
             mView.showRoomList(listRoomData);
         });
     }
-
 }
