@@ -27,7 +27,7 @@ public class SplashActivity extends AppCompatActivity {
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             Intent intent;
             if(isFirstRun) {
-                 intent = new Intent(SplashActivity.this, FirstTimeActivity.class);
+                intent = new Intent(SplashActivity.this, FirstTimeActivity.class);
             } else {
                 intent = new Intent(SplashActivity.this, MainActivity.class);
             }
