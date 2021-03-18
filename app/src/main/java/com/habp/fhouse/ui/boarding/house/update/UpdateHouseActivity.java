@@ -104,7 +104,6 @@ public class UpdateHouseActivity extends AppCompatActivity {
         houseFirestoreRepository.updateHouse(currentHouse, house -> {
             if(house != null) {
                 Toast.makeText(this, "Update successful", Toast.LENGTH_SHORT).show();
-                System.out.println(house.getPhotoPath());
                 firebaseStorageRemote.uploadImage(imageByte, house.getPhotoPath(), isSuccess -> {
                     firebaseStorageRemote.getImageURL(house.getPhotoPath(), imageURL -> {
                         currentHouse.setPhotoPath(imageURL.toString());
