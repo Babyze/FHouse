@@ -1,9 +1,5 @@
 package com.habp.fhouse.data.datasource;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -24,7 +20,12 @@ import java.util.Map;
 
 public class HouseFirestoreRepository {
     private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore firebaseFirestore;
     private CollectionReference collection;
+
+    public HouseFirestoreRepository(FirebaseFirestore firebaseFirestore) {
+        this.firebaseFirestore = firebaseFirestore;
+    }
 
     public HouseFirestoreRepository(FirebaseFirestore firebaseFirestore, FirebaseAuth firebaseAuth) {
         this.firebaseAuth = firebaseAuth;
