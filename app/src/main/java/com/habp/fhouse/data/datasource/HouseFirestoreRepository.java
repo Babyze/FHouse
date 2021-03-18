@@ -44,7 +44,7 @@ public class HouseFirestoreRepository {
 
     private void isHouseExist(String houseId, CallBack<Boolean> callBack) {
         collection.document(houseId).get()
-                .addOnCompleteListener(task -> callBack.onSuccessListener(task.getResult().exists()));
+                .addOnCompleteListener(task -> callBack.onSuccessListener(task.getResult() != null));
     }
 
     public void getHouseList(CallBack<List<House>> callBack) {
@@ -59,10 +59,12 @@ public class HouseFirestoreRepository {
                            firebaseStorageRemote.getImageURL(house.getPhotoPath(), imageURL -> {
                                house.setPhotoPath(imageURL.toString());
                                houses.add(house);
+                               callBack.onSuccessListener(houses);
                            });
                        }
+                    } else {
+                        callBack.onSuccessListener(houses);
                     }
-                    callBack.onSuccessListener(houses);
                 });
     }
 
@@ -70,7 +72,7 @@ public class HouseFirestoreRepository {
         collection.document(houseId)
                 .get().addOnCompleteListener(task -> {
                     House house = new House();
-                    if(task.isSuccessful()) {
+                    if(task.getResult() != null) {
                         house = task.getResult().toObject(House.class);
                     }
                     callBack.onSuccessListener(house);
