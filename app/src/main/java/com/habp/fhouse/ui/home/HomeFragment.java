@@ -1,48 +1,159 @@
 package com.habp.fhouse.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.habp.fhouse.R;
+import com.habp.fhouse.data.datasource.ArticleFirestoreRepository;
+import com.habp.fhouse.data.datasource.UserFirestoreRepository;
 import com.habp.fhouse.data.model.Article;
-import com.habp.fhouse.data.model.House;
-import com.habp.fhouse.ui.house_management.HouseAdapter;
+import com.habp.fhouse.data.model.User;
+import com.habp.fhouse.ui.articledetail.ArticleDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements HomeContract.View {
+
     private ListView lvHomePage;
+    private TextView txtFullName;
+    private SwipeRefreshLayout swipeArticle;
     private ArticleAdapter adapter;
+    private HomePresenter homePresenter;
+    private List<Article> listArticleInHomePage;
+    private int currentResult = 7;
+    private int nextResult = 7;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        lvHomePage = view.findViewById(R.id.lvHomePage);
-        List<Article> listArticleInHomePage = new ArrayList<>();
-        listArticleInHomePage.add(new Article("1","Lovely House in 2 District","Ho Chi Minh", 5000000, new House("Richkid_01", "House01", "Vinhomes Grand Park", "https://www.apartmentforrent.com.vn/upload/@files/vinhome-1479039656.jpg", "Quận 2, Thành phố Hồ Chí Minh" )));
-        listArticleInHomePage.add(new Article("2","Lovely House in 1 District","Ho Chi Minh", 5000000, new House("Richkid_01", "House01", "Vinhomes Grand Park", "https://www.apartmentforrent.com.vn/upload/@files/vinhome-1479039656.jpg", "Quận 1, Thành phố Hồ Chí Minh" )));
-        listArticleInHomePage.add(new Article("3","Lovely House in 1 District","Ho Chi Minh", 5000000, new House("Richkid_01", "House01", "Vinhomes Grand Park", "https://www.apartmentforrent.com.vn/upload/@files/vinhome-1479039656.jpg", "Quận 1, Thành phố Hồ Chí Minh" )));
-        listArticleInHomePage.add(new Article("4","Lovely House in 5 District","Ho Chi Minh", 5000000, new House("Richkid_01", "House01", "Vinhomes Grand Park", "https://www.apartmentforrent.com.vn/upload/@files/vinhome-1479039656.jpg", "Quận 5, Thành phố Hồ Chí Minh" )));
-        listArticleInHomePage.add(new Article("5","Lovely House in Thu Duc","Ho Chi Minh", 5000000, new House("Richkid_01", "House01", "Vinhomes Grand Park", "https://www.apartmentforrent.com.vn/upload/@files/vinhome-1479039656.jpg", "Quận Thủ Đức, Thành phố Hồ Chí Minh" )));
-        listArticleInHomePage.add(new Article("6","Lovely House in Thu Duc","Ho Chi Minh", 5000000, new House("Richkid_01", "House01", "Vinhomes Grand Park", "https://www.apartmentforrent.com.vn/upload/@files/vinhome-1479039656.jpg", "Quận Thủ Đức, Thành phố Hồ Chí Minh" )));
-        listArticleInHomePage.add(new Article("7","Lovely House in Binh Thanh","Ho Chi Minh", 5000000, new House("Richkid_01", "House01", "Vinhomes Grand Park", "https://www.apartmentforrent.com.vn/upload/@files/vinhome-1479039656.jpg", "Quận Bình Thạnh, Thành phố Hồ Chí Minh" )));
-        listArticleInHomePage.add(new Article("8","Lovely House in Binh Thanh","Ho Chi Minh", 5000000, new House("Richkid_01", "House01", "Vinhomes Grand Park", "https://www.apartmentforrent.com.vn/upload/@files/vinhome-1479039656.jpg", "Quận Bình Thạnh, Thành phố Hồ Chí Minh" )));
-        listArticleInHomePage.add(new Article("9","Lovely House in Binh Thanh","Ho Chi Minh", 5000000, new House("Richkid_01", "House01", "Vinhomes Grand Park", "https://www.apartmentforrent.com.vn/upload/@files/vinhome-1479039656.jpg", "Quận Bình Thạnh, Thành phố Hồ Chí Minh" )));
-        listArticleInHomePage.add(new Article("10","Lovely House in 2 District","Ho Chi Minh", 5000000, new House("Richkid_01", "House01", "Vinhomes Grand Park", "https://www.apartmentforrent.com.vn/upload/@files/vinhome-1479039656.jpg", "Quận 2, Thành phố Hồ Chí Minh" )));
 
-        adapter = new ArticleAdapter(listArticleInHomePage);
-        lvHomePage.setAdapter(adapter);
+        initData(view);
+
+        configListViewScrollPagination();
 
         return view;
-
     }
 
+    private void initData(View view) {
+        lvHomePage = view.findViewById(R.id.lvHomePage);
+        swipeArticle = view.findViewById(R.id.swipeArticle);
+        txtFullName = view.findViewById(R.id.txtFullName);
+
+        listArticleInHomePage = new ArrayList<>();
+        adapter = new ArticleAdapter();
+
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+
+        ArticleFirestoreRepository articleFirestoreRepository =
+                new ArticleFirestoreRepository(firebaseFirestore, firebaseAuth);
+        UserFirestoreRepository userFirestoreRepository =
+                new UserFirestoreRepository(firebaseFirestore, firebaseAuth);
+
+        homePresenter = new HomePresenter(articleFirestoreRepository, userFirestoreRepository, this);
+
+        homePresenter.loadUserInfo();
+        homePresenter.loadArticle(currentResult, articles -> {
+            showArticle(articles);
+        });
+    }
+
+    private void configListViewScrollPagination() {
+        lvHomePage.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                int lastScrollItemPosition = lvHomePage.getLastVisiblePosition();
+                int totalItem = adapter.getCount() - 1;
+                if(lastScrollItemPosition >= totalItem && scrollState == SCROLL_STATE_IDLE) {
+                    Toast.makeText(getContext(), "Loading more boarding", Toast.LENGTH_SHORT).show();
+                    currentResult += nextResult;
+                    homePresenter.loadArticle(currentResult, articles -> {
+                        showArticle(articles);
+                        if(currentResult - nextResult == 0)
+                            lvHomePage.setSelection(nextResult);
+                        else
+                            lvHomePage.setSelection(currentResult - nextResult);
+                    });
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+            }
+        });
+
+
+        swipeArticle.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Toast.makeText(getActivity(), "Please wait", Toast.LENGTH_SHORT).show();
+                currentResult = nextResult;
+                homePresenter.loadArticle(currentResult, articles -> {
+                    showArticle(articles);
+                    swipeArticle.setRefreshing(false);
+                });
+            }
+        });
+
+        lvHomePage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Article article = listArticleInHomePage.get(position);
+                Intent intent = new Intent(getActivity(), ArticleDetailActivity.class);
+                intent.putExtra("article", article);
+                intent.putExtra("articlePosition", position);
+                startActivityForResult(intent, 1);
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        homePresenter.loadUserInfo();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == 1) {
+            if(resultCode == 2) {
+                int articlePosition = data.getIntExtra("articlePosition", 0);
+                Article modifiedArtical = (Article) data.getSerializableExtra("modifiedArticle");
+                Article article = listArticleInHomePage.get(articlePosition);
+                article.setWishListId(modifiedArtical.getWishListId());
+            }
+        }
+    }
+
+    @Override
+    public void showArticle(List<Article> articles) {
+        listArticleInHomePage = articles;
+        adapter.setListArticle(listArticleInHomePage);
+        lvHomePage.setAdapter(adapter);
+    }
+
+    @Override
+    public void showUserInfo(User user) {
+        if(user != null) {
+            txtFullName.setText("Hi " + user.getFullName());
+        }
+    }
 }

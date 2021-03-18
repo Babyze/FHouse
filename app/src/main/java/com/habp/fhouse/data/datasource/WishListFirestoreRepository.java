@@ -92,9 +92,14 @@ public class WishListFirestoreRepository {
                 .whereEqualTo(DatabaseConstraints.ARTICLE_ID_KEY_NAME, articleId)
                 .get()
                 .addOnCompleteListener(task -> {
-                    for(DocumentSnapshot doc : task.getResult()) {
-                        callBack.onSuccessListener(doc.toObject(WishList.class));
+                    QuerySnapshot snap = task.getResult();
+                    WishList wishList = new WishList();
+                    if(snap != null) {
+                        for(DocumentSnapshot doc : task.getResult().getDocuments()) {
+                            wishList = doc.toObject(WishList.class);
+                        }
                     }
+                    callBack.onSuccessListener(wishList);
                 });
     }
 

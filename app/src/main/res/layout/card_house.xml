@@ -19,7 +19,7 @@
         android:fontFamily="sans-serif-light"
         android:text="Lovely House in Thu Duc"
 
-        android:textColor="#0033CC"
+        android:textColor="@color/black"
         android:textSize="16dp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/imgHouse"
@@ -33,23 +33,25 @@
         android:layout_marginTop="5dp"
         android:ellipsize="end"
         android:fontFamily="sans-serif-medium"
+        android:text="Price"
         android:textColor="#F44336"
-        android:textSize="14dp"
+        android:textSize="17dp"
         app:layout_constraintStart_toEndOf="@+id/imgHouse"
         app:layout_constraintTop_toBottomOf="@+id/txtName" />
 
     <TextView
-        android:id="@+id/txtRequiremnt"
+        android:id="@+id/txtArticleType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="5dp"
         android:ellipsize="end"
         android:fontFamily="sans-serif-medium"
         android:text="House For Rent"
         android:textSize="11dp"
+        android:textStyle="italic"
         app:layout_constraintStart_toEndOf="@+id/imgHouse"
-        app:layout_constraintTop_toBottomOf="@+id/txtName" />
+        app:layout_constraintTop_toBottomOf="@+id/txtPrice" />
 
     <ImageView
         android:id="@+id/imgHouse"
@@ -63,64 +65,27 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginBottom="6dp"
-        android:src="@mipmap/ic_door_black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imgHouse" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:text="3"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:textSize="14dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-        app:layout_constraintStart_toEndOf="@+id/imageView3" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="3"
-        android:textSize="14dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-        app:layout_constraintStart_toEndOf="@+id/imageView4" />
-
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="40dp"
-        android:src="@mipmap/ic_bed_black"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-        app:layout_constraintStart_toEndOf="@+id/imageView3" />
-
-    <ImageView
         android:id="@+id/imageView5"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="40dp"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginStart="10dp"
         android:src="@mipmap/ic_placeholder_black"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-        app:layout_constraintStart_toEndOf="@+id/imageView4" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imgHouse"
+        app:layout_constraintTop_toBottomOf="@+id/txtArticleType" />
 
     <TextView
         android:id="@+id/textPlace"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:fontFamily="sans-serif-medium"
         android:text="Ho Chi Minh"
         android:textSize="14dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView5"
-        app:layout_constraintStart_toEndOf="@+id/imageView5" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView5"
+        app:layout_constraintTop_toBottomOf="@+id/txtArticleType" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
