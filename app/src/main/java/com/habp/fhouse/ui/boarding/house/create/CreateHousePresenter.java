@@ -20,22 +20,17 @@ public class CreateHousePresenter implements CreateHouseContract.Presenter {
 
     @Override
     public void createHouse(House house, byte[] imageByte) {
-        FirebaseAuth.getInstance().signInWithEmailAndPassword("hoangpdse130719@fpt.edu.vn","123456")
-                .addOnCompleteListener(task -> {
-                    if(task.isComplete()) {
-                        String imagePath = DatabaseConstraints.BOARDING_IMAGE_PATH + house.getHouseId() + ".jpg";
-                        firebaseStorageRemote.uploadImage(imageByte, imagePath, isUploadSuccess -> {
-                            if(isUploadSuccess) {
-                                house.setPhotoPath(imagePath);
-                                houseFirestoreRepository.createHouse(house, isSuccess -> {
-                                    if(isSuccess)
-                                        mView.onCreateSuccess("Create OK");
-                                    else
-                                        mView.onCreateFailed("Create Failed");
-                                });
-                            }
-                        });
-                    }
+        String imagePath = DatabaseConstraints.BOARDING_IMAGE_PATH + house.getHouseId() + ".jpg";
+        firebaseStorageRemote.uploadImage(imageByte, imagePath, isUploadSuccess -> {
+            if(isUploadSuccess) {
+                house.setPhotoPath(imagePath);
+                houseFirestoreRepository.createHouse(house, isSuccess -> {
+                    if(isSuccess)
+                        mView.onCreateSuccess("Create OK");
+                    else
+                        mView.onCreateFailed("Create Failed");
                 });
+            }
+        });
     }
 }

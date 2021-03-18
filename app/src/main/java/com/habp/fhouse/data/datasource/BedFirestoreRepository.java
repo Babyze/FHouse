@@ -34,7 +34,14 @@ public class BedFirestoreRepository {
 
     private void isBedExist(String bedId, CallBack<Boolean> callBack) {
         collection.document(bedId).get()
-                .addOnCompleteListener(task -> callBack.onSuccessListener(task.getResult() != null));
+                .addOnCompleteListener(task -> {
+                    if(task.getResult() != null) {
+                        Bed bed = task.getResult().toObject(Bed.class);
+                        callBack.onSuccessListener(bed != null);
+                    } else {
+                        callBack.onSuccessListener(false);
+                    }
+                });
     }
 
     public void getBed(String bedId, CallBack<Bed> callback) {
@@ -69,12 +76,18 @@ public class BedFirestoreRepository {
         });
     }
 
-    public void updateBed(Bed bed, CallBack<Boolean> callBack) {
+    public void updateBed(Bed bed, CallBack<Bed> callBack) {
         getBed(bed.getBedId(), bedDB -> {
             bed.setPhotoPath(bedDB.getPhotoPath());
             Map<String, Object> map = ConvertHelper.convertObjectToMap(bed);
             collection.document(bed.getBedId())
-                    .update(map).addOnCompleteListener(task -> callBack.onSuccessListener(task.isSuccessful()));
+                    .update(map).addOnCompleteListener(task -> {
+                if(task.isSuccessful()) {
+                    callBack.onSuccessListener(bed);
+                } else {
+                    callBack.onSuccessListener(null);
+                }
+            });
         });
     }
 

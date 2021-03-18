@@ -20,6 +20,7 @@ import com.habp.fhouse.data.datasource.HouseFirestoreRepository;
 import com.habp.fhouse.data.model.Bed;
 import com.habp.fhouse.data.model.House;
 import com.habp.fhouse.util.ConvertHelper;
+import com.habp.fhouse.util.DatabaseConstraints;
 
 public class UpdateHouseActivity extends AppCompatActivity {
     private Uri filePath;
@@ -96,20 +97,29 @@ public class UpdateHouseActivity extends AppCompatActivity {
 
         byte[] imageByte = ConvertHelper.convertImageViewToByte(findViewById(R.id.imgUploadPhoto));
         FirebaseStorageRemote firebaseStorageRemote = new FirebaseStorageRemote(FirebaseStorage.getInstance());
-        firebaseStorageRemote.uploadImage(imageByte, currentHouse.getPhotoPath(), isSuccess -> {
-        });
 
         HouseFirestoreRepository houseFirestoreRepository =
                 new HouseFirestoreRepository(FirebaseFirestore.getInstance());
-        houseFirestoreRepository.updateHouse(currentHouse, isSuccess -> {
-            Toast.makeText(this, "Update successful", Toast.LENGTH_SHORT).show();
+
+        houseFirestoreRepository.updateHouse(currentHouse, house -> {
+            if(house != null) {
+                Toast.makeText(this, "Update successful", Toast.LENGTH_SHORT).show();
+                System.out.println(house.getPhotoPath());
+                firebaseStorageRemote.uploadImage(imageByte, house.getPhotoPath(), isSuccess -> {
+                    firebaseStorageRemote.getImageURL(house.getPhotoPath(), imageURL -> {
+                        currentHouse.setPhotoPath(imageURL.toString());
+
+                        Intent intent = getIntent();
+                        intent.putExtra("currentHouse", currentHouse);
+                        setResult(1, intent);
+                        finish();
+                    });
+                });
+            } else {
+                Toast.makeText(this, "Update failed", Toast.LENGTH_SHORT).show();
+                finish();
+            }
         });
-
-        Intent intent = getIntent();
-        intent.putExtra("currentHouse", currentHouse);
-        setResult(1, intent);
-
-        finish();
     }
 
 }

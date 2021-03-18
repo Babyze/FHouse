@@ -35,7 +35,14 @@ public class RoomFirestoreRepository {
 
     private void isRoomExist(String roomId, CallBack<Boolean> callBack) {
         collection.document(roomId).get()
-                .addOnCompleteListener(task -> callBack.onSuccessListener(task.getResult() != null));
+                .addOnCompleteListener(task -> {
+                    if(task.getResult() != null) {
+                        Room room = task.getResult().toObject(Room.class);
+                        callBack.onSuccessListener(room != null);
+                    } else {
+                        callBack.onSuccessListener(false);
+                    }
+                });
     }
 
     public void getRoom(String roomId, CallBack<Room> callback) {
@@ -70,12 +77,18 @@ public class RoomFirestoreRepository {
         });
     }
 
-    public void updateRoom(Room room, CallBack<Boolean> callBack) {
+    public void updateRoom(Room room, CallBack<Room> callBack) {
         getRoom(room.getRoomId(), roomDB -> {
             room.setPhotoPath(roomDB.getPhotoPath());
             Map<String, Object> map = ConvertHelper.convertObjectToMap(room);
             collection.document(room.getRoomId())
-                    .update(map).addOnCompleteListener(task -> callBack.onSuccessListener(task.isSuccessful()));
+                    .update(map).addOnCompleteListener(task -> {
+                        if(task.isSuccessful()) {
+                            callBack.onSuccessListener(room);
+                        } else {
+                            callBack.onSuccessListener(null);
+                        }
+            });
         });
     }
 

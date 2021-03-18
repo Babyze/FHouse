@@ -45,7 +45,14 @@ public class HouseFirestoreRepository {
 
     private void isHouseExist(String houseId, CallBack<Boolean> callBack) {
         collection.document(houseId).get()
-                .addOnCompleteListener(task -> callBack.onSuccessListener(task.getResult() != null));
+                .addOnCompleteListener(task -> {
+                    if(task.getResult() != null) {
+                        House house = task.getResult().toObject(House.class);
+                        callBack.onSuccessListener(house != null);
+                    } else {
+                        callBack.onSuccessListener(false);
+                    }
+                });
     }
 
     public void getHouseList(CallBack<List<House>> callBack) {
@@ -80,13 +87,19 @@ public class HouseFirestoreRepository {
                 });
     }
 
-    public void updateHouse(House house, CallBack<Boolean> callBack) {
+    public void updateHouse(House house, CallBack<House> callBack) {
         getHouse(house.getHouseId(), houseDB -> {
             house.setPhotoPath(houseDB.getPhotoPath());
             Map<String, Object> houseData = ConvertHelper.convertObjectToMap(house);
             collection.document(house.getHouseId())
                     .update(houseData)
-                    .addOnCompleteListener(task -> callBack.onSuccessListener(task.isSuccessful()));
+                    .addOnCompleteListener(task -> {
+                        if(task.isSuccessful()) {
+                            callBack.onSuccessListener(house);
+                        } else {
+                            callBack.onSuccessListener(null);
+                        }
+                    });
         });
 
     }
