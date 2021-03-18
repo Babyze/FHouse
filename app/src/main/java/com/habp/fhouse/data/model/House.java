@@ -1,38 +1,33 @@
 package com.habp.fhouse.data.model;
 
-public class House {
-    private String ownerID;
-    private String houseID;
-    private String houseName;
-    private String photoPath;
-    private String address;
+import java.io.Serializable;
 
+public class House implements Serializable {
+    private String houseId, houseName, houseAddress, photoPath, userId;
 
-    public House() {
-    }
+    public House() {}
 
-    public House(String ownerID, String houseID, String houseName, String photoPath, String address) {
-        this.ownerID = ownerID;
-        this.houseID = houseID;
+    public House(String houseId, String houseName, String houseAddress, String photoPath, String userId) {
+        this.houseId = houseId;
         this.houseName = houseName;
+        this.houseAddress = houseAddress;
         this.photoPath = photoPath;
-        this.address = address;
+        this.userId = userId;
     }
 
-    public String getOwnerID() {
-        return ownerID;
+    public House(String houseId, String houseName, String houseAddress, String userId) {
+        this.houseId = houseId;
+        this.houseName = houseName;
+        this.houseAddress = houseAddress;
+        this.userId = userId;
     }
 
-    public void setOwnerID(String ownerID) {
-        this.ownerID = ownerID;
+    public String getHouseId() {
+        return houseId;
     }
 
-    public String getHouseID() {
-        return houseID;
-    }
-
-    public void setHouseID(String houseID) {
-        this.houseID = houseID;
+    public void setHouseId(String houseId) {
+        this.houseId = houseId;
     }
 
     public String getHouseName() {
@@ -43,6 +38,14 @@ public class House {
         this.houseName = houseName;
     }
 
+    public String getHouseAddress() {
+        return houseAddress;
+    }
+
+    public void setHouseAddress(String houseAddress) {
+        this.houseAddress = houseAddress;
+    }
+
     public String getPhotoPath() {
         return photoPath;
     }
@@ -51,11 +54,11 @@ public class House {
         this.photoPath = photoPath;
     }
 
-    public String getAddress() {
-        return address;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

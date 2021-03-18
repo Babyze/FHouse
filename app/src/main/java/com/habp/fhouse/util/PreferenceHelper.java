@@ -15,14 +15,14 @@ public class PreferenceHelper {
     public boolean isFirstTime(String key) {
         boolean isFirstRun = sharedPreferences.getBoolean(key, true);
         if(isFirstRun) {
-            setFirstTime(false);
+            setFirstTime(false, key);
         }
         return isFirstRun;
     }
 
-    public void setFirstTime(boolean status) {
+    public void setFirstTime(boolean status, String key) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(String.valueOf(R.string.is_first_run), false).apply();
+        editor.putBoolean(key, false).apply();
     }
 
 }

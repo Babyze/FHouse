@@ -1,4 +1,4 @@
-package com.habp.fhouse.ui.house_management;
+package com.habp.fhouse.ui.boarding;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +8,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.storage.FirebaseStorage;
 import com.habp.fhouse.R;
+import com.habp.fhouse.data.datasource.FirebaseStorageRemote;
 import com.habp.fhouse.data.model.House;
 
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.List;
 
 public class HouseAdapter extends BaseAdapter {
     List<House> listHouse;
+    private FirebaseStorageRemote firebaseStorageRemote;
 
     public List<House> getListHouse() {
         return listHouse;
@@ -58,7 +61,7 @@ public class HouseAdapter extends BaseAdapter {
         TextView txtName = view.findViewById(R.id.txtName);
         TextView txtAddress = view.findViewById(R.id.txtAddress);
         txtName.setText(itemHouse.getHouseName());
-        txtAddress.setText(itemHouse.getAddress());
+        txtAddress.setText(itemHouse.getHouseAddress());
 
         return view;
     }

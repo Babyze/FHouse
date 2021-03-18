@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="100dp"
     android:background="@color/white"
-    android:onClick="clickToHomeDetail"
     android:layout_marginBottom="1px">
 
     <TextView
@@ -14,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:ellipsize="end"
         android:fontFamily="@font/cabin"
         android:text="Vinhomes Grand Park"
@@ -49,49 +48,12 @@
 
     <ImageView
         android:id="@+id/imgHouse"
-        android:layout_width="105dp"
-        android:layout_height="80dp"
+        android:layout_width="110dp"
+        android:layout_height="90dp"
         android:layout_marginStart="10dp"
         android:scaleType="fitXY"
-        android:src="@mipmap/img_house_example"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="14dp"
-        android:src="@mipmap/ic_house_item_door_black"
-        app:layout_constraintEnd_toEndOf="@+id/imageView2"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:text="3"
-        android:textSize="14dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-        app:layout_constraintStart_toEndOf="@+id/imageView3" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:text="3"
-        android:textSize="14dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-        app:layout_constraintStart_toEndOf="@+id/imageView4" />
-
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="40dp"
-        android:src="@mipmap/ic_house_item_bed_black"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-        app:layout_constraintStart_toEndOf="@+id/imageView3" />
 </androidx.constraintlayout.widget.ConstraintLayout>
