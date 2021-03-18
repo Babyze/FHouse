@@ -27,7 +27,7 @@ public class EditProfilePresenter implements EditProfileContract.Presenter {
         }
 
         User user = new User();
-        user.setUserName(name);
+        user.setFullName(name);
         user.setPhone(phoneNumber);
         // Call API
         userFirestoreRepository.updateUser(user, isSuccess -> {

@@ -60,7 +60,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditProfil
     }
 
     private void showUserProfile(User user) {
-        edtUsername.setText(user.getUserName());
+        edtUsername.setText(user.getFullName());
         edtEmail.getEditText().setText(user.getEmail());
         edtEmail.setEnabled(false);
         edtPhoneNumber.getEditText().setText(user.getPhone());
@@ -75,7 +75,6 @@ public class EditProfileActivity extends AppCompatActivity implements EditProfil
     @Override
     public void onGetUserProfileFailed(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-        return;
     }
 
     @Override
@@ -93,18 +92,15 @@ public class EditProfileActivity extends AppCompatActivity implements EditProfil
     @Override
     public void onInvalidName(String message) {
         edtUsername.setError(message);
-        return;
     }
 
     @Override
     public void onInvalidEmail(String message) {
         edtEmail.setError(message);
-        return;
     }
 
     @Override
     public void onInvalidPhoneNumber(String message) {
         edtPhoneNumber.setError(message);
-        return;
     }
 }
