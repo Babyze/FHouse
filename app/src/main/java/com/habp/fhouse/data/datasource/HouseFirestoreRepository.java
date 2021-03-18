@@ -81,10 +81,14 @@ public class HouseFirestoreRepository {
     }
 
     public void updateHouse(House house, CallBack<Boolean> callBack) {
-        Map<String, Object> houseData = ConvertHelper.convertObjectToMap(house);
-        collection.document(house.getHouseId())
-                .update(houseData)
-                .addOnCompleteListener(task -> callBack.onSuccessListener(task.isSuccessful()));
+        getHouse(house.getHouseId(), houseDB -> {
+            house.setPhotoPath(houseDB.getPhotoPath());
+            Map<String, Object> houseData = ConvertHelper.convertObjectToMap(house);
+            collection.document(house.getHouseId())
+                    .update(houseData)
+                    .addOnCompleteListener(task -> callBack.onSuccessListener(task.isSuccessful()));
+        });
+
     }
 
     public void deleteHouse(String houseId, CallBack<Boolean> callBack) {

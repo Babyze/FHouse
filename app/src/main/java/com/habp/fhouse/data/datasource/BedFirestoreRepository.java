@@ -70,9 +70,12 @@ public class BedFirestoreRepository {
     }
 
     public void updateBed(Bed bed, CallBack<Boolean> callBack) {
-        Map<String, Object> map = ConvertHelper.convertObjectToMap(bed);
-        collection.document(bed.getBedId())
-                .update(map).addOnCompleteListener(task -> callBack.onSuccessListener(task.isSuccessful()));
+        getBed(bed.getBedId(), bedDB -> {
+            bed.setPhotoPath(bedDB.getPhotoPath());
+            Map<String, Object> map = ConvertHelper.convertObjectToMap(bed);
+            collection.document(bed.getBedId())
+                    .update(map).addOnCompleteListener(task -> callBack.onSuccessListener(task.isSuccessful()));
+        });
     }
 
     public void deleteBed(String bedId, CallBack<Boolean> callBack) {

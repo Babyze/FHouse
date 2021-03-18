@@ -71,9 +71,12 @@ public class RoomFirestoreRepository {
     }
 
     public void updateRoom(Room room, CallBack<Boolean> callBack) {
-        Map<String, Object> map = ConvertHelper.convertObjectToMap(room);
-        collection.document(room.getRoomId())
-                .update(map).addOnCompleteListener(task -> callBack.onSuccessListener(task.isSuccessful()));
+        getRoom(room.getRoomId(), roomDB -> {
+            room.setPhotoPath(roomDB.getPhotoPath());
+            Map<String, Object> map = ConvertHelper.convertObjectToMap(room);
+            collection.document(room.getRoomId())
+                    .update(map).addOnCompleteListener(task -> callBack.onSuccessListener(task.isSuccessful()));
+        });
     }
 
     public void deleteRoom(String roomId, CallBack<Boolean> callBack) {
