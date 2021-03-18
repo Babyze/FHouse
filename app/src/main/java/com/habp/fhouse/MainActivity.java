@@ -3,14 +3,19 @@ package com.habp.fhouse;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.habp.fhouse.ui.article.ArticleFragment;
+import com.habp.fhouse.ui.boarding.room.roomdetail.RoomDetailFragment;
 import com.habp.fhouse.ui.home.HomeFragment;
-import com.habp.fhouse.ui.house_management.HouseManagementFragment;
+import com.habp.fhouse.ui.boarding.HouseManagementFragment;
 import com.habp.fhouse.ui.profile.ProfileFragment;
 import com.habp.fhouse.ui.wishlist.WishlistFragment;
 
@@ -24,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.fragment_container, new HomeFragment());
+        fragmentTransaction.commit();
 
     }
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =

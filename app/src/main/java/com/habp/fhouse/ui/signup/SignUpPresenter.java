@@ -13,20 +13,14 @@ public class SignUpPresenter implements SignUpContract.Presenter {
 
     @Override
     public void onSignUp(String email, String password, String confirmPsw, String name, String phoneNumber) {
-        // Check email
         if (email.length() == 0) {
             mView.onInvalidEmail("Email is required");
             return;
         }
-        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            mView.onInvalidEmail("Invalid Email address");
-        }
-        // Check Password
         if (password.length() < 6) {
             mView.onInvalidPassword("Password is required");
             return;
         }
-        // Check Confirm Password
         if (confirmPsw.length() < 6) {
             mView.onInvalidConfirmPassword("Confirm password is required");
             return;
@@ -35,14 +29,12 @@ public class SignUpPresenter implements SignUpContract.Presenter {
             mView.onInvalidConfirmPassword("Confirm password is not matching");
             return;
         }
-        // Check name
         if (name.length() == 0) {
-            mView.onInvalidName("Name is required");
+            mView.onInvalidConfirmPassword("Name is required");
             return;
         }
-        // Check phone number
         if (phoneNumber.length() != 10) {
-            mView.onInvalidPhoneNumber("Phone number has to be 10 numbers");
+            mView.onInvalidConfirmPassword("Phone number is required. Has to be 10 numbers");
             return;
         }
         firebaseAuthRepository.signUp(email, password, name, phoneNumber, isSuccess -> {
