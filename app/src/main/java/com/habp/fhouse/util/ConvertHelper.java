@@ -7,7 +7,10 @@ import android.widget.ImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
+import java.text.NumberFormat;
+import java.util.Currency;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class ConvertHelper {
@@ -19,7 +22,8 @@ public class ConvertHelper {
             for (Field field : allFields) {
                 field.setAccessible(true);
                 Object value = field.get(object);
-                map.put(field.getName(), value);
+                if(value != null)
+                    map.put(field.getName(), value);
             }
         } catch (Exception e) {
             Log.d("ConvertHelper", e.getMessage());
@@ -31,8 +35,14 @@ public class ConvertHelper {
         imageView.buildDrawingCache();
         Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
         return baos.toByteArray();
+    }
+
+    public static String convertToMoneyFormat(float price) {
+        NumberFormat format = NumberFormat.getCurrencyInstance(Locale.getDefault());
+        format.setCurrency(Currency.getInstance("VND"));
+        return format.format(price);
     }
 
 }
