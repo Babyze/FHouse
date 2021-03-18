@@ -21,16 +21,13 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.habp.fhouse.MainActivity;
 import com.habp.fhouse.R;
 import com.habp.fhouse.data.datasource.FirebaseAuthRepository;
-import com.habp.fhouse.data.datasource.HouseFirestoreRepository;
 import com.habp.fhouse.data.model.House;
 import com.habp.fhouse.ui.boarding.house.create.CreateHouseActivity;
 import com.habp.fhouse.ui.boarding.house.housedetail.HouseDetailFragment;
+import com.habp.fhouse.ui.sign.SignInActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -46,8 +43,13 @@ public class HouseManagementFragment extends Fragment implements HouseContract.V
         View view = inflater.inflate(R.layout.fragment_house_management, container, false);
         lvHomeMamage = view.findViewById(R.id.lvHomeManage);
 
-        housePresenter = new HousePresenter(this);
+        FirebaseAuthRepository firebaseAuthRepository
+                = new FirebaseAuthRepository(FirebaseAuth.getInstance());
+
+        housePresenter = new HousePresenter(this, firebaseAuthRepository);
+        housePresenter.checkAuthorize(false);
         housePresenter.loadHouse();
+
         ImageButton btnCreate = view.findViewById(R.id.btnCreateHouseActivity);
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,8 +93,20 @@ public class HouseManagementFragment extends Fragment implements HouseContract.V
     }
 
     @Override
+    public void startSignInActivity() {
+        Intent intent = new Intent(getActivity(), SignInActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void redirectToHomeFragment() {
+
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         housePresenter.loadHouse();
+        housePresenter.checkAuthorize(true);
     }
 }

@@ -1,30 +1,39 @@
 package com.habp.fhouse.ui.boarding;
 
-import android.view.View;
-
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.habp.fhouse.data.datasource.FirebaseStorageRemote;
+import com.habp.fhouse.data.datasource.FirebaseAuthRepository;
 import com.habp.fhouse.data.datasource.HouseFirestoreRepository;
 
 public class HousePresenter implements HouseContract.Presenter {
     private HouseContract.View mView;
+    private FirebaseAuthRepository firebaseAuthRepository;
 
-    public HousePresenter(HouseContract.View mView) {
+    public HousePresenter(HouseContract.View mView, FirebaseAuthRepository firebaseAuthRepository) {
         this.mView = mView;
+        this.firebaseAuthRepository = firebaseAuthRepository;
     }
 
     @Override
     public void loadHouse() {
-        FirebaseAuth.getInstance().signInWithEmailAndPassword("hoangpdse130719@fpt.edu.vn","123456")
-                .addOnCompleteListener(task -> {
-                    if(task.isComplete()) {
-                        HouseFirestoreRepository houseFirestoreRepository = new HouseFirestoreRepository(FirebaseFirestore.getInstance(), FirebaseAuth.getInstance());
-                        houseFirestoreRepository.getHouseList(listHouseData -> {
-                            System.out.println("Ahihi" + listHouseData.size());
-                            mView.showHouseList(listHouseData);
-                        });
-                    }
-                });
+        if(firebaseAuthRepository.getUser() != null) {
+            HouseFirestoreRepository houseFirestoreRepository =
+                    new HouseFirestoreRepository(FirebaseFirestore.getInstance(), FirebaseAuth.getInstance());
+            houseFirestoreRepository.getHouseList(listHouseData -> {
+                mView.showHouseList(listHouseData);
+            });
+        }
+    }
+
+    @Override
+    public void checkAuthorize(boolean isReturn) {
+        FirebaseUser user = firebaseAuthRepository.getUser();
+        if(user == null) {
+            if(isReturn)
+                mView.redirectToHomeFragment();
+            else
+                mView.startSignInActivity();
+        }
     }
 }

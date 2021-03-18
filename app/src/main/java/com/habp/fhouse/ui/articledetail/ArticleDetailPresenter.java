@@ -5,11 +5,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.habp.fhouse.data.datasource.FirebaseAuthRepository;
 import com.habp.fhouse.data.model.Article;
 
-public class ArticleDetailPresneter implements ArticleDetailContract.Presenter {
+public class ArticleDetailPresenter implements ArticleDetailContract.Presenter {
     private FirebaseAuthRepository firebaseAuthRepository;
     private ArticleDetailContract.View mView;
 
-    public ArticleDetailPresneter(FirebaseAuthRepository firebaseAuthRepository, ArticleDetailContract.View Mview) {
+    public ArticleDetailPresenter(FirebaseAuthRepository firebaseAuthRepository, ArticleDetailContract.View Mview) {
         this.firebaseAuthRepository = firebaseAuthRepository;
         this.mView = Mview;
     }

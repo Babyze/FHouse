@@ -7,8 +7,11 @@ import java.util.List;
 public interface HouseContract {
     interface View {
         void showHouseList(List<House> listHouse);
+        void startSignInActivity();
+        void redirectToHomeFragment();
     }
     interface Presenter {
         void loadHouse();
+        void checkAuthorize(boolean isReturn);
     }
 }

@@ -31,7 +31,7 @@ import java.util.UUID;
 
 public class ArticleDetailActivity extends AppCompatActivity implements ArticleDetailContract.View {
     private FirebaseAuthRepository firebaseAuthRepository;
-    private ArticleDetailPresneter articleDetailPresneter;
+    private ArticleDetailPresenter articleDetailPresenter;
     private TextView txtArticleName, txtPrice, txtDescription, txtHouseAddress, txtPhoneNumber;
     private ImageView imageArticle, imageWishlist;
     private Article article;
@@ -43,10 +43,10 @@ public class ArticleDetailActivity extends AppCompatActivity implements ArticleD
         initData();
 
         firebaseAuthRepository = new FirebaseAuthRepository(FirebaseAuth.getInstance());
-        articleDetailPresneter = new ArticleDetailPresneter(firebaseAuthRepository, this);
+        articleDetailPresenter = new ArticleDetailPresenter(firebaseAuthRepository, this);
 
-        articleDetailPresneter.checkAuthorization(false);
-        articleDetailPresneter.loadData(article);
+        articleDetailPresenter.checkAuthorization(false);
+        articleDetailPresenter.loadData(article);
 
     }
 
@@ -147,12 +147,12 @@ public class ArticleDetailActivity extends AppCompatActivity implements ArticleD
     @Override
     protected void onRestart() {
         super.onRestart();
-        articleDetailPresneter.checkAuthorization(true);
+        articleDetailPresenter.checkAuthorization(true);
         WishListFirestoreRepository wishListFirestoreRepository =
                 new WishListFirestoreRepository(FirebaseFirestore.getInstance());
         wishListFirestoreRepository.getWishList(firebaseAuthRepository.getUserId(), article.getArticleId(), wishList -> {
             article.setWishListId(wishList.getWishListId());
-            articleDetailPresneter.loadData(article);
+            articleDetailPresenter.loadData(article);
         });
     }
 

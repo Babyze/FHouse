@@ -22,11 +22,6 @@ public class HouseFirestoreRepository {
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference collection;
-    private FirebaseFirestore firebaseFirestore;
-
-    public HouseFirestoreRepository(FirebaseFirestore firebaseFirestore) {
-        this.firebaseFirestore = firebaseFirestore;
-    }
 
     public HouseFirestoreRepository(FirebaseFirestore firebaseFirestore, FirebaseAuth firebaseAuth) {
         this.firebaseAuth = firebaseAuth;
@@ -37,8 +32,6 @@ public class HouseFirestoreRepository {
         this.firebaseFirestore = firebaseFirestore;
         this.collection = firebaseFirestore.collection(DatabaseConstraints.HOUSE_COLLECTION_NAME);
     }
-
-
 
     public void createHouse(House house, CallBack<Boolean> callBack) {
         isHouseExist(house.getHouseId(), isExist -> {
