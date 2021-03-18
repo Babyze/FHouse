@@ -6,6 +6,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.habp.fhouse.data.model.Article;
 import com.habp.fhouse.data.model.WishList;
@@ -62,14 +63,20 @@ public class ArticleFirestoreRepository {
         collection.whereEqualTo(DatabaseConstraints.USER_ID_KEY_NAME, firebaseAuth.getUid())
                 .get()
                 .addOnCompleteListener(task -> {
-                   for(DocumentSnapshot doc : task.getResult()) {
-                       Article article = doc.toObject(Article.class);
-                       houseFirestoreRepository.getHouse(article.getHouseId(), house -> {
-                           article.setHouseAddress(house.getHouseAddress());
-                           articleList.add(article);
-                       });
-                   }
-                   callBack.onSuccessListener(articleList);
+                    QuerySnapshot snap = task.getResult();
+                    if(snap != null) {
+                        for(DocumentSnapshot doc : task.getResult()) {
+                            Article article = doc.toObject(Article.class);
+                            houseFirestoreRepository.getHouse(article.getHouseId(), house -> {
+                                article.setHouseAddress(house.getHouseAddress());
+                                getBoardingImageURL(article.getArticleType(), article, imageURL -> {
+                                    article.setPhotoPath(imageURL);
+                                    articleList.add(article);
+                                    callBack.onSuccessListener(articleList);
+                                });
+                            });
+                        }
+                    }
                 });
     }
 
@@ -80,18 +87,29 @@ public class ArticleFirestoreRepository {
                 .orderBy(DatabaseConstraints.ARTICLE_TIME_KEY_NAME, Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(task -> {
-                    for(DocumentSnapshot doc : task.getResult()) {
-                        Article article = doc.toObject(Article.class);
-                        houseFirestoreRepository.getHouse(article.getHouseId(), house -> {
-                            article.setHouseAddress(house.getHouseAddress());
-                            getBoardingImageURL(article.getArticleType(), article, article::setPhotoPath);
-                            if(firebaseAuth.getCurrentUser() != null)
-                                getWishListId(article.getArticleId(), firebaseAuth.getUid(), article::setWishListId);
-                            articleList.add(article);
-                        });
-
+                    QuerySnapshot snap = task.getResult();
+                    if(snap != null) {
+                        for(DocumentSnapshot doc : snap.getDocuments()) {
+                            Article article = doc.toObject(Article.class);
+                            houseFirestoreRepository.getHouse(article.getHouseId(), house -> {
+                                article.setHouseAddress(house.getHouseAddress());
+                                getBoardingImageURL(article.getArticleType(), article, imageURL -> {
+                                    article.setPhotoPath(imageURL);
+                                    if(firebaseAuth.getCurrentUser() != null)
+                                        getWishListId(article.getArticleId(), firebaseAuth.getUid(), wishlistId -> {
+                                            article.setWishListId(wishlistId);
+                                            articleList.add(article);
+                                            callBack.onSuccessListener(articleList);
+                                        });
+                                    else {
+                                        callBack.onSuccessListener(articleList);
+                                    }
+                                });
+                            });
+                        }
+                    } else {
+                        callBack.onSuccessListener(articleList);
                     }
-                    callBack.onSuccessListener(articleList);
                 });
     }
 
@@ -137,53 +155,112 @@ public class ArticleFirestoreRepository {
     }
 
     public void getArticle(String articleId, CallBack<Article> callBack) {
+        HouseFirestoreRepository houseFirestoreRepository = new HouseFirestoreRepository(FirebaseFirestore.getInstance(), firebaseAuth);
         collection.document(articleId)
                 .get()
-                .addOnCompleteListener(task -> callBack.onSuccessListener(task.getResult().toObject(Article.class)));
+                .addOnCompleteListener(task -> {
+                    DocumentSnapshot snap = task.getResult();
+                    Article article = snap.toObject(Article.class);
+                    houseFirestoreRepository.getHouse(article.getHouseId(), house -> {
+                        article.setHouseAddress(house.getHouseAddress());
+                        getBoardingImageURL(article.getArticleType(), article, imageURL -> {
+                            article.setPhotoPath(imageURL);
+                            callBack.onSuccessListener(article);
+                        });
+                    });
+                });
     }
 
     public void getArticleListByBedId(String bedId, CallBack<List<Article>> callBack) {
+        HouseFirestoreRepository houseFirestoreRepository = new HouseFirestoreRepository(FirebaseFirestore.getInstance(), firebaseAuth);
         List<Article> articleList = new ArrayList<>();
         collection.whereEqualTo(DatabaseConstraints.BED_ID_KEY_NAME, bedId)
                 .get().addOnCompleteListener(task -> {
-                    for(DocumentSnapshot doc : task.getResult().getDocuments()) {
-                        Article article = doc.toObject(Article.class);
-                        getBoardingImageURL(article.getArticleType(), article, article::setPhotoPath);
-                        if(firebaseAuth.getCurrentUser() != null)
-                            getWishListId(article.getArticleId(), firebaseAuth.getUid(), article::setWishListId);
-                        articleList.add(article);
+                    QuerySnapshot snap = task.getResult();
+                    if(snap != null) {
+                        for(DocumentSnapshot doc : snap.getDocuments()) {
+                            Article article = doc.toObject(Article.class);
+                            houseFirestoreRepository.getHouse(article.getHouseId(), house -> {
+                                article.setHouseAddress(house.getHouseAddress());
+                                getBoardingImageURL(article.getArticleType(), article, imageURL -> {
+                                    article.setPhotoPath(imageURL);
+                                    if(firebaseAuth.getCurrentUser() != null)
+                                        getWishListId(article.getArticleId(), firebaseAuth.getUid(), wishlistId -> {
+                                            article.setWishListId(wishlistId);
+                                            articleList.add(article);
+                                            callBack.onSuccessListener(articleList);
+                                        });
+                                    else {
+                                        callBack.onSuccessListener(articleList);
+                                    }
+                                });
+                            });
+                        }
+                    } else {
+                        callBack.onSuccessListener(articleList);
                     }
-                    callBack.onSuccessListener(articleList);
                 });
     }
 
     public void getArticleListByRoomId(String roomId, CallBack<List<Article>> callBack) {
+        HouseFirestoreRepository houseFirestoreRepository = new HouseFirestoreRepository(FirebaseFirestore.getInstance(), firebaseAuth);
         List<Article> articleList = new ArrayList<>();
         collection.whereEqualTo(DatabaseConstraints.ROOM_ID_KEY_NAME, roomId)
                 .get().addOnCompleteListener(task -> {
-            for(DocumentSnapshot doc : task.getResult().getDocuments()) {
-                Article article = doc.toObject(Article.class);
-                getBoardingImageURL(article.getArticleType(), article, article::setPhotoPath);
-                if(firebaseAuth.getCurrentUser() != null)
-                    getWishListId(article.getArticleId(), firebaseAuth.getUid(), article::setWishListId);
-                articleList.add(article);
-            }
-            callBack.onSuccessListener(articleList);
+                    QuerySnapshot snap = task.getResult();
+                    if(snap != null) {
+                        for(DocumentSnapshot doc : snap.getDocuments()) {
+                            Article article = doc.toObject(Article.class);
+                            houseFirestoreRepository.getHouse(article.getHouseId(), house -> {
+                                article.setHouseAddress(house.getHouseAddress());
+                                getBoardingImageURL(article.getArticleType(), article, imageURL -> {
+                                    article.setPhotoPath(imageURL);
+                                    if(firebaseAuth.getCurrentUser() != null)
+                                        getWishListId(article.getArticleId(), firebaseAuth.getUid(), wishlistId -> {
+                                            article.setWishListId(wishlistId);
+                                            articleList.add(article);
+                                            callBack.onSuccessListener(articleList);
+                                        });
+                                    else {
+                                        callBack.onSuccessListener(articleList);
+                                    }
+                                });
+                            });
+                        }
+                    } else {
+                        callBack.onSuccessListener(articleList);
+                    }
         });
     }
 
     public void getArticleListByHouseId(String houseId, CallBack<List<Article>> callBack) {
+        HouseFirestoreRepository houseFirestoreRepository = new HouseFirestoreRepository(FirebaseFirestore.getInstance(), firebaseAuth);
         List<Article> articleList = new ArrayList<>();
         collection.whereEqualTo(DatabaseConstraints.HOUSE_ID_KEY_NAME, houseId)
                 .get().addOnCompleteListener(task -> {
-            for(DocumentSnapshot doc : task.getResult().getDocuments()) {
-                Article article = doc.toObject(Article.class);
-                getBoardingImageURL(article.getArticleType(), article, article::setPhotoPath);
-                if(firebaseAuth.getCurrentUser() != null)
-                    getWishListId(article.getArticleId(), firebaseAuth.getUid(), article::setWishListId);
-                articleList.add(article);
-            }
-            callBack.onSuccessListener(articleList);
+                    QuerySnapshot snap = task.getResult();
+                    if(snap != null) {
+                        for(DocumentSnapshot doc : snap.getDocuments()) {
+                            Article article = doc.toObject(Article.class);
+                            houseFirestoreRepository.getHouse(article.getHouseId(), house -> {
+                                article.setHouseAddress(house.getHouseAddress());
+                                getBoardingImageURL(article.getArticleType(), article, imageURL -> {
+                                    article.setPhotoPath(imageURL);
+                                    if(firebaseAuth.getCurrentUser() != null)
+                                        getWishListId(article.getArticleId(), firebaseAuth.getUid(), wishlistId -> {
+                                            article.setWishListId(wishlistId);
+                                            articleList.add(article);
+                                            callBack.onSuccessListener(articleList);
+                                        });
+                                    else {
+                                        callBack.onSuccessListener(articleList);
+                                    }
+                                });
+                            });
+                        }
+                    } else {
+                        callBack.onSuccessListener(articleList);
+                    }
         });
     }
 
