@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.boarding.house.create.CreateHouseActivity">
+    tools:context=".ui.boarding.room.update.UpdateRoomActivity">
+    tools:context=".ui.boarding.bed.update.UpdateBedActivity">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -29,13 +30,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/righteous"
-            android:text="Create House"
+            android:text="Update Room"
             android:textColor="@color/white"
             android:textSize="24dp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@font/righteous"
+            android:textColor="@color/orange"
+            android:text="Delete"
+            android:textSize="18dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -58,9 +71,6 @@
             android:id="@+id/imgUploadPhoto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@mipmap/ic_firsttime_house"
-            android:visibility="invisible"
-            android:background="@null"
             android:scaleType="centerCrop" />
 
         <ImageView
@@ -86,42 +96,29 @@
             app:layout_constraintEnd_toEndOf="@+id/imgIconUpload"
             app:layout_constraintStart_toStartOf="@+id/imgIconUpload"
             app:layout_constraintTop_toBottomOf="@+id/imgIconUpload" />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <EditText
-        android:id="@+id/edtHouseName"
+        android:id="@+id/edtRoomNameUpdate"
         android:layout_width="314dp"
-        android:hint="House name"
+        android:hint="Room name"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="50dp"
         app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
         app:layout_constraintStart_toStartOf="@+id/constraintLayout"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
-
-    <EditText
-        android:id="@+id/edtHouseAddress"
-        android:layout_width="314dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:hint="House address"
-        app:layout_constraintEnd_toEndOf="@+id/edtHouseName"
-        app:layout_constraintStart_toStartOf="@+id/edtHouseName"
-        app:layout_constraintTop_toBottomOf="@+id/edtHouseName" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/blue"
         android:gravity="center"
-        android:onClick="clickToCreateHouse"
-        android:text="Create House"
+        android:onClick="clickToUpdateRoomDetail"
+        android:text="Update Room"
         android:textColor="@color/white"
         android:textSize="30dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_editor_absoluteX="16dp" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

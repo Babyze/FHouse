@@ -104,7 +104,7 @@
         android:background="@color/blue"
         android:gravity="center"
         android:onClick="clickToCreateRoom"
-        android:text="Create House"
+        android:text="Create Room"
         android:textColor="@color/white"
         android:textSize="30dp"
         android:textStyle="bold"

@@ -19,14 +19,19 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.button.MaterialButton;
+import com.google.firebase.storage.FirebaseStorage;
 import com.habp.fhouse.R;
+import com.habp.fhouse.data.datasource.FirebaseStorageRemote;
 import com.habp.fhouse.data.model.House;
 import com.habp.fhouse.data.model.Room;
 import com.habp.fhouse.ui.boarding.HouseAdapter;
 import com.habp.fhouse.ui.boarding.HouseManagementFragment;
 import com.habp.fhouse.ui.boarding.house.create.CreateHouseActivity;
+import com.habp.fhouse.ui.boarding.house.update.UpdateHouseActivity;
 import com.habp.fhouse.ui.boarding.room.RoomAdapter;
 import com.habp.fhouse.ui.boarding.room.create.CreateRoomActivity;
 import com.habp.fhouse.ui.boarding.room.roomdetail.RoomDetailFragment;
@@ -38,27 +43,17 @@ public class HouseDetailFragment extends Fragment {
 
     private ListView lvRoom;
     private RoomAdapter adapter;
+    private final int INTENT_RESULT_DELETE_CODE = 1;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_house_detail, container, false);
-        House testHouse = new House("Richkid_01", "House01", "Vinhomes Grand Park", "https://www.apartmentforrent.com.vn/upload/@files/vinhome-1479039656.jpg", "Quận 9, Thành phố Hồ Chí Minh");
         lvRoom = view.findViewById(R.id.lvRoom);
-        List<Room> listRoom = new ArrayList<>();
-        listRoom.add(new Room("R001", "Lovely Room",
-                "https://media-cdn.tripadvisor.com/media/photo-s/13/d8/ea/1b/a-room-at-the-beach.jpg", testHouse));
-        listRoom.add(new Room("R001", "Activity Room",
-                "https://media-cdn.tripadvisor.com/media/photo-s/13/d8/ea/1b/a-room-at-the-beach.jpg", testHouse));
+        House currentHouse = (House) this.getArguments().getSerializable("currentHouse");
 
-        listRoom.add(new Room("R001", "Storm Room",
-                "https://media-cdn.tripadvisor.com/media/photo-s/13/d8/ea/1b/a-room-at-the-beach.jpg", testHouse));
-        listRoom.add(new Room("R001", "Normal Room",
-                "https://media-cdn.tripadvisor.com/media/photo-s/13/d8/ea/1b/a-room-at-the-beach.jpg", testHouse));
-        listRoom.add(new Room("R001", "Storm Room",
-                "https://media-cdn.tripadvisor.com/media/photo-s/13/d8/ea/1b/a-room-at-the-beach.jpg", testHouse));
-        listRoom.add(new Room("R001", "Normal Room",
-                "https://media-cdn.tripadvisor.com/media/photo-s/13/d8/ea/1b/a-room-at-the-beach.jpg", testHouse));
+        //set list room
+        List<Room> listRoom = new ArrayList<>();
         if (listRoom.size() > 0) {
             adapter = new RoomAdapter(listRoom);
             lvRoom.setAdapter(adapter);
@@ -69,7 +64,6 @@ public class HouseDetailFragment extends Fragment {
                     if (roomCurrent != null) {
                         Bundle bundle = new Bundle();
                         bundle.putString("id", roomCurrent.getRoomId());
-                        System.out.println(roomCurrent.getRoomId());
                         Fragment roomDetail = new RoomDetailFragment();
                         roomDetail.setArguments(bundle);
                         FragmentManager fragmentManager = getFragmentManager();
@@ -79,6 +73,9 @@ public class HouseDetailFragment extends Fragment {
                     }
                 }
             });
+            lvRoom.setBackgroundColor(getResources().getColor(R.color.grey));
+            TextView txtEmptyRoom = view.findViewById(R.id.txtEmptyRoom);
+            txtEmptyRoom.setText("");
         } else {
             lvRoom.setBackgroundColor(Color.WHITE);
             TextView txtEmptyRoom = view.findViewById(R.id.txtEmptyRoom);
@@ -86,11 +83,14 @@ public class HouseDetailFragment extends Fragment {
         }
 
 
-//        String id = this.getArguments().getString("id");    //Lấy string từ fragment trước
+        //String id = this.getArguments().getString("id");    //Lấy string từ fragment trước
+        //set Title
         TextView txtHouseName = view.findViewById(R.id.txtHouseName);
-        txtHouseName.setText(testHouse.getHouseName());
-        Glide.with(view).load(testHouse.getPhotoPath()).into((ImageView) view.findViewById(R.id.imgHousePhoto));
+        txtHouseName.setText(currentHouse.getHouseName());
+        //set Image
+        Glide.with(view).load(currentHouse.getPhotoPath()).into((ImageView) view.findViewById(R.id.imgHousePhoto));
 
+        //button back
         ImageButton btnBack = view.findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,18 +103,36 @@ public class HouseDetailFragment extends Fragment {
             }
         });
 
+        //click to go to CreateRoomActivity
         ImageButton btnCreate = view.findViewById(R.id.btnCreateRoomActivity);
         btnCreate.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), CreateRoomActivity.class);
                 startActivity(intent);
+            }
+        });
 
-
+        //click to go to UpdateHouseActivity
+        MaterialButton btnEditHouse = view.findViewById(R.id.btnEditHouse);
+        btnEditHouse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), UpdateHouseActivity.class);
+                intent.putExtra("currentHouse", currentHouse);
+                startActivityForResult(intent,INTENT_RESULT_DELETE_CODE);
             }
         });
         return view;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        House deleteHouse = (House) data.getSerializableExtra("deleteHouse");
+        if (requestCode == INTENT_RESULT_DELETE_CODE){
+            Toast.makeText(this.getContext(),"Delete" +deleteHouse.getHouseName() , Toast.LENGTH_SHORT).show();
+        }
+
+    }
 }

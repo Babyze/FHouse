@@ -58,10 +58,10 @@ public class HouseFirestoreRepository {
                            firebaseStorageRemote.getImageURL(house.getPhotoPath(), imageURL -> {
                                house.setPhotoPath(imageURL.toString());
                                houses.add(house);
+                               callBack.onSuccessListener(houses);
                            });
                        }
                     }
-                    callBack.onSuccessListener(houses);
                 });
     }
 

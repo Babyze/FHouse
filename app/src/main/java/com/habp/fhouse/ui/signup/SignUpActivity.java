@@ -13,7 +13,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.habp.fhouse.MainActivity;
 import com.habp.fhouse.R;
 import com.habp.fhouse.data.datasource.FirebaseAuthRepository;
-import com.habp.fhouse.ui.sign.SignInActivity;
 
 public class SignUpActivity extends AppCompatActivity implements SignUpContract.View {
     private FirebaseAuthRepository firebaseAuthRepository;
@@ -48,8 +47,8 @@ public class SignUpActivity extends AppCompatActivity implements SignUpContract.
     }
 
     public void clickToSignIn(View view) {
-        Intent intent = new Intent(this, SignInActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, Login.class);
+//        startActivity(intent);
     }
 
     @Override
@@ -67,30 +66,25 @@ public class SignUpActivity extends AppCompatActivity implements SignUpContract.
     @Override
     public void onInvalidEmail(String message) {
         edtEmail.setError(message);
-        return;
     }
 
     @Override
     public void onInvalidPassword(String message) {
         edtPassword.setError(message);
-        return;
     }
 
     @Override
     public void onInvalidConfirmPassword(String message) {
         edtConfirmPsw.setError(message);
-        return;
     }
 
     @Override
     public void onInvalidName(String message) {
         edtName.setError(message);
-        return;
     }
 
     @Override
     public void onInvalidPhoneNumber(String message) {
         edtPhoneNumber.setError(message);
-        return;
     }
 }

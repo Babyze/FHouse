@@ -93,7 +93,8 @@
                 android:textColor="@color/black"
                 android:textSize="18dp"
                 app:cornerRadius="0dp"
-                app:strokeColor="@color/grey" />
+                app:strokeColor="@color/grey"
+                android:id="@+id/btnEditHouse"/>
 
             <com.google.android.material.button.MaterialButton
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -119,8 +120,7 @@
         android:id="@+id/lvRoom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/grey"
-        android:layout_marginBottom="60dp"/>
+        android:background="@color/grey"/>
 
     <TextView
         android:id="@+id/txtEmptyRoom"

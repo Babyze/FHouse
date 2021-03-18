@@ -52,8 +52,14 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/lvHomeManage"
-            android:layout_marginBottom="60dp"/>
+            android:id="@+id/lvHomeManage"/>
+        <TextView
+            android:id="@+id/txtEmptyHouse"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/righteous"
+            android:gravity="center"
+            android:textSize="40dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

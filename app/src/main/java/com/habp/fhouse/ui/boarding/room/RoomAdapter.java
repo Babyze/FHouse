@@ -55,8 +55,6 @@ public class RoomAdapter extends BaseAdapter {
         Room itemRoom = listRoom.get(i);
         Glide.with(view).load(itemRoom.getPhotoPath()).into((ImageView) view.findViewById(R.id.imgRoom));
         TextView txtRoomName = view.findViewById(R.id.txtRoomName);
-        TextView txtRoomQuantity = view.findViewById(R.id.txtRoomQuantity);
-        txtRoomQuantity.setText("999");
         txtRoomName.setText(itemRoom.getRoomName());
         return view;
     }
