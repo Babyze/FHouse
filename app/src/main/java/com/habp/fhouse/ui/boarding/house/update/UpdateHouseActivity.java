@@ -9,11 +9,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.habp.fhouse.R;
 import com.habp.fhouse.data.datasource.FirebaseStorageRemote;
+import com.habp.fhouse.data.datasource.HouseFirestoreRepository;
 import com.habp.fhouse.data.model.Bed;
 import com.habp.fhouse.data.model.House;
 import com.habp.fhouse.util.ConvertHelper;
@@ -21,7 +24,6 @@ import com.habp.fhouse.util.ConvertHelper;
 public class UpdateHouseActivity extends AppCompatActivity {
     private Uri filePath;
     private House currentHouse;
-    private final int INTENT_RESULT_DELETE_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,8 @@ public class UpdateHouseActivity extends AppCompatActivity {
     }
 
     public void clickToBackActivity(View view) {
+        Intent intent = getIntent();
+        setResult(0,intent);
         finish();
     }
 
@@ -86,17 +90,26 @@ public class UpdateHouseActivity extends AppCompatActivity {
         //chuẩn bị data update
         EditText edtHouseNameUpdate = findViewById(R.id.edtHouseNameUpdate);
         EditText edtHouseAddressUpdate = findViewById(R.id.edtHouseAddressUpdate);
+
         currentHouse.setHouseName(edtHouseNameUpdate.getText().toString());
         currentHouse.setHouseAddress(edtHouseAddressUpdate.getText().toString());
+
         byte[] imageByte = ConvertHelper.convertImageViewToByte(findViewById(R.id.imgUploadPhoto));
+        FirebaseStorageRemote firebaseStorageRemote = new FirebaseStorageRemote(FirebaseStorage.getInstance());
+        firebaseStorageRemote.uploadImage(imageByte, currentHouse.getPhotoPath(), isSuccess -> {
+        });
 
+        HouseFirestoreRepository houseFirestoreRepository =
+                new HouseFirestoreRepository(FirebaseFirestore.getInstance());
+        houseFirestoreRepository.updateHouse(currentHouse, isSuccess -> {
+            Toast.makeText(this, "Update successful", Toast.LENGTH_SHORT).show();
+        });
 
-    }
-
-    public void clickToDeleteHouse(View view) {
         Intent intent = getIntent();
-        intent.putExtra("deleteHouse", currentHouse);
-        setResult(INTENT_RESULT_DELETE_CODE, intent);
+        intent.putExtra("currentHouse", currentHouse);
+        setResult(1, intent);
+
         finish();
     }
+
 }

@@ -109,6 +109,7 @@
                 android:textColor="@color/red"
                 android:textSize="18dp"
                 app:cornerRadius="0dp"
+                android:id="@+id/btnDeleteHouse"
                 app:strokeColor="@color/grey" />
 
         </LinearLayout>

@@ -23,9 +23,11 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.habp.fhouse.R;
 import com.habp.fhouse.data.datasource.FirebaseStorageRemote;
+import com.habp.fhouse.data.datasource.HouseFirestoreRepository;
 import com.habp.fhouse.data.model.House;
 import com.habp.fhouse.data.model.Room;
 import com.habp.fhouse.ui.boarding.HouseAdapter;
@@ -43,14 +45,14 @@ public class HouseDetailFragment extends Fragment {
 
     private ListView lvRoom;
     private RoomAdapter adapter;
-    private final int INTENT_RESULT_DELETE_CODE = 1;
+    private House currentHouse;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_house_detail, container, false);
         lvRoom = view.findViewById(R.id.lvRoom);
-        House currentHouse = (House) this.getArguments().getSerializable("currentHouse");
+        currentHouse = (House) this.getArguments().getSerializable("currentHouse");
 
         //set list room
         List<Room> listRoom = new ArrayList<>();
@@ -81,7 +83,10 @@ public class HouseDetailFragment extends Fragment {
             TextView txtEmptyRoom = view.findViewById(R.id.txtEmptyRoom);
             txtEmptyRoom.setText("Empty");
         }
-
+        loadData(view);
+        return view;
+    }
+    public void loadData(View view){
 
         //String id = this.getArguments().getString("id");    //Lấy string từ fragment trước
         //set Title
@@ -120,19 +125,46 @@ public class HouseDetailFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), UpdateHouseActivity.class);
                 intent.putExtra("currentHouse", currentHouse);
-                startActivityForResult(intent,INTENT_RESULT_DELETE_CODE);
+                startActivityForResult(intent, 1);
             }
         });
-        return view;
+
+        //click to DeleteHouse
+        MaterialButton btnDeleteHouse = view.findViewById(R.id.btnDeleteHouse);
+        btnDeleteHouse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String deleteHouseId = currentHouse.getHouseId();
+                System.out.println(deleteHouseId + " YOYO");
+                // xóa
+                HouseFirestoreRepository houseFirestoreRepository =
+                        new HouseFirestoreRepository(FirebaseFirestore.getInstance());
+
+                houseFirestoreRepository.deleteHouse(deleteHouseId, isSuccess -> {
+                    if (isSuccess) {
+                        Toast.makeText(getContext(), "Delete successful ", Toast.LENGTH_SHORT).show();
+                        Fragment listHouseFragment = new HouseManagementFragment();
+                        FragmentManager fragmentManager = getFragmentManager();
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.replace(R.id.fragment_container, listHouseFragment);
+                        fragmentTransaction.commit();
+                    } else {
+
+                        Toast.makeText(getContext(), "Delete error ", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+        });
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        House deleteHouse = (House) data.getSerializableExtra("deleteHouse");
-        if (requestCode == INTENT_RESULT_DELETE_CODE){
-            Toast.makeText(this.getContext(),"Delete" +deleteHouse.getHouseName() , Toast.LENGTH_SHORT).show();
+        if (requestCode == 1){
+            currentHouse = (House)data.getSerializableExtra("currentHouse");
+            loadData(this.getView());
+            Toast.makeText(getContext(), "upddate"+ currentHouse.getHouseName(), Toast.LENGTH_SHORT).show();
         }
-
     }
 }

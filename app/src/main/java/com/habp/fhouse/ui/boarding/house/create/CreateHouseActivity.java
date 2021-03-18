@@ -86,6 +86,7 @@ public class CreateHouseActivity extends AppCompatActivity implements CreateHous
                 imgIconUpload.setVisibility(View.INVISIBLE);
                 tvUpload.setVisibility(View.INVISIBLE);
                 imgUploadPhoto.setImageURI(filePath);
+                imgUploadPhoto.setVisibility(View.VISIBLE);
             }
             catch (Exception e)
             {
