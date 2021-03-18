@@ -1,24 +1,24 @@
 package com.habp.fhouse.data.model;
 
-public class Bed {
-    private String bedId, bedName, photoPath;
-    private Room room;
-    private House house;
+import java.io.Serializable;
 
-    public Bed(String bedId, String bedName, String photoPath, Room room, House house) {
+public class Bed implements Serializable {
+    private String bedId, bedName, photoPath, roomId;
+
+    public Bed() {
+    }
+
+    public Bed(String bedId, String bedName, String photoPath, String roomId) {
         this.bedId = bedId;
         this.bedName = bedName;
         this.photoPath = photoPath;
-        this.room = room;
-        this.house = house;
+        this.roomId = roomId;
     }
 
-    public String getPhotoPath() {
-        return photoPath;
-    }
-
-    public void setPhotoPath(String photoPath) {
-        this.photoPath = photoPath;
+    public Bed(String bedId, String bedName, String roomId) {
+        this.bedId = bedId;
+        this.bedName = bedName;
+        this.roomId = roomId;
     }
 
     public String getBedId() {
@@ -37,19 +37,19 @@ public class Bed {
         this.bedName = bedName;
     }
 
-    public Room getRoom() {
-        return room;
+    public String getPhotoPath() {
+        return photoPath;
     }
 
-    public void setRoom(Room room) {
-        this.room = room;
+    public void setPhotoPath(String photoPath) {
+        this.photoPath = photoPath;
     }
 
-    public House getHouse() {
-        return house;
+    public String getRoomId() {
+        return roomId;
     }
 
-    public void setHouse(House house) {
-        this.house = house;
+    public void setRoomId(String roomId) {
+        this.roomId = roomId;
     }
 }
