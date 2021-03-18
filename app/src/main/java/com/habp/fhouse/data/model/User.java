@@ -24,11 +24,11 @@ public class User implements Serializable {
         this.userId = userId;
     }
 
-    public String getUserName() {
+    public String getFullName() {
         return fullName;
     }
 
-    public void setUserName(String fullName) {
+    public void setFullName(String fullName) {
         this.fullName = fullName;
     }
 

@@ -80,11 +80,11 @@ public class ArticleFirestoreRepository {
                 });
     }
 
-    public void getNewestArticleList(CallBack<List<Article>> callBack) {
+    public void getNewestArticleList(int nextResult, CallBack<List<Article>> callBack) {
         HouseFirestoreRepository houseFirestoreRepository = new HouseFirestoreRepository(FirebaseFirestore.getInstance(), firebaseAuth);
         List<Article> articleList = new ArrayList<>();
-        collection.whereEqualTo(DatabaseConstraints.USER_ID_KEY_NAME, firebaseAuth.getUid())
-                .orderBy(DatabaseConstraints.ARTICLE_TIME_KEY_NAME, Query.Direction.ASCENDING)
+        collection.orderBy(DatabaseConstraints.ARTICLE_TIME_KEY_NAME, Query.Direction.ASCENDING)
+                .limit(nextResult)
                 .get()
                 .addOnCompleteListener(task -> {
                     QuerySnapshot snap = task.getResult();
@@ -95,13 +95,14 @@ public class ArticleFirestoreRepository {
                                 article.setHouseAddress(house.getHouseAddress());
                                 getBoardingImageURL(article.getArticleType(), article, imageURL -> {
                                     article.setPhotoPath(imageURL);
-                                    if(firebaseAuth.getCurrentUser() != null)
+                                    if(firebaseAuth.getCurrentUser() != null) {
                                         getWishListId(article.getArticleId(), firebaseAuth.getUid(), wishlistId -> {
                                             article.setWishListId(wishlistId);
                                             articleList.add(article);
                                             callBack.onSuccessListener(articleList);
                                         });
-                                    else {
+                                    } else {
+                                        articleList.add(article);
                                         callBack.onSuccessListener(articleList);
                                     }
                                 });
@@ -151,7 +152,9 @@ public class ArticleFirestoreRepository {
 
     private void getWishListId(String articleId, String userId, CallBack<String> callBack) {
         WishListFirestoreRepository wishListFirestoreRepository = new WishListFirestoreRepository(firebaseFirestore);
-        wishListFirestoreRepository.getWishList(articleId, userId, wishListId -> callBack.onSuccessListener(wishListId.getArticleId()));
+        wishListFirestoreRepository.getWishList(userId, articleId, wishList -> {
+            callBack.onSuccessListener(wishList.getWishListId());
+        } );
     }
 
     public void getArticle(String articleId, CallBack<Article> callBack) {

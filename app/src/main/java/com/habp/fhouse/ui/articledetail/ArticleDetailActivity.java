@@ -64,6 +64,9 @@ public class ArticleDetailActivity extends AppCompatActivity implements ArticleD
     }
 
     public void clickToReturn(View view) {
+        Intent intent = getIntent();
+        intent.putExtra("modifiedArticle", article);
+        setResult(2, intent);
         finish();
     }
 
@@ -128,7 +131,7 @@ public class ArticleDetailActivity extends AppCompatActivity implements ArticleD
         txtDescription.setText(article.getArticleDescription());
         txtHouseAddress.setText(article.getHouseAddress());
         txtPhoneNumber.setText(article.getPhoneNumber());
-        Glide.with(this).load(article.getPhotoPath()).into(imageArticle);
+        Glide.with(getApplicationContext()).load(article.getPhotoPath()).into(imageArticle);
     }
 
     @Override
