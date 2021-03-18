@@ -1,6 +1,8 @@
 package com.habp.fhouse.ui.home;
 
 
+import android.text.Editable;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.habp.fhouse.data.datasource.ArticleFirestoreRepository;
@@ -37,5 +39,15 @@ public class HomePresenter implements HomeContract.Presenter {
         articleFirestoreRepository.getNewestArticleList(nextResult, articleList -> {
             callBack.onSuccessListener(articleList);
         });
+    }
+
+    @Override
+    public void searchArticle(Editable keyword) {
+        if(keyword != null) {
+            String keywordText = keyword.toString();
+            if(!keywordText.isEmpty()) {
+                mView.redirectToSearch(keywordText);
+            }
+        }
     }
 }

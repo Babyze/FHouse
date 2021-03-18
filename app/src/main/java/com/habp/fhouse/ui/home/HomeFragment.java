@@ -2,11 +2,14 @@ package com.habp.fhouse.ui.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +27,7 @@ import com.habp.fhouse.data.datasource.UserFirestoreRepository;
 import com.habp.fhouse.data.model.Article;
 import com.habp.fhouse.data.model.User;
 import com.habp.fhouse.ui.articledetail.ArticleDetailActivity;
+import com.habp.fhouse.ui.search.SearchActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,13 +35,15 @@ import java.util.List;
 public class HomeFragment extends Fragment implements HomeContract.View {
 
     private ListView lvHomePage;
+    private Button btnSearch;
+    private EditText edtSearch;
     private TextView txtFullName;
     private SwipeRefreshLayout swipeArticle;
     private ArticleAdapter adapter;
     private HomePresenter homePresenter;
     private List<Article> listArticleInHomePage;
     private int currentResult = 7;
-    private int nextResult = 7;
+    private final int nextResult = 7;
 
     @Nullable
     @Override
@@ -45,6 +51,8 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         initData(view);
+
+        showArticleData();
 
         configListViewScrollPagination();
 
@@ -55,10 +63,23 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         lvHomePage = view.findViewById(R.id.lvHomePage);
         swipeArticle = view.findViewById(R.id.swipeArticle);
         txtFullName = view.findViewById(R.id.txtFullName);
+        edtSearch = view.findViewById(R.id.edtSearch);
+        btnSearch = view.findViewById(R.id.btnSearch);
 
         listArticleInHomePage = new ArrayList<>();
         adapter = new ArticleAdapter();
 
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Editable searchKeyWord = edtSearch.getText();
+                homePresenter.searchArticle(searchKeyWord);
+            }
+        });
+
+    }
+
+    private void showArticleData() {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
@@ -155,5 +176,12 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         if(user != null) {
             txtFullName.setText("Hi " + user.getFullName());
         }
+    }
+
+    @Override
+    public void redirectToSearch(String keyword) {
+        Intent intent = new Intent(getActivity(), SearchActivity.class);
+        intent.putExtra("keyword", keyword);
+        startActivity(intent);
     }
 }
