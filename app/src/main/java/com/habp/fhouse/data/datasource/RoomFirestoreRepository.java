@@ -3,6 +3,7 @@ package com.habp.fhouse.data.datasource;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.habp.fhouse.data.model.Article;
 import com.habp.fhouse.data.model.Bed;
@@ -34,13 +35,16 @@ public class RoomFirestoreRepository {
 
     private void isRoomExist(String roomId, CallBack<Boolean> callBack) {
         collection.document(roomId).get()
-                .addOnCompleteListener(task -> callBack.onSuccessListener(task.getResult().exists()));
+                .addOnCompleteListener(task -> callBack.onSuccessListener(task.getResult() != null));
     }
 
     public void getRoom(String roomId, CallBack<Room> callback) {
         collection.document(roomId)
                 .get().addOnCompleteListener(task -> {
-                    Room room = task.getResult().toObject(Room.class);
+                    Room room = new Room();
+                    if(task.getResult() != null) {
+                        room = task.getResult().toObject(Room.class);
+                    }
                     callback.onSuccessListener(room);
         });
     }
@@ -50,14 +54,19 @@ public class RoomFirestoreRepository {
         collection.whereEqualTo(DatabaseConstraints.HOUSE_ID_KEY_NAME, houseId)
                 .get().addOnCompleteListener(task -> {
                     List<Room> rooms = new ArrayList<>();
-                    for(DocumentSnapshot documentSnapshot : task.getResult()) {
-                        Room room = documentSnapshot.toObject(Room.class);
-                        firebaseStorageRemote.getImageURL(room.getPhotoPath(), imageURL -> {
-                            room.setPhotoPath(imageURL.toString());
-                            rooms.add(room);
-                        });
+                    QuerySnapshot snapshot = task.getResult();
+                    if(snapshot != null) {
+                        for(DocumentSnapshot documentSnapshot : snapshot.getDocuments()) {
+                            Room room = documentSnapshot.toObject(Room.class);
+                            firebaseStorageRemote.getImageURL(room.getPhotoPath(), imageURL -> {
+                                room.setPhotoPath(imageURL.toString());
+                                rooms.add(room);
+                                callBack.onSuccessListener(rooms);
+                            });
+                        }
+                    } else {
+                        callBack.onSuccessListener(rooms);
                     }
-                    callBack.onSuccessListener(rooms);
         });
     }
 

@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.habp.fhouse.data.model.Article;
 import com.habp.fhouse.data.model.User;
 import com.habp.fhouse.data.model.WishList;
@@ -38,16 +39,35 @@ public class WishListFirestoreRepository {
                 .addOnCompleteListener(task -> callback.onSuccessListener(task.isSuccessful()));
     }
 
+    public void getWishListByArticleId(String articleId, CallBack<List<WishList>> callBack) {
+        List<WishList> wishLists = new ArrayList<>();
+        collection.whereEqualTo(DatabaseConstraints.ARTICLE_ID_KEY_NAME, articleId)
+                .get()
+                .addOnCompleteListener(data -> {
+                   for(DocumentSnapshot doc : data.getResult()) {
+                       wishLists.add(doc.toObject(WishList.class));
+                   }
+                   callBack.onSuccessListener(wishLists);
+                });
+    }
+
     public void getArticleWishListByUserId(String userId, CallBack<List<Article>> callBack) {
         List<Article> articleList = new ArrayList<>();
         ArticleFirestoreRepository articleFirestoreRepository = new ArticleFirestoreRepository(firebaseFirestore,firebaseAuth);
         collection.whereEqualTo(DatabaseConstraints.USER_ID_KEY_NAME, userId)
                 .get().addOnCompleteListener(wishLists -> {
-                for (DocumentSnapshot doc : wishLists.getResult()) {
-                    WishList wishList = doc.toObject(WishList.class);
-                    articleFirestoreRepository.getArticle(wishList.getArticleId(), articleList::add);
-                }
-                callBack.onSuccessListener(articleList);
+                    QuerySnapshot snap = wishLists.getResult();
+                    if(snap != null) {
+                        for (DocumentSnapshot doc : wishLists.getResult()) {
+                            WishList wishList = doc.toObject(WishList.class);
+                            articleFirestoreRepository.getArticle(wishList.getArticleId(), article -> {
+                                articleList.add(article);
+                                callBack.onSuccessListener(articleList);
+                            });
+                        }
+                    } else {
+                        callBack.onSuccessListener(articleList);
+                    }
         });
     }
 
@@ -59,9 +79,22 @@ public class WishListFirestoreRepository {
                 .addOnCompleteListener(wishlists -> {
                    for(DocumentSnapshot doc : wishlists.getResult()) {
                        WishList wishList = doc.toObject(WishList.class);
-                       userFirestoreRepository.getUserInfo(wishList.getUserId(), users::add);
+                       userFirestoreRepository.getUserInfo(wishList.getUserId(), user -> {
+                           users.add(user);
+                           callBack.onSuccessListener(users);
+                       });
                    }
-                   callBack.onSuccessListener(users);
+                });
+    }
+
+    public void getWishList(String userId, String articleId, CallBack<WishList> callBack) {
+        collection.whereEqualTo(DatabaseConstraints.USER_ID_KEY_NAME, userId)
+                .whereEqualTo(DatabaseConstraints.ARTICLE_ID_KEY_NAME, articleId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    for(DocumentSnapshot doc : task.getResult()) {
+                        callBack.onSuccessListener(doc.toObject(WishList.class));
+                    }
                 });
     }
 

@@ -15,4 +15,5 @@
     <color name="grey">#D9D9D9</color>
     <color name="red">#F21B1B</color>
     <color name="orange">#FAB072</color>
+    <color name="red_price">#D33838</color>
 </resources>

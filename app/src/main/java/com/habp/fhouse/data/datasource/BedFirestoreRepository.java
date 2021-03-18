@@ -3,6 +3,7 @@ package com.habp.fhouse.data.datasource;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.habp.fhouse.data.model.Article;
 import com.habp.fhouse.data.model.Bed;
@@ -33,13 +34,16 @@ public class BedFirestoreRepository {
 
     private void isBedExist(String bedId, CallBack<Boolean> callBack) {
         collection.document(bedId).get()
-                .addOnCompleteListener(task -> callBack.onSuccessListener(task.getResult().exists()));
+                .addOnCompleteListener(task -> callBack.onSuccessListener(task.getResult() != null));
     }
 
     public void getBed(String bedId, CallBack<Bed> callback) {
         collection.document(bedId)
                 .get().addOnCompleteListener(task -> {
-                    Bed bed = task.getResult().toObject(Bed.class);
+                    Bed bed = new Bed();
+                    if(task.getResult() != null) {
+                        bed = task.getResult().toObject(Bed.class);
+                    }
                     callback.onSuccessListener(bed);
         });
     }
@@ -49,14 +53,19 @@ public class BedFirestoreRepository {
         collection.whereEqualTo(DatabaseConstraints.ROOM_ID_KEY_NAME, roomId)
                 .get().addOnCompleteListener(task -> {
             List<Bed> beds = new ArrayList<>();
-            for(DocumentSnapshot documentSnapshot : task.getResult()) {
-                Bed bed = documentSnapshot.toObject(Bed.class);
-                firebaseStorageRemote.getImageURL(bed.getPhotoPath(), imageURL -> {
-                    bed.setPhotoPath(imageURL.toString());
-                    beds.add(bed);
-                });
+            QuerySnapshot snap = task.getResult();
+            if(snap != null) {
+                for(DocumentSnapshot documentSnapshot : snap.getDocuments()) {
+                    Bed bed = documentSnapshot.toObject(Bed.class);
+                    firebaseStorageRemote.getImageURL(bed.getPhotoPath(), imageURL -> {
+                        bed.setPhotoPath(imageURL.toString());
+                        beds.add(bed);
+                        callBack.onSuccessListener(beds);
+                    });
+                }
+            } else {
+                callBack.onSuccessListener(beds);
             }
-            callBack.onSuccessListener(beds);
         });
     }
 

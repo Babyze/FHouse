@@ -1,9 +1,5 @@
 package com.habp.fhouse.data.datasource;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -24,8 +20,13 @@ import java.util.Map;
 
 public class HouseFirestoreRepository {
     private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore firebaseFirestore;
     private CollectionReference collection;
     private FirebaseFirestore firebaseFirestore;
+
+    public HouseFirestoreRepository(FirebaseFirestore firebaseFirestore) {
+        this.firebaseFirestore = firebaseFirestore;
+    }
 
     public HouseFirestoreRepository(FirebaseFirestore firebaseFirestore, FirebaseAuth firebaseAuth) {
         this.firebaseAuth = firebaseAuth;
@@ -51,7 +52,7 @@ public class HouseFirestoreRepository {
 
     private void isHouseExist(String houseId, CallBack<Boolean> callBack) {
         collection.document(houseId).get()
-                .addOnCompleteListener(task -> callBack.onSuccessListener(task.getResult().exists()));
+                .addOnCompleteListener(task -> callBack.onSuccessListener(task.getResult() != null));
     }
 
     public void getHouseList(CallBack<List<House>> callBack) {
@@ -69,6 +70,8 @@ public class HouseFirestoreRepository {
                                callBack.onSuccessListener(houses);
                            });
                        }
+                    } else {
+                        callBack.onSuccessListener(houses);
                     }
                 });
     }
@@ -77,7 +80,7 @@ public class HouseFirestoreRepository {
         collection.document(houseId)
                 .get().addOnCompleteListener(task -> {
                     House house = new House();
-                    if(task.isSuccessful()) {
+                    if(task.getResult() != null) {
                         house = task.getResult().toObject(House.class);
                     }
                     callBack.onSuccessListener(house);

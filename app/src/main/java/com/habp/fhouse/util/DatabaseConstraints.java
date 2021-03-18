@@ -19,4 +19,5 @@ public class DatabaseConstraints {
     public static final int HOUSE_ARTICLE = 1;
     public static final int ROOM_ARTICLE = 2;
     public static final int BED_ARTICLE = 3;
+    public static final String GOOGLE_MAP_URL = "http://maps.google.com/maps?q=";
 }
