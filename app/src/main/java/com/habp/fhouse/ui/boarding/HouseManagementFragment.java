@@ -21,8 +21,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.habp.fhouse.R;
 import com.habp.fhouse.data.datasource.FirebaseAuthRepository;
+import com.habp.fhouse.data.datasource.HouseFirestoreRepository;
 import com.habp.fhouse.data.model.House;
 import com.habp.fhouse.ui.boarding.house.create.CreateHouseActivity;
 import com.habp.fhouse.ui.boarding.house.housedetail.HouseDetailFragment;
@@ -45,6 +47,8 @@ public class HouseManagementFragment extends Fragment implements HouseContract.V
 
         FirebaseAuthRepository firebaseAuthRepository
                 = new FirebaseAuthRepository(FirebaseAuth.getInstance());
+        HouseFirestoreRepository houseFirestoreRepository =
+                new HouseFirestoreRepository(FirebaseFirestore.getInstance(), FirebaseAuth.getInstance());
 
         housePresenter = new HousePresenter(this, firebaseAuthRepository);
         housePresenter.checkAuthorize(false);
@@ -63,6 +67,7 @@ public class HouseManagementFragment extends Fragment implements HouseContract.V
 
     @Override
     public void showHouseList(List<House> listHouse) {
+        System.out.println(listHouse.size() + "AAAAA");
         adapter = new HouseAdapter(listHouse);
         if (listHouse.size() > 0) {
             lvHomeMamage.setAdapter(adapter);

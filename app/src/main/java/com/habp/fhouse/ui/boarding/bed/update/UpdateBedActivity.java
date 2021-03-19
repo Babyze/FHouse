@@ -1,6 +1,9 @@
 package com.habp.fhouse.ui.boarding.bed.update;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -9,13 +12,22 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 import com.habp.fhouse.R;
+import com.habp.fhouse.data.datasource.BedFirestoreRepository;
+import com.habp.fhouse.data.datasource.FirebaseStorageRemote;
 import com.habp.fhouse.data.model.Bed;
+import com.habp.fhouse.data.model.Room;
+import com.habp.fhouse.ui.boarding.room.roomdetail.RoomDetailFragment;
+import com.habp.fhouse.util.ConvertHelper;
 
 public class UpdateBedActivity extends AppCompatActivity {
     private Uri filePath;
+    private Bed currentBed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +35,7 @@ public class UpdateBedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_update_bed);
 
         Intent intent = getIntent();
-        Bed currentBed = (Bed) intent.getSerializableExtra("currentBed");
+        currentBed = (Bed) intent.getSerializableExtra("currentBed");
         Glide.with(this).load(currentBed.getPhotoPath()).into((ImageView) this.findViewById(R.id.imgUploadPhoto));
         EditText edtBedNameUpdate = findViewById(R.id.edtBedNameUpdate);
         edtBedNameUpdate.setText(currentBed.getBedName());
@@ -36,10 +48,33 @@ public class UpdateBedActivity extends AppCompatActivity {
     }
 
     public void clickToBackActivity(View view) {
+        Intent intent = getIntent();
+        setResult(0, intent);
         finish();
     }
 
     public void clickToUpdateBedDetail(View view) {
+        //Chuẩn bị data
+        EditText edtBedNameUpdate = findViewById(R.id.edtBedNameUpdate);
+        currentBed.setBedName(edtBedNameUpdate.getText().toString());
+
+        byte[] imageByte = ConvertHelper.convertImageViewToByte(findViewById(R.id.imgUploadPhoto));
+        FirebaseStorageRemote firebaseStorageRemote = new FirebaseStorageRemote(FirebaseStorage.getInstance());
+        BedFirestoreRepository bedFirestoreRepository = new BedFirestoreRepository(FirebaseFirestore.getInstance());
+        bedFirestoreRepository.updateBed(currentBed, bed->{
+            if (bed !=null){
+                Toast.makeText(this, "Update successful", Toast.LENGTH_SHORT).show();
+                firebaseStorageRemote.uploadImage(imageByte, bed.getPhotoPath(), isSuccess->{
+                    firebaseStorageRemote.getImageURL(bed.getPhotoPath(), imageURL->{
+                        currentBed.setPhotoPath(imageURL.toString());
+                        finish();
+                    });
+                });
+            }else {
+                Toast.makeText(this, "Update failed", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
 
     }
 
@@ -73,5 +108,20 @@ public class UpdateBedActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void clickToDeleteBed(View view) {
+        String deleteBedId = currentBed.getBedId();
+        //Delete
+        BedFirestoreRepository bedFirestoreRepository =
+                new BedFirestoreRepository(FirebaseFirestore.getInstance());
+        bedFirestoreRepository.deleteBed(deleteBedId, isSuccess->{
+            if (isSuccess){
+                Toast.makeText(this, "Delete successful", Toast.LENGTH_SHORT).show();
+                finish();
+            }else {
+                Toast.makeText(this, "Delete error", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

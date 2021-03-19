@@ -108,7 +108,8 @@
                 android:textColor="@color/red"
                 android:textSize="18dp"
                 app:cornerRadius="0dp"
-                app:strokeColor="@color/grey" />
+                app:strokeColor="@color/grey"
+                android:id="@+id/btnDeleteRoom"/>
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

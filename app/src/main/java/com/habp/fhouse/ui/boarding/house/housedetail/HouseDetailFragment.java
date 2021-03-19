@@ -23,29 +23,35 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.habp.fhouse.R;
+import com.habp.fhouse.data.datasource.FirebaseAuthRepository;
 import com.habp.fhouse.data.datasource.FirebaseStorageRemote;
 import com.habp.fhouse.data.datasource.HouseFirestoreRepository;
 import com.habp.fhouse.data.model.House;
 import com.habp.fhouse.data.model.Room;
 import com.habp.fhouse.ui.boarding.HouseAdapter;
 import com.habp.fhouse.ui.boarding.HouseManagementFragment;
+import com.habp.fhouse.ui.boarding.HousePresenter;
 import com.habp.fhouse.ui.boarding.house.create.CreateHouseActivity;
 import com.habp.fhouse.ui.boarding.house.update.UpdateHouseActivity;
 import com.habp.fhouse.ui.boarding.room.RoomAdapter;
+import com.habp.fhouse.ui.boarding.room.RoomContract;
+import com.habp.fhouse.ui.boarding.room.RoomPresenter;
 import com.habp.fhouse.ui.boarding.room.create.CreateRoomActivity;
 import com.habp.fhouse.ui.boarding.room.roomdetail.RoomDetailFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HouseDetailFragment extends Fragment {
+public class HouseDetailFragment extends Fragment implements RoomContract.View {
 
     private ListView lvRoom;
     private RoomAdapter adapter;
     private House currentHouse;
+    private RoomPresenter roomPresenter;
 
     @Nullable
     @Override
@@ -54,36 +60,14 @@ public class HouseDetailFragment extends Fragment {
         lvRoom = view.findViewById(R.id.lvRoom);
         currentHouse = (House) this.getArguments().getSerializable("currentHouse");
 
-        //set list room
-        List<Room> listRoom = new ArrayList<>();
-        if (listRoom.size() > 0) {
-            adapter = new RoomAdapter(listRoom);
-            lvRoom.setAdapter(adapter);
-            lvRoom.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Room roomCurrent = listRoom.get(i);
-                    if (roomCurrent != null) {
-                        Bundle bundle = new Bundle();
-                        bundle.putString("id", roomCurrent.getRoomId());
-                        Fragment roomDetail = new RoomDetailFragment();
-                        roomDetail.setArguments(bundle);
-                        FragmentManager fragmentManager = getFragmentManager();
-                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.fragment_container, roomDetail);
-                        fragmentTransaction.commit();
-                    }
-                }
-            });
-            lvRoom.setBackgroundColor(getResources().getColor(R.color.grey));
-            TextView txtEmptyRoom = view.findViewById(R.id.txtEmptyRoom);
-            txtEmptyRoom.setText("");
-        } else {
-            lvRoom.setBackgroundColor(Color.WHITE);
-            TextView txtEmptyRoom = view.findViewById(R.id.txtEmptyRoom);
-            txtEmptyRoom.setText("Empty");
-        }
+        FirebaseAuthRepository firebaseAuthRepository
+                = new FirebaseAuthRepository(FirebaseAuth.getInstance());
+        roomPresenter = new RoomPresenter(this);
+        roomPresenter.loadRoom(currentHouse.getHouseId());
+
         loadData(view);
+
+
         return view;
     }
     public void loadData(View view){
@@ -114,6 +98,7 @@ public class HouseDetailFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), CreateRoomActivity.class);
+                intent.putExtra("currentHouseId", currentHouse.getHouseId());
                 startActivity(intent);
             }
         });
@@ -166,5 +151,42 @@ public class HouseDetailFragment extends Fragment {
             loadData(this.getView());
             Toast.makeText(getContext(), "upddate"+ currentHouse.getHouseName(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void showRoomList(List<Room> listRoom) {
+        if (listRoom.size() > 0) {
+            adapter = new RoomAdapter(listRoom);
+            lvRoom.setAdapter(adapter);
+            lvRoom.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Room roomCurrent = listRoom.get(i);
+                    if (roomCurrent != null) {
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("currentRoom", roomCurrent);
+                        bundle.putSerializable("currentHouse", currentHouse);
+                        Fragment roomDetail = new RoomDetailFragment();
+                        roomDetail.setArguments(bundle);
+                        FragmentManager fragmentManager = getFragmentManager();
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.replace(R.id.fragment_container, roomDetail);
+                        fragmentTransaction.commit();
+                    }
+                }
+            });
+            lvRoom.setBackgroundColor(getResources().getColor(R.color.grey));
+            TextView txtEmptyRoom = this.getView().findViewById(R.id.txtEmptyRoom);
+            txtEmptyRoom.setText("");
+        } else {
+            lvRoom.setBackgroundColor(Color.WHITE);
+            TextView txtEmptyRoom = this.getView().findViewById(R.id.txtEmptyRoom);
+            txtEmptyRoom.setText("Empty");
+        }
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        roomPresenter.loadRoom(currentHouse.getHouseId());
     }
 }

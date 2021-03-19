@@ -55,9 +55,13 @@
         app:layout_constraintTop_toBottomOf="@+id/header">
 
         <ImageView
+            android:backgroundTint="@color/white"
             android:id="@+id/imgUploadPhoto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:src="@mipmap/img_room_default"
+            android:visibility="invisible"
+            android:background="@null"
             android:scaleType="centerCrop" />
 
         <ImageView
@@ -88,7 +92,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/edtRoomName"
         android:layout_width="314dp"
         android:hint="Room name"
         android:layout_height="wrap_content"
