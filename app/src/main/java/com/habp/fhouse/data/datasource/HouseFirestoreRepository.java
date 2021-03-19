@@ -1,5 +1,7 @@
 package com.habp.fhouse.data.datasource;
 
+import android.telecom.Call;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -84,6 +86,23 @@ public class HouseFirestoreRepository {
                         house = task.getResult().toObject(House.class);
                     }
                     callBack.onSuccessListener(house);
+                });
+    }
+
+    public void getHouseListByAddress(String address, CallBack<List<House>> callBack) {
+        List<House> houses = new ArrayList<>();
+        collection.whereGreaterThanOrEqualTo(DatabaseConstraints.HOUSE_ADDRESS_KEY_NAME, address.toUpperCase())
+                .whereLessThanOrEqualTo(DatabaseConstraints.HOUSE_ADDRESS_KEY_NAME, address + '\uf8ff')
+                .get()
+                .addOnCompleteListener(querySnapShot -> {
+                   QuerySnapshot snap = querySnapShot.getResult();
+                   if(snap != null) {
+                       for(DocumentSnapshot doc : snap.getDocuments()) {
+                           House house = doc.toObject(House.class);
+                           houses.add(house);
+                           callBack.onSuccessListener(houses);
+                       }
+                   }
                 });
     }
 
