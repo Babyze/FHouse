@@ -1,9 +1,6 @@
 package com.habp.fhouse.ui.boarding.bed.update;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -21,8 +18,6 @@ import com.habp.fhouse.R;
 import com.habp.fhouse.data.datasource.BedFirestoreRepository;
 import com.habp.fhouse.data.datasource.FirebaseStorageRemote;
 import com.habp.fhouse.data.model.Bed;
-import com.habp.fhouse.data.model.Room;
-import com.habp.fhouse.ui.boarding.room.roomdetail.RoomDetailFragment;
 import com.habp.fhouse.util.ConvertHelper;
 
 public class UpdateBedActivity extends AppCompatActivity {
@@ -56,26 +51,26 @@ public class UpdateBedActivity extends AppCompatActivity {
     public void clickToUpdateBedDetail(View view) {
         //Chuẩn bị data
         EditText edtBedNameUpdate = findViewById(R.id.edtBedNameUpdate);
-        currentBed.setBedName(edtBedNameUpdate.getText().toString());
-
-        byte[] imageByte = ConvertHelper.convertImageViewToByte(findViewById(R.id.imgUploadPhoto));
-        FirebaseStorageRemote firebaseStorageRemote = new FirebaseStorageRemote(FirebaseStorage.getInstance());
-        BedFirestoreRepository bedFirestoreRepository = new BedFirestoreRepository(FirebaseFirestore.getInstance());
-        bedFirestoreRepository.updateBed(currentBed, bed->{
-            if (bed !=null){
-                Toast.makeText(this, "Update successful", Toast.LENGTH_SHORT).show();
-                firebaseStorageRemote.uploadImage(imageByte, bed.getPhotoPath(), isSuccess->{
-                    firebaseStorageRemote.getImageURL(bed.getPhotoPath(), imageURL->{
-                        currentBed.setPhotoPath(imageURL.toString());
-                        finish();
+        if (!edtBedNameUpdate.getText().toString().isEmpty()) {
+            currentBed.setBedName(edtBedNameUpdate.getText().toString());
+            byte[] imageByte = ConvertHelper.convertImageViewToByte(findViewById(R.id.imgUploadPhoto));
+            FirebaseStorageRemote firebaseStorageRemote = new FirebaseStorageRemote(FirebaseStorage.getInstance());
+            BedFirestoreRepository bedFirestoreRepository = new BedFirestoreRepository(FirebaseFirestore.getInstance());
+            bedFirestoreRepository.updateBed(currentBed, bed -> {
+                if (bed != null) {
+                    Toast.makeText(this, "Update successful", Toast.LENGTH_SHORT).show();
+                    firebaseStorageRemote.uploadImage(imageByte, bed.getPhotoPath(), isSuccess -> {
+                        firebaseStorageRemote.getImageURL(bed.getPhotoPath(), imageURL -> {
+                            currentBed.setPhotoPath(imageURL.toString());
+                            finish();
+                        });
                     });
-                });
-            }else {
-                Toast.makeText(this, "Update failed", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        });
-
+                } else {
+                    Toast.makeText(this, "Update failed", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            });
+        } else Toast.makeText(this, "Please input bed name", Toast.LENGTH_SHORT).show();
     }
 
     public void clickToUploadPhoto(View view) {
@@ -115,11 +110,11 @@ public class UpdateBedActivity extends AppCompatActivity {
         //Delete
         BedFirestoreRepository bedFirestoreRepository =
                 new BedFirestoreRepository(FirebaseFirestore.getInstance());
-        bedFirestoreRepository.deleteBed(deleteBedId, isSuccess->{
-            if (isSuccess){
+        bedFirestoreRepository.deleteBed(deleteBedId, isSuccess -> {
+            if (isSuccess) {
                 Toast.makeText(this, "Delete successful", Toast.LENGTH_SHORT).show();
                 finish();
-            }else {
+            } else {
                 Toast.makeText(this, "Delete error", Toast.LENGTH_SHORT).show();
             }
         });

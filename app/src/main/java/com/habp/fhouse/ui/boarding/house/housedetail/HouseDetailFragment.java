@@ -1,6 +1,5 @@
 package com.habp.fhouse.ui.boarding.house.housedetail;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -25,17 +24,12 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
 import com.habp.fhouse.R;
 import com.habp.fhouse.data.datasource.FirebaseAuthRepository;
-import com.habp.fhouse.data.datasource.FirebaseStorageRemote;
 import com.habp.fhouse.data.datasource.HouseFirestoreRepository;
 import com.habp.fhouse.data.model.House;
 import com.habp.fhouse.data.model.Room;
-import com.habp.fhouse.ui.boarding.HouseAdapter;
 import com.habp.fhouse.ui.boarding.HouseManagementFragment;
-import com.habp.fhouse.ui.boarding.HousePresenter;
-import com.habp.fhouse.ui.boarding.house.create.CreateHouseActivity;
 import com.habp.fhouse.ui.boarding.house.update.UpdateHouseActivity;
 import com.habp.fhouse.ui.boarding.room.RoomAdapter;
 import com.habp.fhouse.ui.boarding.room.RoomContract;
@@ -43,7 +37,6 @@ import com.habp.fhouse.ui.boarding.room.RoomPresenter;
 import com.habp.fhouse.ui.boarding.room.create.CreateRoomActivity;
 import com.habp.fhouse.ui.boarding.room.roomdetail.RoomDetailFragment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class HouseDetailFragment extends Fragment implements RoomContract.View {
@@ -59,26 +52,17 @@ public class HouseDetailFragment extends Fragment implements RoomContract.View {
         View view = inflater.inflate(R.layout.fragment_house_detail, container, false);
         lvRoom = view.findViewById(R.id.lvRoom);
         currentHouse = (House) this.getArguments().getSerializable("currentHouse");
-
-        FirebaseAuthRepository firebaseAuthRepository
-                = new FirebaseAuthRepository(FirebaseAuth.getInstance());
         roomPresenter = new RoomPresenter(this);
         roomPresenter.loadRoom(currentHouse.getHouseId());
-
         loadData(view);
-
-
         return view;
     }
     public void loadData(View view){
-
-        //String id = this.getArguments().getString("id");    //Lấy string từ fragment trước
         //set Title
         TextView txtHouseName = view.findViewById(R.id.txtHouseName);
         txtHouseName.setText(currentHouse.getHouseName());
         //set Image
         Glide.with(view).load(currentHouse.getPhotoPath()).into((ImageView) view.findViewById(R.id.imgHousePhoto));
-
         //button back
         ImageButton btnBack = view.findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -120,11 +104,9 @@ public class HouseDetailFragment extends Fragment implements RoomContract.View {
             @Override
             public void onClick(View view) {
                 String deleteHouseId = currentHouse.getHouseId();
-                System.out.println(deleteHouseId + " YOYO");
                 // xóa
                 HouseFirestoreRepository houseFirestoreRepository =
                         new HouseFirestoreRepository(FirebaseFirestore.getInstance());
-
                 houseFirestoreRepository.deleteHouse(deleteHouseId, isSuccess -> {
                     if (isSuccess) {
                         Toast.makeText(getContext(), "Delete successful ", Toast.LENGTH_SHORT).show();

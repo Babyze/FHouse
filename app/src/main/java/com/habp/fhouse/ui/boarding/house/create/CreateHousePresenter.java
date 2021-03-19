@@ -1,7 +1,5 @@
 package com.habp.fhouse.ui.boarding.house.create;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.habp.fhouse.data.datasource.FirebaseStorageRemote;
 import com.habp.fhouse.data.datasource.HouseFirestoreRepository;
 import com.habp.fhouse.data.model.House;
@@ -22,10 +20,10 @@ public class CreateHousePresenter implements CreateHouseContract.Presenter {
     public void createHouse(House house, byte[] imageByte) {
         String imagePath = DatabaseConstraints.BOARDING_IMAGE_PATH + house.getHouseId() + ".jpg";
         firebaseStorageRemote.uploadImage(imageByte, imagePath, isUploadSuccess -> {
-            if(isUploadSuccess) {
+            if (isUploadSuccess) {
                 house.setPhotoPath(imagePath);
                 houseFirestoreRepository.createHouse(house, isSuccess -> {
-                    if(isSuccess)
+                    if (isSuccess)
                         mView.onCreateSuccess("Create OK");
                     else
                         mView.onCreateFailed("Create Failed");

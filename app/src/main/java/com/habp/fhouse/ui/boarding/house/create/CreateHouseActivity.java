@@ -1,13 +1,10 @@
 package com.habp.fhouse.ui.boarding.house.create;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -23,13 +20,13 @@ import com.habp.fhouse.data.datasource.HouseFirestoreRepository;
 import com.habp.fhouse.data.model.House;
 import com.habp.fhouse.util.ConvertHelper;
 
-import java.io.IOException;
 import java.util.UUID;
 
 public class CreateHouseActivity extends AppCompatActivity implements CreateHouseContract.View {
     private Uri filePath;
     private CreateHousePresenter createHousePresenter;
     private FirebaseAuth firebaseAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +34,6 @@ public class CreateHouseActivity extends AppCompatActivity implements CreateHous
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-
         FirebaseStorageRemote firebaseStorageRemote = new FirebaseStorageRemote(firebaseStorage);
         createHousePresenter =
                 new CreateHousePresenter(this,
@@ -48,12 +44,22 @@ public class CreateHouseActivity extends AppCompatActivity implements CreateHous
         String houseId = UUID.randomUUID().toString();
         EditText edtHouseName = findViewById(R.id.edtHouseName);
         String houseName = edtHouseName.getText().toString();
+
         EditText edtHouseAddress = findViewById(R.id.edtHouseAddress);
         String houseAddress = edtHouseAddress.getText().toString();
-        byte[] imageByte = ConvertHelper.convertImageViewToByte(findViewById(R.id.imgUploadPhoto));
-        String userId = firebaseAuth.getUid();
-        House house = new House(houseId, houseName, houseAddress, userId);
-        createHousePresenter.createHouse(house, imageByte);
+        if (!houseName.isEmpty() && !houseAddress.isEmpty()) {
+            byte[] imageByte = ConvertHelper.convertImageViewToByte(findViewById(R.id.imgUploadPhoto));
+            String userId = firebaseAuth.getUid();
+            House house = new House(houseId, houseName, houseAddress, userId);
+            createHousePresenter.createHouse(house, imageByte);
+        } else {
+            if (houseAddress.isEmpty() && houseName.isEmpty()) {
+                Toast.makeText(this, "Please input House address and House name", Toast.LENGTH_SHORT).show();
+            } else if (houseName.isEmpty() && !houseAddress.isEmpty()) {
+                onHouseNameError("Please input House name");
+            } else
+                onAddressError("Please input House Address");
+        }
     }
 
     public void clickToUploadPhoto(View view) {
@@ -63,6 +69,7 @@ public class CreateHouseActivity extends AppCompatActivity implements CreateHous
     public void clickToBackActivity(View view) {
         finish();
     }
+
     private void chooseImage() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -73,12 +80,10 @@ public class CreateHouseActivity extends AppCompatActivity implements CreateHous
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1 && resultCode == RESULT_OK
-                && data != null && data.getData() != null )
-        {
+        if (requestCode == 1 && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
             filePath = data.getData();
             try {
-
                 ImageView imgUploadPhoto = findViewById(R.id.imgUploadPhoto);
                 ImageView imgIconUpload = findViewById(R.id.imgIconUpload);
                 TextView tvUpload = findViewById(R.id.tvUpload);
@@ -87,9 +92,7 @@ public class CreateHouseActivity extends AppCompatActivity implements CreateHous
                 tvUpload.setVisibility(View.INVISIBLE);
                 imgUploadPhoto.setImageURI(filePath);
                 imgUploadPhoto.setVisibility(View.VISIBLE);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -108,11 +111,11 @@ public class CreateHouseActivity extends AppCompatActivity implements CreateHous
 
     @Override
     public void onHouseNameError(String message) {
-
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onAddressError(String message) {
-
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 }
