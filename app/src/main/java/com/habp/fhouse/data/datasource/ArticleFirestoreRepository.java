@@ -113,6 +113,7 @@ public class ArticleFirestoreRepository {
                                             callBack.onSuccessListener(articleSnap);
                                         });
                                     } else {
+                                        articleList.add(article);
                                         articleSnap.setArticleList(articleList);
                                         callBack.onSuccessListener(articleSnap);
                                     }
@@ -126,11 +127,11 @@ public class ArticleFirestoreRepository {
     }
 
     public void getNewestArticleList(DocumentSnapshot lastSnap, CallBack<ArticleSnap> callBack) {
-        HouseFirestoreRepository houseFirestoreRepository = new HouseFirestoreRepository(FirebaseFirestore.getInstance());
+        HouseFirestoreRepository houseFirestoreRepository
+                = new HouseFirestoreRepository(FirebaseFirestore.getInstance(), firebaseAuth);
         ArticleSnap articleSnap = new ArticleSnap();
         List<Article> articleList = new ArrayList<>();
         collection.orderBy(DatabaseConstraints.ARTICLE_TIME_KEY_NAME, Query.Direction.ASCENDING)
-                .startAfter(lastSnap)
                 .limit(7)
                 .get()
                 .addOnCompleteListener(task -> {
@@ -139,6 +140,9 @@ public class ArticleFirestoreRepository {
                         if(snap.size() > 1) {
                             DocumentSnapshot lastSnapDB = snap.getDocuments().get(snap.size() - 1);
                             articleSnap.setLastSnap(lastSnapDB);
+                        } else {
+                            articleSnap.setArticleList(articleList);
+                            callBack.onSuccessListener(articleSnap);
                         }
                         for(DocumentSnapshot doc : snap.getDocuments()) {
                             Article article = doc.toObject(Article.class);
@@ -154,6 +158,7 @@ public class ArticleFirestoreRepository {
                                             callBack.onSuccessListener(articleSnap);
                                         });
                                     } else {
+                                        articleList.add(article);
                                         articleSnap.setArticleList(articleList);
                                         callBack.onSuccessListener(articleSnap);
                                     }
