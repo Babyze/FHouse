@@ -103,6 +103,7 @@ public class ArticleFirestoreRepository {
                             Article article = doc.toObject(Article.class);
                             houseFirestoreRepository.getHouse(article.getHouseId(), house -> {
                                 article.setHouseAddress(house.getHouseAddress());
+                                article.setOwnerId(house.getUserId());
                                 getBoardingImageURL(article.getArticleType(), article, imageURL -> {
                                     article.setPhotoPath(imageURL);
                                     if(firebaseAuth.getCurrentUser() != null) {
@@ -149,6 +150,7 @@ public class ArticleFirestoreRepository {
                             Article article = doc.toObject(Article.class);
                             houseFirestoreRepository.getHouse(article.getHouseId(), house -> {
                                 article.setHouseAddress(house.getHouseAddress());
+                                article.setOwnerId(house.getUserId());
                                 getBoardingImageURL(article.getArticleType(), article, imageURL -> {
                                     article.setPhotoPath(imageURL);
                                     if(firebaseAuth.getCurrentUser() != null) {
@@ -347,6 +349,7 @@ public class ArticleFirestoreRepository {
                             Article article = doc.toObject(Article.class);
                             houseFirestoreRepository.getHouse(article.getHouseId(), house -> {
                                 article.setHouseAddress(house.getHouseAddress());
+                                article.setOwnerId(house.getUserId());
                                 getBoardingImageURL(article.getArticleType(), article, imageURL -> {
                                     article.setPhotoPath(imageURL);
                                     if(firebaseAuth.getCurrentUser() != null) {
@@ -393,6 +396,7 @@ public class ArticleFirestoreRepository {
                             Article article = doc.toObject(Article.class);
                             houseFirestoreRepository.getHouse(article.getHouseId(), house -> {
                                 article.setHouseAddress(house.getHouseAddress());
+                                article.setOwnerId(house.getUserId());
                                 getBoardingImageURL(article.getArticleType(), article, imageURL -> {
                                     article.setPhotoPath(imageURL);
                                     if(firebaseAuth.getCurrentUser() != null) {

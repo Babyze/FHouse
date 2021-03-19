@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Article implements Serializable {
     private String articleId, articleName, articleDescription, houseId, roomId, bedId;
-    private String houseAddress, phoneNumber, photoPath, wishListId;
+    private String houseAddress, phoneNumber, photoPath, wishListId, ownerId;
     private float price;
     private int articleType;
 
@@ -30,6 +30,14 @@ public class Article implements Serializable {
 
     public void setArticleDescription(String articleDescription) {
         this.articleDescription = articleDescription;
+    }
+
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
     }
 
     public String getHouseId() {
