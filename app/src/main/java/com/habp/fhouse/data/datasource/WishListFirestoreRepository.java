@@ -53,7 +53,9 @@ public class WishListFirestoreRepository {
 
     public void getArticleWishListByUserId(String userId, CallBack<List<Article>> callBack) {
         List<Article> articleList = new ArrayList<>();
-        ArticleFirestoreRepository articleFirestoreRepository = new ArticleFirestoreRepository(firebaseFirestore,firebaseAuth);
+        ArticleFirestoreRepository articleFirestoreRepository =
+                new ArticleFirestoreRepository(firebaseFirestore,firebaseAuth);
+
         collection.whereEqualTo(DatabaseConstraints.USER_ID_KEY_NAME, userId)
                 .get().addOnCompleteListener(wishLists -> {
                     QuerySnapshot snap = wishLists.getResult();
@@ -65,6 +67,7 @@ public class WishListFirestoreRepository {
                                 callBack.onSuccessListener(articleList);
                             });
                         }
+                        callBack.onSuccessListener(articleList);
                     } else {
                         callBack.onSuccessListener(articleList);
                     }
