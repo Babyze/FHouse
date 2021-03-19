@@ -1,6 +1,8 @@
 package com.habp.fhouse.data.model;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private String userId, fullName, email, address, photoPath, phone;
 
     public User() {}
@@ -22,11 +24,11 @@ public class User {
         this.userId = userId;
     }
 
-    public String getUserName() {
+    public String getFullName() {
         return fullName;
     }
 
-    public void setUserName(String fullName) {
+    public void setFullName(String fullName) {
         this.fullName = fullName;
     }
 
