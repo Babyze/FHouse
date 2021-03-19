@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface SearchContract {
     interface View {
-        void showResult(ArticleSnap articleSnap);
+        void showResult(boolean isLoadMore, ArticleSnap articleSnap);
     }
     interface Presenter {
         void loadArticleResult(DocumentSnapshot snap, String keyword);

@@ -182,7 +182,6 @@ public class HomeFragment extends Fragment implements HomeContract.View {
             lvHomePage.setVisibility(View.INVISIBLE);
             txtNoResult.setText("No result found");
         } else {
-            System.out.println("????");
             txtNoResult.setVisibility(View.INVISIBLE);
             lvHomePage.setVisibility(View.VISIBLE);
         }

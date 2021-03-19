@@ -25,7 +25,8 @@
             android:layout_marginTop="5dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_create_house_back" />
+            app:srcCompat="@drawable/ic_create_house_back"
+            android:onClick="clickToClose"/>
 
         <TextView
             android:id="@+id/textView3"
@@ -77,7 +78,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                app:icon="@mipmap/ic_search"
+                app:icon="@mipmap/ic_search_sort"
                 app:iconSize="20dp"
                 style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
                 android:text="Sort"
