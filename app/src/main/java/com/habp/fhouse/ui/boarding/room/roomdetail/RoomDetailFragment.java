@@ -80,6 +80,7 @@ public class RoomDetailFragment extends Fragment implements BedContract.View {
                     if (currentBed != null) {
                         Intent intent = new Intent(getActivity(), UpdateBedActivity.class);
                         intent.putExtra("currentBed", currentBed);
+                        intent.putExtra("currentRoom", currentRoom);
                         startActivity(intent);
                     }
                 }
@@ -103,6 +104,7 @@ public class RoomDetailFragment extends Fragment implements BedContract.View {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), CreateBedActivity.class);
+                intent.putExtra("currentRoom", currentRoom);
                 startActivity(intent);
             }
         });
@@ -168,5 +170,11 @@ public class RoomDetailFragment extends Fragment implements BedContract.View {
             loadData(this.getView());
             Toast.makeText(getContext(), "Update " + currentRoom.getRoomName() + " successful", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        bedPresenter.loadBed(currentRoom.getRoomId());
     }
 }

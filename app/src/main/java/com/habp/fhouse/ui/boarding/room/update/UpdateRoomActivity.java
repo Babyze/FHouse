@@ -84,9 +84,7 @@ public class UpdateRoomActivity extends AppCompatActivity {
     public void clickToUpdateRoomDetail(View view) {
         //Chuẩn bị data update
         EditText edtRoomNameUpdate = findViewById(R.id.edtRoomNameUpdate);
-        System.out.println(edtRoomNameUpdate.getText().toString());
         currentRoom.setRoomName(edtRoomNameUpdate.getText().toString());
-        System.out.println(currentRoom.getRoomName());
 
         byte[] imageByte = ConvertHelper.convertImageViewToByte(findViewById(R.id.imgUploadPhoto));
         FirebaseStorageRemote firebaseStorageRemote = new FirebaseStorageRemote(FirebaseStorage.getInstance());
