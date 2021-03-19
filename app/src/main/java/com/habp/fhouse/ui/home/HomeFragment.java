@@ -40,6 +40,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     private Button btnSearch;
     private EditText edtSearch;
     private TextView txtFullName;
+    private TextView txtNoResult;
     private SwipeRefreshLayout swipeArticle;
     private ArticleAdapter adapter;
     private HomePresenter homePresenter;
@@ -64,6 +65,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         lvHomePage = view.findViewById(R.id.lvHomePage);
         swipeArticle = view.findViewById(R.id.swipeArticle);
         txtFullName = view.findViewById(R.id.txtFullName);
+        txtNoResult = view.findViewById(R.id.txtNoResult);
         edtSearch = view.findViewById(R.id.edtSearch);
         btnSearch = view.findViewById(R.id.btnSearch);
 
@@ -173,6 +175,14 @@ public class HomeFragment extends Fragment implements HomeContract.View {
                 listArticleInHomePage = articles;
                 adapter.setListArticle(listArticleInHomePage);
             }
+        }
+        if(listArticleInHomePage.size() == 0) {
+            txtNoResult.setVisibility(View.VISIBLE);
+            lvHomePage.setVisibility(View.INVISIBLE);
+            txtNoResult.setText("No result found");
+        } else {
+            txtNoResult.setVisibility(View.INVISIBLE);
+            lvHomePage.setVisibility(View.VISIBLE);
         }
         adapter.notifyDataSetChanged();
     }
