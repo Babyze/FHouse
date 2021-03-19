@@ -34,7 +34,7 @@ import java.util.List;
 public class SearchActivity extends AppCompatActivity implements SearchContract.View {
 
     private EditText edtSearch;
-    private Button btnSort, btnFilter;
+//    private Button btnSort, btnFilter;
     private SwipeRefreshLayout swipeArticle;
     private TextView txtNoResult;
     private ListView lvResult;
@@ -55,6 +55,8 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
 
         searchPresenter.loadArticleResult(null, keyWord);
 
+        checkListDataIsExist();
+
         configListViewScrollPagination();
 
         configKeywordType();
@@ -62,8 +64,8 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
 
     private void initData() {
         edtSearch = findViewById(R.id.edtSearch);
-        btnSort = findViewById(R.id.btnSort);
-        btnFilter = findViewById(R.id.btnFilter);
+//        btnSort = findViewById(R.id.btnSort);
+//        btnFilter = findViewById(R.id.btnFilter);
         swipeArticle = findViewById(R.id.swipeArticle);
         txtNoResult = findViewById(R.id.txtNoResult);
         lvResult = findViewById(R.id.lvResult);
@@ -101,6 +103,17 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
                 return false;
             }
         });
+    }
+
+    private void checkListDataIsExist() {
+        if(listResult.size() == 0) {
+            txtNoResult.setVisibility(View.VISIBLE);
+            lvResult.setVisibility(View.INVISIBLE);
+            txtNoResult.setText("No result found");
+        } else {
+            txtNoResult.setVisibility(View.INVISIBLE);
+            lvResult.setVisibility(View.VISIBLE);
+        }
     }
 
     private void configListViewScrollPagination() {
@@ -155,22 +168,9 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
                 articleAdapter.setListArticle(listResult);
             }
         }
-        if(listResult.size() == 0) {
-            txtNoResult.setVisibility(View.VISIBLE);
-            lvResult.setVisibility(View.INVISIBLE);
-            txtNoResult.setText("No result found");
-        } else {
-            txtNoResult.setVisibility(View.INVISIBLE);
-            lvResult.setVisibility(View.VISIBLE);
-        }
+        checkListDataIsExist();
         articleAdapter.notifyDataSetChanged();
     }
-
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        showResult(false, articleSnap);
-//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

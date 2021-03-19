@@ -49,59 +49,61 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/shape_search_rectangle_corner"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLines="1"
             android:paddingLeft="8dp"
             android:paddingTop="8dp"
             android:paddingRight="8dp"
             android:paddingBottom="8dp"
             android:textSize="20sp"
-            android:imeOptions="actionDone"
-            android:maxLines="1"
-            android:inputType="text"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            android:background="@drawable/shape_search_transperment_rectangle"
-            android:weightSum="2"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edtSearch">
-            <Button
-                android:id="@+id/btnSort"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                app:icon="@mipmap/ic_search_sort"
-                app:iconSize="20dp"
-                style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-                android:text="Sort"
-                android:textColor="#7C7979"
-                app:iconGravity="textStart"
-                app:iconPadding="15dp"
-                android:textAllCaps="false"
-                android:textSize="20sp"/>
-            <Button
-                android:id="@+id/btnFilter"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                app:icon="@mipmap/ic_search_filter"
-                app:iconSize="20dp"
-                style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-                android:text="Filter"
-                android:textColor="#7C7979"
-                app:iconGravity="textStart"
-                app:iconPadding="15dp"
-                android:textAllCaps="false"
-                android:textSize="20sp"/>
-        </LinearLayout>
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:background="@drawable/shape_search_transperment_rectangle"-->
+<!--            android:weightSum="2"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/edtSearch">-->
+<!--            <Button-->
+<!--                android:id="@+id/btnSort"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:icon="@mipmap/ic_search_sort"-->
+<!--                app:iconSize="20dp"-->
+<!--                style="@style/Widget.MaterialComponents.Button.TextButton.Icon"-->
+<!--                android:text="Sort"-->
+<!--                android:textColor="#7C7979"-->
+<!--                app:iconGravity="textStart"-->
+<!--                app:iconPadding="15dp"-->
+<!--                android:textAllCaps="false"-->
+<!--                android:textSize="20sp"/>-->
+<!--            <Button-->
+<!--                android:id="@+id/btnFilter"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:icon="@mipmap/ic_search_filter"-->
+<!--                app:iconSize="20dp"-->
+<!--                style="@style/Widget.MaterialComponents.Button.TextButton.Icon"-->
+<!--                android:text="Filter"-->
+<!--                android:textColor="#7C7979"-->
+<!--                app:iconGravity="textStart"-->
+<!--                app:iconPadding="15dp"-->
+<!--                android:textAllCaps="false"-->
+<!--                android:textSize="20sp"/>-->
+<!--        </LinearLayout>-->
     </androidx.constraintlayout.widget.ConstraintLayout>
     <FrameLayout
         android:layout_width="match_parent"
