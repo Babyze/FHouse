@@ -27,7 +27,7 @@
                 android:fontFamily="@font/righteous"
                 android:text="FHOUSE"
                 android:textColor="@color/white"
-                android:textSize="24dp"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -54,7 +54,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
                 android:text="Hi Guest"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.044"
@@ -67,17 +67,16 @@
                 android:layout_height="22dp"
                 android:layout_marginStart="5dp"
                 android:text="Search Boarding"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.046"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtFullName" />
 
 
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="106dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="8dp"
@@ -96,23 +95,25 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="3dp"
                     android:text="Search"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+                    app:layout_constraintTop_toBottomOf="@+id/edtSearch" />
 
                 <EditText
                     android:id="@+id/edtSearch"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="12dp"
                     android:layout_marginEnd="10dp"
-                    android:background="@color/white"
+                    android:background="@drawable/shape_search_rectangle_corner"
                     android:inputType="textPersonName"
-                    android:textSize="24dp"
+                    android:padding="8dp"
+                    android:textSize="24sp"
                     app:layout_constraintBottom_toTopOf="@+id/btnSearch"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -124,27 +125,27 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout4"
             android:layout_width="match_parent"
-            android:layout_height="26dp"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/header"
             android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/shape_bottom_border"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
 
             <TextView
-                android:layout_width="151dp"
-                android:layout_height="22dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="15dp"
                 android:text="Newest Boarding"
                 android:textColor="@color/black"
-                android:textSize="17dp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.023"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -167,7 +168,7 @@
             android:id="@+id/txtNoResult"
             android:text="Loading Boarding"
             android:textStyle="bold"
-            android:textSize="30dp"
+            android:textSize="30sp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"/>
