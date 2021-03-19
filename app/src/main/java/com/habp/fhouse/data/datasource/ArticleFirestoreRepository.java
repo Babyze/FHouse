@@ -9,6 +9,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.habp.fhouse.data.model.Article;
+import com.habp.fhouse.data.model.ArticleSnap;
 import com.habp.fhouse.data.model.WishList;
 import com.habp.fhouse.util.CallBack;
 import com.habp.fhouse.util.ConvertHelper;
@@ -80,35 +81,92 @@ public class ArticleFirestoreRepository {
                 });
     }
 
-    public void getNewestArticleList(CallBack<List<Article>> callBack) {
-        HouseFirestoreRepository houseFirestoreRepository = new HouseFirestoreRepository(FirebaseFirestore.getInstance(), firebaseAuth);
+    public void getNewestArticleList(CallBack<ArticleSnap> callBack) {
+        HouseFirestoreRepository houseFirestoreRepository
+                = new HouseFirestoreRepository(FirebaseFirestore.getInstance(), firebaseAuth);
+        ArticleSnap articleSnap = new ArticleSnap();
         List<Article> articleList = new ArrayList<>();
-        collection.whereEqualTo(DatabaseConstraints.USER_ID_KEY_NAME, firebaseAuth.getUid())
-                .orderBy(DatabaseConstraints.ARTICLE_TIME_KEY_NAME, Query.Direction.ASCENDING)
+        collection.orderBy(DatabaseConstraints.ARTICLE_TIME_KEY_NAME, Query.Direction.ASCENDING)
+                .limit(7)
                 .get()
                 .addOnCompleteListener(task -> {
                     QuerySnapshot snap = task.getResult();
                     if(snap != null) {
+                        if(snap.size() > 1) {
+                            DocumentSnapshot lastSnapDB = snap.getDocuments().get(snap.size() - 1);
+                            articleSnap.setLastSnap(lastSnapDB);
+                        } else {
+                            articleSnap.setArticleList(articleList);
+                            callBack.onSuccessListener(articleSnap);
+                        }
                         for(DocumentSnapshot doc : snap.getDocuments()) {
                             Article article = doc.toObject(Article.class);
                             houseFirestoreRepository.getHouse(article.getHouseId(), house -> {
                                 article.setHouseAddress(house.getHouseAddress());
                                 getBoardingImageURL(article.getArticleType(), article, imageURL -> {
                                     article.setPhotoPath(imageURL);
-                                    if(firebaseAuth.getCurrentUser() != null)
+                                    if(firebaseAuth.getCurrentUser() != null) {
                                         getWishListId(article.getArticleId(), firebaseAuth.getUid(), wishlistId -> {
                                             article.setWishListId(wishlistId);
                                             articleList.add(article);
-                                            callBack.onSuccessListener(articleList);
+                                            articleSnap.setArticleList(articleList);
+                                            callBack.onSuccessListener(articleSnap);
                                         });
-                                    else {
-                                        callBack.onSuccessListener(articleList);
+                                    } else {
+                                        articleList.add(article);
+                                        articleSnap.setArticleList(articleList);
+                                        callBack.onSuccessListener(articleSnap);
                                     }
                                 });
                             });
                         }
                     } else {
-                        callBack.onSuccessListener(articleList);
+                        callBack.onSuccessListener(articleSnap);
+                    }
+                });
+    }
+
+    public void getNewestArticleList(DocumentSnapshot lastSnap, CallBack<ArticleSnap> callBack) {
+        HouseFirestoreRepository houseFirestoreRepository
+                = new HouseFirestoreRepository(FirebaseFirestore.getInstance(), firebaseAuth);
+        ArticleSnap articleSnap = new ArticleSnap();
+        List<Article> articleList = new ArrayList<>();
+        collection.orderBy(DatabaseConstraints.ARTICLE_TIME_KEY_NAME, Query.Direction.ASCENDING)
+                .limit(7)
+                .get()
+                .addOnCompleteListener(task -> {
+                    QuerySnapshot snap = task.getResult();
+                    if(snap != null) {
+                        if(snap.size() > 1) {
+                            DocumentSnapshot lastSnapDB = snap.getDocuments().get(snap.size() - 1);
+                            articleSnap.setLastSnap(lastSnapDB);
+                        } else {
+                            articleSnap.setArticleList(articleList);
+                            callBack.onSuccessListener(articleSnap);
+                        }
+                        for(DocumentSnapshot doc : snap.getDocuments()) {
+                            Article article = doc.toObject(Article.class);
+                            houseFirestoreRepository.getHouse(article.getHouseId(), house -> {
+                                article.setHouseAddress(house.getHouseAddress());
+                                getBoardingImageURL(article.getArticleType(), article, imageURL -> {
+                                    article.setPhotoPath(imageURL);
+                                    if(firebaseAuth.getCurrentUser() != null) {
+                                        getWishListId(article.getArticleId(), firebaseAuth.getUid(), wishlistId -> {
+                                            article.setWishListId(wishlistId);
+                                            articleList.add(article);
+                                            articleSnap.setArticleList(articleList);
+                                            callBack.onSuccessListener(articleSnap);
+                                        });
+                                    } else {
+                                        articleList.add(article);
+                                        articleSnap.setArticleList(articleList);
+                                        callBack.onSuccessListener(articleSnap);
+                                    }
+                                });
+                            });
+                        }
+                    } else {
+                        callBack.onSuccessListener(articleSnap);
                     }
                 });
     }
@@ -117,13 +175,13 @@ public class ArticleFirestoreRepository {
         FirebaseStorageRemote firebaseStorageRemote = new FirebaseStorageRemote(FirebaseStorage.getInstance());
         switch (articleType) {
             case DatabaseConstraints.HOUSE_ARTICLE:
-                getHouseImageURL(firebaseStorageRemote, article.getHouseId(), callBack);
+                getHouseImageURL(firebaseStorageRemote, article.getHouseId(), imageURL -> callBack.onSuccessListener(imageURL));
                 break;
             case DatabaseConstraints.ROOM_ARTICLE:
-                getRoomImageURL(firebaseStorageRemote, article.getRoomId(), callBack);
+                getRoomImageURL(firebaseStorageRemote, article.getRoomId(), imageURL -> callBack.onSuccessListener(imageURL));
                 break;
             case DatabaseConstraints.BED_ARTICLE:
-                getBedImageURL(firebaseStorageRemote, article.getBedId(), callBack);
+                getBedImageURL(firebaseStorageRemote, article.getBedId(), imageURL -> callBack.onSuccessListener(imageURL));
                 break;
         }
     }
@@ -131,7 +189,7 @@ public class ArticleFirestoreRepository {
     private void getHouseImageURL(FirebaseStorageRemote firebaseStorageRemote, String houseId, CallBack<String> callBack) {
         HouseFirestoreRepository houseFirestoreRepository = new HouseFirestoreRepository(firebaseFirestore);
         houseFirestoreRepository.getHouse(houseId, house -> {
-            firebaseStorageRemote.getImageURL(house.getPhotoPath(), imageURL-> callBack.onSuccessListener(imageURL.toString()));
+            firebaseStorageRemote.getImageURL(house.getPhotoPath(), imageURL -> callBack.onSuccessListener(imageURL.toString()));
         });
     }
 
@@ -151,7 +209,9 @@ public class ArticleFirestoreRepository {
 
     private void getWishListId(String articleId, String userId, CallBack<String> callBack) {
         WishListFirestoreRepository wishListFirestoreRepository = new WishListFirestoreRepository(firebaseFirestore);
-        wishListFirestoreRepository.getWishList(articleId, userId, wishListId -> callBack.onSuccessListener(wishListId.getArticleId()));
+        wishListFirestoreRepository.getWishList(userId, articleId, wishList -> {
+            callBack.onSuccessListener(wishList.getWishListId());
+        } );
     }
 
     public void getArticle(String articleId, CallBack<Article> callBack) {
