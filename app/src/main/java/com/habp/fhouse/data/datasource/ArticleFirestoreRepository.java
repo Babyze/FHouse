@@ -92,8 +92,13 @@ public class ArticleFirestoreRepository {
                 .addOnCompleteListener(task -> {
                     QuerySnapshot snap = task.getResult();
                     if(snap != null) {
-                        DocumentSnapshot lastSnap = snap.getDocuments().get(snap.size() - 1);
-                        articleSnap.setLastSnap(lastSnap);
+                        if(snap.size() > 1) {
+                            DocumentSnapshot lastSnapDB = snap.getDocuments().get(snap.size() - 1);
+                            articleSnap.setLastSnap(lastSnapDB);
+                        } else {
+                            articleSnap.setArticleList(articleList);
+                            callBack.onSuccessListener(articleSnap);
+                        }
                         for(DocumentSnapshot doc : snap.getDocuments()) {
                             Article article = doc.toObject(Article.class);
                             houseFirestoreRepository.getHouse(article.getHouseId(), house -> {
@@ -105,7 +110,6 @@ public class ArticleFirestoreRepository {
                                             article.setWishListId(wishlistId);
                                             articleList.add(article);
                                             articleSnap.setArticleList(articleList);
-                                            System.out.println(articleSnap.getArticleList().size() + " AAA");
                                             callBack.onSuccessListener(articleSnap);
                                         });
                                     } else {
