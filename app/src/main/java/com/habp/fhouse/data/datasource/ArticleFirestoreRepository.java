@@ -126,7 +126,7 @@ public class ArticleFirestoreRepository {
     }
 
     public void getNewestArticleList(DocumentSnapshot lastSnap, CallBack<ArticleSnap> callBack) {
-        HouseFirestoreRepository houseFirestoreRepository = new HouseFirestoreRepository(FirebaseFirestore.getInstance(), firebaseAuth);
+        HouseFirestoreRepository houseFirestoreRepository = new HouseFirestoreRepository(FirebaseFirestore.getInstance());
         ArticleSnap articleSnap = new ArticleSnap();
         List<Article> articleList = new ArrayList<>();
         collection.orderBy(DatabaseConstraints.ARTICLE_TIME_KEY_NAME, Query.Direction.ASCENDING)
@@ -170,13 +170,13 @@ public class ArticleFirestoreRepository {
         FirebaseStorageRemote firebaseStorageRemote = new FirebaseStorageRemote(FirebaseStorage.getInstance());
         switch (articleType) {
             case DatabaseConstraints.HOUSE_ARTICLE:
-                getHouseImageURL(firebaseStorageRemote, article.getHouseId(), callBack);
+                getHouseImageURL(firebaseStorageRemote, article.getHouseId(), imageURL -> callBack.onSuccessListener(imageURL));
                 break;
             case DatabaseConstraints.ROOM_ARTICLE:
-                getRoomImageURL(firebaseStorageRemote, article.getRoomId(), callBack);
+                getRoomImageURL(firebaseStorageRemote, article.getRoomId(), imageURL -> callBack.onSuccessListener(imageURL));
                 break;
             case DatabaseConstraints.BED_ARTICLE:
-                getBedImageURL(firebaseStorageRemote, article.getBedId(), callBack);
+                getBedImageURL(firebaseStorageRemote, article.getBedId(), imageURL -> callBack.onSuccessListener(imageURL));
                 break;
         }
     }
@@ -184,7 +184,7 @@ public class ArticleFirestoreRepository {
     private void getHouseImageURL(FirebaseStorageRemote firebaseStorageRemote, String houseId, CallBack<String> callBack) {
         HouseFirestoreRepository houseFirestoreRepository = new HouseFirestoreRepository(firebaseFirestore);
         houseFirestoreRepository.getHouse(houseId, house -> {
-            firebaseStorageRemote.getImageURL(house.getPhotoPath(), imageURL-> callBack.onSuccessListener(imageURL.toString()));
+            firebaseStorageRemote.getImageURL(house.getPhotoPath(), imageURL -> callBack.onSuccessListener(imageURL.toString()));
         });
     }
 
