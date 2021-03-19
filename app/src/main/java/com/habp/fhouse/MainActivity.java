@@ -16,13 +16,13 @@ import com.habp.fhouse.ui.boarding.HouseManagementFragment;
 import com.habp.fhouse.ui.profile.ProfileFragment;
 import com.habp.fhouse.ui.wishlist.WishlistFragment;
 
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
