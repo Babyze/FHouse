@@ -6,6 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".ui.editprofile.EditProfileActivity">
 
+    <!-- Constraint-->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glHorizontal12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.12" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glHorizontal45"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.45" />
+
     <!--header-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header"
@@ -43,27 +58,33 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/circleImageView"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
-        android:layout_below="@+id/imageView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
+        android:id="@+id/imgAvatar"
+        android:layout_width="141dp"
+        android:layout_height="127dp"
         android:src="@mipmap/ic_editprofile_defaultavatar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header" />
+        app:layout_constraintTop_toTopOf="@+id/glHorizontal12" />
+
+    <ImageView
+        android:id="@+id/imgCamera"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgAvatar"
+        app:layout_constraintEnd_toEndOf="@+id/imgAvatar"
+        app:srcCompat="@mipmap/ic_editprofile_camera"
+        android:onClick="clickToUploadAvatar"/>
 
     <EditText
         android:id="@+id/edtUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:textColor="@color/grey"
         android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/circleImageView" />
+        app:layout_constraintTop_toBottomOf="@+id/imgAvatar" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edtEmail"
@@ -71,11 +92,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="30dp"
         android:layout_marginEnd="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtUsername">
+        app:layout_constraintTop_toBottomOf="@+id/glHorizontal45">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -104,6 +124,17 @@
             android:hint="Phone number"
             android:inputType="number" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Forgot Password"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="@+id/edtPhoneNumber"
+        app:layout_constraintTop_toBottomOf="@+id/edtPhoneNumber"
+        android:onClick="clickToResetPassword"/>
 
     <Button
         android:id="@+id/btnUpdate"

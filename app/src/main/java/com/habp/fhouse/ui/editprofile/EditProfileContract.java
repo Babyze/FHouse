@@ -9,12 +9,11 @@ public interface EditProfileContract {
         void onUpdateSuccess();
         void onUpdateFailed(String message);
         void onInvalidName(String message);
-        void onInvalidEmail(String message);
         void onInvalidPhoneNumber(String message);
     }
 
     interface Presenter {
-        void onUpdate(String name, String phoneNumber);
+        void onUpdate(String name, String phoneNumber, byte[] imageByte);
         void getUserProfile();
     }
 }
