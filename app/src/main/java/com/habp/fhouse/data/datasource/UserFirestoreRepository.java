@@ -18,6 +18,10 @@ public class UserFirestoreRepository {
         this.firebaseAuth = firebaseAuth;
     }
 
+    public UserFirestoreRepository(FirebaseFirestore firebaseFirestore) {
+        this.firebaseFirestore = firebaseFirestore;
+    }
+
     public void getUserInfo(CallBack<User> callBack) {
         FirebaseStorageRemote firebaseStorageRemote = new FirebaseStorageRemote(FirebaseStorage.getInstance());
         firebaseFirestore.collection(DatabaseConstraints.USER_COLLECTION_NAME)

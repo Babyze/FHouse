@@ -2,7 +2,9 @@ package com.habp.fhouse.ui.articledetail;
 
 
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.habp.fhouse.data.datasource.FirebaseAuthRepository;
+import com.habp.fhouse.data.datasource.UserFirestoreRepository;
 import com.habp.fhouse.data.model.Article;
 
 public class ArticleDetailPresenter implements ArticleDetailContract.Presenter {
@@ -27,9 +29,13 @@ public class ArticleDetailPresenter implements ArticleDetailContract.Presenter {
 
     @Override
     public void loadData(Article article) {
-        if(article != null) {
-            mView.setActivityWishlist(article.getWishListId() != null);
-        }
-        mView.showData();
+        UserFirestoreRepository userRep = new UserFirestoreRepository(FirebaseFirestore.getInstance());
+        userRep.getUserInfo(article.getOwnerId(), user -> {
+            article.setPhoneNumber(user.getPhone());
+            if(article != null) {
+                mView.setActivityWishlist(article.getWishListId() != null);
+            }
+            mView.showData();
+        });
     }
 }
