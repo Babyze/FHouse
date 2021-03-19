@@ -17,7 +17,7 @@ public class HousePresenter implements HouseContract.Presenter {
 
     @Override
     public void loadHouse() {
-        if(firebaseAuthRepository.getUser() != null) {
+        if (firebaseAuthRepository.getUser() != null) {
             HouseFirestoreRepository houseFirestoreRepository =
                     new HouseFirestoreRepository(FirebaseFirestore.getInstance(), FirebaseAuth.getInstance());
             houseFirestoreRepository.getHouseList(listHouseData -> {
@@ -29,8 +29,8 @@ public class HousePresenter implements HouseContract.Presenter {
     @Override
     public void checkAuthorize(boolean isReturn) {
         FirebaseUser user = firebaseAuthRepository.getUser();
-        if(user == null) {
-            if(isReturn)
+        if (user == null) {
+            if (isReturn)
                 mView.redirectToHomeFragment();
             else
                 mView.startSignInActivity();

@@ -17,10 +17,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.habp.fhouse.R;
 import com.habp.fhouse.data.datasource.FirebaseStorageRemote;
 import com.habp.fhouse.data.datasource.HouseFirestoreRepository;
-import com.habp.fhouse.data.model.Bed;
 import com.habp.fhouse.data.model.House;
 import com.habp.fhouse.util.ConvertHelper;
-import com.habp.fhouse.util.DatabaseConstraints;
 
 public class UpdateHouseActivity extends AppCompatActivity {
     private Uri filePath;
@@ -51,7 +49,7 @@ public class UpdateHouseActivity extends AppCompatActivity {
 
     public void clickToBackActivity(View view) {
         Intent intent = getIntent();
-        setResult(0,intent);
+        setResult(0, intent);
         finish();
     }
 
@@ -73,7 +71,6 @@ public class UpdateHouseActivity extends AppCompatActivity {
                 && data != null && data.getData() != null) {
             filePath = data.getData();
             try {
-
                 ImageView imgUploadPhoto = findViewById(R.id.imgUploadPhoto);
                 ImageView imgIconUpload = findViewById(R.id.imgIconUpload);
                 TextView tvUpload = findViewById(R.id.tvUpload);
@@ -91,34 +88,42 @@ public class UpdateHouseActivity extends AppCompatActivity {
         //chuẩn bị data update
         EditText edtHouseNameUpdate = findViewById(R.id.edtHouseNameUpdate);
         EditText edtHouseAddressUpdate = findViewById(R.id.edtHouseAddressUpdate);
+        String houseNameUpdate = edtHouseNameUpdate.getText().toString();
+        String houseAddressUpdate = edtHouseAddressUpdate.getText().toString();
+        if (!houseNameUpdate.isEmpty() && !houseAddressUpdate.isEmpty()) {
+            currentHouse.setHouseName(houseNameUpdate);
+            currentHouse.setHouseAddress(houseAddressUpdate);
+            byte[] imageByte = ConvertHelper.convertImageViewToByte(findViewById(R.id.imgUploadPhoto));
+            FirebaseStorageRemote firebaseStorageRemote = new FirebaseStorageRemote(FirebaseStorage.getInstance());
+            HouseFirestoreRepository houseFirestoreRepository =
+                    new HouseFirestoreRepository(FirebaseFirestore.getInstance());
 
-        currentHouse.setHouseName(edtHouseNameUpdate.getText().toString());
-        currentHouse.setHouseAddress(edtHouseAddressUpdate.getText().toString());
+            houseFirestoreRepository.updateHouse(currentHouse, house -> {
+                if (house != null) {
+                    Toast.makeText(this, "Update successful", Toast.LENGTH_SHORT).show();
+                    firebaseStorageRemote.uploadImage(imageByte, house.getPhotoPath(), isSuccess -> {
+                        firebaseStorageRemote.getImageURL(house.getPhotoPath(), imageURL -> {
+                            currentHouse.setPhotoPath(imageURL.toString());
 
-        byte[] imageByte = ConvertHelper.convertImageViewToByte(findViewById(R.id.imgUploadPhoto));
-        FirebaseStorageRemote firebaseStorageRemote = new FirebaseStorageRemote(FirebaseStorage.getInstance());
-
-        HouseFirestoreRepository houseFirestoreRepository =
-                new HouseFirestoreRepository(FirebaseFirestore.getInstance());
-
-        houseFirestoreRepository.updateHouse(currentHouse, house -> {
-            if(house != null) {
-                Toast.makeText(this, "Update successful", Toast.LENGTH_SHORT).show();
-                firebaseStorageRemote.uploadImage(imageByte, house.getPhotoPath(), isSuccess -> {
-                    firebaseStorageRemote.getImageURL(house.getPhotoPath(), imageURL -> {
-                        currentHouse.setPhotoPath(imageURL.toString());
-
-                        Intent intent = getIntent();
-                        intent.putExtra("currentHouse", currentHouse);
-                        setResult(1, intent);
-                        finish();
+                            Intent intent = getIntent();
+                            intent.putExtra("currentHouse", currentHouse);
+                            setResult(1, intent);
+                            finish();
+                        });
                     });
-                });
-            } else {
-                Toast.makeText(this, "Update failed", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        });
+                } else {
+                    Toast.makeText(this, "Update failed", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            });
+        } else {
+            if (houseAddressUpdate.isEmpty() && houseNameUpdate.isEmpty()) {
+                Toast.makeText(this, "Please input House address and House name", Toast.LENGTH_SHORT).show();
+            } else if (houseNameUpdate.isEmpty() && !houseAddressUpdate.isEmpty()) {
+                Toast.makeText(this, "Please input House name", Toast.LENGTH_SHORT).show();
+            } else
+                Toast.makeText(this, "Please input House Address", Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

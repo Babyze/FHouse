@@ -2,17 +2,14 @@ package com.habp.fhouse.ui.boarding;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,7 +35,6 @@ public class HouseManagementFragment extends Fragment implements HouseContract.V
     private HouseAdapter adapter;
     private HousePresenter housePresenter;
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,11 +45,9 @@ public class HouseManagementFragment extends Fragment implements HouseContract.V
                 = new FirebaseAuthRepository(FirebaseAuth.getInstance());
         HouseFirestoreRepository houseFirestoreRepository =
                 new HouseFirestoreRepository(FirebaseFirestore.getInstance(), FirebaseAuth.getInstance());
-
         housePresenter = new HousePresenter(this, firebaseAuthRepository);
         housePresenter.checkAuthorize(false);
         housePresenter.loadHouse();
-
         ImageButton btnCreate = view.findViewById(R.id.btnCreateHouseActivity);
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +61,6 @@ public class HouseManagementFragment extends Fragment implements HouseContract.V
 
     @Override
     public void showHouseList(List<House> listHouse) {
-        System.out.println(listHouse.size() + "AAAAA");
         adapter = new HouseAdapter(listHouse);
         if (listHouse.size() > 0) {
             lvHomeMamage.setAdapter(adapter);

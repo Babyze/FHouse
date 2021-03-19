@@ -8,7 +8,8 @@ public interface RoomContract {
     interface View {
         void showRoomList(List<Room> listRoom);
     }
-    interface Presenter{
+
+    interface Presenter {
         void loadRoom(String houseId);
     }
 }

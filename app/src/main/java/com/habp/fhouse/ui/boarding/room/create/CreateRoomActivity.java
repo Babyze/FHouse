@@ -11,14 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.habp.fhouse.R;
 import com.habp.fhouse.data.datasource.FirebaseStorageRemote;
 import com.habp.fhouse.data.datasource.RoomFirestoreRepository;
 import com.habp.fhouse.data.model.Room;
-import com.habp.fhouse.ui.boarding.house.create.CreateHousePresenter;
 import com.habp.fhouse.util.ConvertHelper;
 
 import java.util.UUID;
@@ -26,14 +24,12 @@ import java.util.UUID;
 public class CreateRoomActivity extends AppCompatActivity implements CreateRoomContract.View {
     private Uri filePath;
     private CreateRoomPresenter createRoomPresenter;
-    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_room);
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-        firebaseAuth = FirebaseAuth.getInstance();
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
         FirebaseStorageRemote firebaseStorageRemote = new FirebaseStorageRemote(firebaseStorage);
@@ -53,11 +49,10 @@ public class CreateRoomActivity extends AppCompatActivity implements CreateRoomC
         EditText edtRoomName = findViewById(R.id.edtRoomName);
         String roomName = edtRoomName.getText().toString();
         byte[] imageByte = ConvertHelper.convertImageViewToByte(findViewById(R.id.imgUploadPhoto));
-        Room room = new Room(roomId, roomName, currentHouseId);
-
-        createRoomPresenter.createRoom(room, imageByte);
-
-
+        if (!roomName.isEmpty()) {
+            Room room = new Room(roomId, roomName, currentHouseId);
+            createRoomPresenter.createRoom(room, imageByte);
+        } else onRoomNameError("Please input room name");
     }
 
     public void clickToUploadPhoto(View view) {
@@ -78,11 +73,9 @@ public class CreateRoomActivity extends AppCompatActivity implements CreateRoomC
                 && data != null && data.getData() != null) {
             filePath = data.getData();
             try {
-
                 ImageView imgUploadPhoto = findViewById(R.id.imgUploadPhoto);
                 ImageView imgIconUpload = findViewById(R.id.imgIconUpload);
                 TextView tvUpload = findViewById(R.id.tvUpload);
-
                 imgIconUpload.setVisibility(View.INVISIBLE);
                 tvUpload.setVisibility(View.INVISIBLE);
                 imgUploadPhoto.setImageURI(filePath);
@@ -108,6 +101,5 @@ public class CreateRoomActivity extends AppCompatActivity implements CreateRoomC
     @Override
     public void onRoomNameError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-
     }
 }

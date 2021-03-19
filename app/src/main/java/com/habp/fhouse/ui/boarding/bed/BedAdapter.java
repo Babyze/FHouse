@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.habp.fhouse.R;
 import com.habp.fhouse.data.model.Bed;
-import com.habp.fhouse.data.model.Room;
 
 import java.util.List;
 

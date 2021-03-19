@@ -19,7 +19,6 @@ import com.habp.fhouse.data.datasource.BedFirestoreRepository;
 import com.habp.fhouse.data.datasource.FirebaseStorageRemote;
 import com.habp.fhouse.data.model.Bed;
 import com.habp.fhouse.data.model.Room;
-import com.habp.fhouse.ui.boarding.room.create.CreateRoomContract;
 import com.habp.fhouse.util.ConvertHelper;
 
 import java.util.UUID;
@@ -87,9 +86,10 @@ public class CreateBedActivity extends AppCompatActivity implements CreateBedCon
         EditText edtBedName = findViewById(R.id.edtBedName);
         String bedName = edtBedName.getText().toString();
         byte[] imageByte = ConvertHelper.convertImageViewToByte(findViewById(R.id.imgUploadPhoto));
-        Bed bed = new Bed(bedId, bedName, currentRoomId);
-
-        createBedPresenter.createBed(bed, imageByte);
+        if (!bedName.isEmpty()) {
+            Bed bed = new Bed(bedId, bedName, currentRoomId);
+            createBedPresenter.createBed(bed, imageByte);
+        } else onBedNameError("Please enter bed name");
     }
 
     @Override

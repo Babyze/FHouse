@@ -30,20 +30,15 @@ import com.habp.fhouse.data.datasource.RoomFirestoreRepository;
 import com.habp.fhouse.data.model.Bed;
 import com.habp.fhouse.data.model.House;
 import com.habp.fhouse.data.model.Room;
-import com.habp.fhouse.ui.boarding.HouseManagementFragment;
 import com.habp.fhouse.ui.boarding.bed.BedAdapter;
 import com.habp.fhouse.ui.boarding.bed.BedContract;
 import com.habp.fhouse.ui.boarding.bed.BedPresenter;
 import com.habp.fhouse.ui.boarding.bed.create.CreateBedActivity;
 import com.habp.fhouse.ui.boarding.bed.update.UpdateBedActivity;
 import com.habp.fhouse.ui.boarding.house.housedetail.HouseDetailFragment;
-import com.habp.fhouse.ui.boarding.room.RoomAdapter;
-import com.habp.fhouse.ui.boarding.room.create.CreateRoomActivity;
 import com.habp.fhouse.ui.boarding.room.update.UpdateRoomActivity;
 
-import java.util.ArrayList;
 import java.util.List;
-
 
 public class RoomDetailFragment extends Fragment implements BedContract.View {
     private ListView lvBed;
@@ -59,9 +54,6 @@ public class RoomDetailFragment extends Fragment implements BedContract.View {
         currentHouse = (House) this.getArguments().getSerializable("currentHouse");
         currentRoom = (Room) this.getArguments().getSerializable("currentRoom");
         lvBed = view.findViewById(R.id.lvBed);
-
-        FirebaseAuthRepository firebaseAuthRepository =
-                new FirebaseAuthRepository(FirebaseAuth.getInstance());
         bedPresenter = new BedPresenter(this);
         bedPresenter.loadBed(currentRoom.getRoomId());
         loadData(view);
