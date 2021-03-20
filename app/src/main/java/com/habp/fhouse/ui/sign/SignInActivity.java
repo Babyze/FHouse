@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
+import com.habp.fhouse.MainActivity;
 import com.habp.fhouse.R;
 import com.habp.fhouse.data.datasource.FirebaseAuthRepository;
 import com.habp.fhouse.ui.forgotpassword.ForgotPasswordActivity;
@@ -33,7 +34,8 @@ public class SignInActivity extends AppCompatActivity implements SignInContract.
     }
 
     public void clickToBack(View view) {
-        finish();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     public void clickOnForgotPsw(View view) {
