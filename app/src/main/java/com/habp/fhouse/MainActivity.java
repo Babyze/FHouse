@@ -8,12 +8,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageButton;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.habp.fhouse.ui.article.ArticleFragment;
-import com.habp.fhouse.ui.boarding.room.roomdetail.RoomDetailFragment;
 import com.habp.fhouse.ui.home.HomeFragment;
 import com.habp.fhouse.ui.boarding.HouseManagementFragment;
 import com.habp.fhouse.ui.profile.ProfileFragment;
