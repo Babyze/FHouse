@@ -50,6 +50,7 @@ public class SignUpActivity extends AppCompatActivity implements SignUpContract.
     public void clickToSignIn(View view) {
         Intent intent = new Intent(this, SignInActivity.class);
         startActivity(intent);
+        finish();
     }
 
     @Override
@@ -57,6 +58,7 @@ public class SignUpActivity extends AppCompatActivity implements SignUpContract.
         Toast.makeText(this, "Sign up success", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 
     @Override
