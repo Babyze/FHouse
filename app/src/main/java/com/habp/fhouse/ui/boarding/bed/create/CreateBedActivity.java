@@ -67,7 +67,9 @@ public class CreateBedActivity extends AppCompatActivity implements CreateBedCon
                 ImageView imgUploadPhoto = findViewById(R.id.imgUploadPhoto);
                 ImageView imgIconUpload = findViewById(R.id.imgIconUpload);
                 TextView tvUpload = findViewById(R.id.tvUpload);
+                ImageView icIconUpload = findViewById(R.id.icIconUpload);
 
+                icIconUpload.setVisibility(View.VISIBLE);
                 imgIconUpload.setVisibility(View.INVISIBLE);
                 tvUpload.setVisibility(View.INVISIBLE);
                 imgUploadPhoto.setImageURI(filePath);

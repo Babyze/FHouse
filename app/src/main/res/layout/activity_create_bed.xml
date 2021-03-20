@@ -87,6 +87,14 @@
             app:layout_constraintEnd_toEndOf="@+id/imgIconUpload"
             app:layout_constraintStart_toStartOf="@+id/imgIconUpload"
             app:layout_constraintTop_toBottomOf="@+id/imgIconUpload" />
+        <ImageView
+            android:id="@+id/icIconUpload"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_create_upload_img"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <EditText
@@ -101,7 +109,7 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:background="@color/blue"
         android:gravity="center"
         android:onClick="clickToCreateBed"

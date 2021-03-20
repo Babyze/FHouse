@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.boarding.room.create.CreateRoomActivity">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -16,14 +17,14 @@
         <ImageButton
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@null"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
+            android:background="@null"
+            android:onClick="clickToBackActivity"
             android:src="@drawable/ic_create_house_back"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:onClick="clickToBackActivity"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -55,14 +56,14 @@
         app:layout_constraintTop_toBottomOf="@+id/header">
 
         <ImageView
-            android:backgroundTint="@color/white"
             android:id="@+id/imgUploadPhoto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@mipmap/img_room_default"
-            android:visibility="invisible"
             android:background="@null"
-            android:scaleType="centerCrop" />
+            android:backgroundTint="@color/white"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/img_room_default"
+            android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/imgIconUpload"
@@ -88,15 +89,23 @@
             app:layout_constraintStart_toStartOf="@+id/imgIconUpload"
             app:layout_constraintTop_toBottomOf="@+id/imgIconUpload" />
 
+        <ImageView
+            android:id="@+id/icIconUpload"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_create_upload_img"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <EditText
         android:id="@+id/edtRoomName"
         android:layout_width="314dp"
-        android:hint="Room name"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
+        android:hint="Room name"
         app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
         app:layout_constraintStart_toStartOf="@+id/constraintLayout"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
@@ -104,7 +113,7 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:background="@color/blue"
         android:gravity="center"
         android:onClick="clickToCreateRoom"
