@@ -132,6 +132,7 @@ public class WishlistFragment extends Fragment implements WishlistContract.View 
         totalResume += 1;
         if(totalResume == DatabaseConstraints.TOTAL_RESUME_FOR_AUTHORIZATION) {
             wishlistPresenter.checkAuthorize(true);
+            wishlistPresenter.loadWishListData();
         }
     }
 }

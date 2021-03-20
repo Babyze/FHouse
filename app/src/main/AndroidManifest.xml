@@ -10,9 +10,9 @@
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:hardwareAccelerated="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_fhouse_logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_fhouse_logo_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FHouse">
         <activity android:name=".ui.search.SearchActivity"></activity>
