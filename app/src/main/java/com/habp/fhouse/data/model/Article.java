@@ -3,8 +3,8 @@ package com.habp.fhouse.data.model;
 import java.io.Serializable;
 
 public class Article implements Serializable {
-    private String articleId, articleName, articleDescription, houseId, roomId, bedId;
-    private String houseAddress, phoneNumber, photoPath, wishListId, ownerId;
+    private String articleId, articleName, articleDescription, houseId, roomId, bedId, userId;
+    private String houseAddress, phoneNumber, photoPath, wishListId;
     private float price;
     private int articleType;
 
@@ -32,12 +32,12 @@ public class Article implements Serializable {
         this.articleDescription = articleDescription;
     }
 
-    public String getOwnerId() {
-        return ownerId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setOwnerId(String ownerId) {
-        this.ownerId = ownerId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getHouseId() {
@@ -112,32 +112,38 @@ public class Article implements Serializable {
         this.wishListId = wishListId;
     }
 
-    public Article(String articleId, String articleName, String articleDescription, String houseId, float price, int articleType) {
+    public Article(String articleId, String articleName, String articleDescription,
+                   String houseId, String userId, float price, int articleType) {
         this.articleId = articleId;
         this.articleName = articleName;
         this.articleDescription = articleDescription;
         this.houseId = houseId;
+        this.userId = userId;
         this.price = price;
         this.articleType = articleType;
     }
 
-    public Article(String articleId, String articleName, String articleDescription, String houseId, String roomId, float price, int articleType) {
+    public Article(String articleId, String articleName, String articleDescription,
+                   String houseId, String roomId, String userId, float price, int articleType) {
         this.articleId = articleId;
         this.articleName = articleName;
         this.articleDescription = articleDescription;
         this.houseId = houseId;
         this.roomId = roomId;
+        this.userId = userId;
         this.price = price;
         this.articleType = articleType;
     }
 
-    public Article(String articleId, String articleName, String articleDescription, String houseId, String roomId, String bedId, float price, int articleType) {
+    public Article(String articleId, String articleName, String articleDescription,
+                   String houseId, String roomId, String bedId, String userId, float price, int articleType) {
         this.articleId = articleId;
         this.articleName = articleName;
         this.articleDescription = articleDescription;
         this.houseId = houseId;
         this.roomId = roomId;
         this.bedId = bedId;
+        this.userId = userId;
         this.price = price;
         this.articleType = articleType;
     }

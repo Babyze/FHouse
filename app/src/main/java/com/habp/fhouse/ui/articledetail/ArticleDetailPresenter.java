@@ -30,7 +30,7 @@ public class ArticleDetailPresenter implements ArticleDetailContract.Presenter {
     @Override
     public void loadData(Article article) {
         UserFirestoreRepository userRep = new UserFirestoreRepository(FirebaseFirestore.getInstance());
-        userRep.getUserInfo(article.getOwnerId(), user -> {
+        userRep.getUserInfo(article.getUserId(), user -> {
             article.setPhoneNumber(user.getPhone());
             if(article != null) {
                 mView.setActivityWishlist(article.getWishListId() != null);
