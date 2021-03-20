@@ -32,7 +32,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     }
 
     public void clickToBack(View view) {
-        finish();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     public void clickOnForgotPsw(View view) {
