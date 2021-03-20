@@ -168,7 +168,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="5dp"
         android:gravity="center"
         android:text="By creating an account you agree to FHouse's Terms and Use and Privacy Policy"
         android:textColor="@color/white"
