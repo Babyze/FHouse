@@ -18,7 +18,7 @@ public class SignUpPresenter implements SignUpContract.Presenter {
             return;
         }
         if (password.length() < 6) {
-            mView.onInvalidPassword("Password is required");
+            mView.onInvalidPassword("Password at least 6 character");
             return;
         }
         if (confirmPsw.length() < 6) {
@@ -30,11 +30,11 @@ public class SignUpPresenter implements SignUpContract.Presenter {
             return;
         }
         if (name.length() == 0) {
-            mView.onInvalidConfirmPassword("Name is required");
+            mView.onInvalidName("Name is required");
             return;
         }
         if (phoneNumber.length() != 10) {
-            mView.onInvalidConfirmPassword("Phone number is required. Has to be 10 numbers");
+            mView.onInvalidPhoneNumber("Phone number is required. Has to be 10 numbers");
             return;
         }
         firebaseAuthRepository.signUp(email, password, name, phoneNumber, isSuccess -> {
