@@ -10,7 +10,7 @@
         android:id="@+id/imageView10"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="70dp"
+        android:layout_marginBottom="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,13 +55,14 @@
         app:layout_constraintTop_toBottomOf="@+id/textView5"
         app:srcCompat="@mipmap/ic_signup_logo" />
 
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edtEmail"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="77dp"
         android:layout_marginStart="35dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="35dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,7 +70,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="60dp"
             android:background="@color/white"
             android:hint="Email"
             android:inputType="textEmailAddress"
@@ -80,8 +81,9 @@
         android:id="@+id/edtPassword"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="77dp"
         android:layout_marginStart="35dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="35dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -90,19 +92,20 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="60dp"
             android:background="@color/white"
             android:hint="Password"
-            android:textSize="15dp"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textSize="15dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edtConfirmPsw"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="77dp"
         android:layout_marginStart="35dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="35dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -111,7 +114,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="60dp"
             android:background="@color/white"
             android:hint="Confirm password"
             android:inputType="textPassword"
@@ -122,8 +125,9 @@
         android:id="@+id/edtName"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="77dp"
         android:layout_marginStart="35dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="35dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -131,7 +135,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="60dp"
             android:background="@color/white"
             android:hint="Name"
             android:textSize="15dp" />
@@ -141,8 +145,9 @@
         android:id="@+id/edtPhoneNumber"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="77dp"
         android:layout_marginStart="35dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="35dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -150,7 +155,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="60dp"
             android:background="@color/white"
             android:hint="Phone Number"
             android:inputType="number"
@@ -166,8 +171,8 @@
         android:layout_marginBottom="4dp"
         android:gravity="center"
         android:text="By creating an account you agree to FHouse's Terms and Use and Privacy Policy"
-        android:textSize="12dp"
         android:textColor="@color/white"
+        android:textSize="12dp"
         app:layout_constraintBottom_toTopOf="@+id/btnSignUp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -212,4 +217,5 @@
         android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView7" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
