@@ -33,7 +33,8 @@ public class SignInActivity extends AppCompatActivity implements SignInContract.
     }
 
     public void clickToBack(View view) {
-        finish();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     public void clickOnForgotPsw(View view) {
