@@ -58,6 +58,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
     private FirebaseAuthRepository firebaseAuthRepository;
     private UserFirestoreRepository userFirestoreRepository;
     private ProfilePresenter profilePresenter;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -66,7 +67,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
         firebaseAuthRepository = new FirebaseAuthRepository(FirebaseAuth.getInstance());
         userFirestoreRepository =
                 new UserFirestoreRepository(FirebaseFirestore.getInstance(), FirebaseAuth.getInstance());
-        profilePresenter = new ProfilePresenter(firebaseAuthRepository, userFirestoreRepository,this);
+        profilePresenter = new ProfilePresenter(firebaseAuthRepository, userFirestoreRepository, this);
 
         edtUsername = view.findViewById(R.id.edtUsername);
         edtEmail = view.findViewById(R.id.edtEmail);
@@ -78,7 +79,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
 
         // Check authorization
         // If user has logged in, get User Profile and show on screen
-        // Else,ì return isReturn false, switch to Sign In Activity, else switch to Main
+        // Else, if return isReturn false, switch to Sign In Activity, else switch to Main
         profilePresenter.checkAuthorization(false);
 
         // Set on click to change fragment
@@ -91,10 +92,6 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
             @Override
             public void onClick(View v) {
                 profilePresenter.onSignOut();
-//                FragmentManager fragmentManager = getFragmentManager();
-//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                fragmentTransaction.replace(R.id.fragment_container, new HomeFragment());
-//                fragmentTransaction.commit();
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
                 Toast.makeText(getActivity(), "Signed out", Toast.LENGTH_SHORT).show();
@@ -124,11 +121,6 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
             }
         });
     }
-
-    private void getUserProfile() {
-        profilePresenter.getUserProfile();
-    }
-
 
     @Override
     public void onGetUserProfileSuccess(User user) {
@@ -181,12 +173,6 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
         startActivity(intent);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        profilePresenter.checkAuthorization(false);
-    }
-
     private void chooseImage() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -210,7 +196,6 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
             filePath = data.getData();
             try {
                 imgAvatar.setImageURI(filePath);
-
             } catch (Exception e) {
                 e.printStackTrace();
             }

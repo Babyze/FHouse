@@ -83,9 +83,9 @@ public class ProfilePresenter implements ProfileContract.Presenter {
             else
                 mView.startSignInActivity(); // Chuyển sang Sign in
         } else {
-//            if (!isReturn) {
+            if (!isReturn) {
                 getUserProfile();
-//            }
+            }
         }
     }
 }

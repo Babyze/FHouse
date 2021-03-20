@@ -33,7 +33,8 @@ public class SignInActivity extends AppCompatActivity implements SignInContract.
     }
 
     public void clickToBack(View view) {
-        finish();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     public void clickOnForgotPsw(View view) {
@@ -62,7 +63,9 @@ public class SignInActivity extends AppCompatActivity implements SignInContract.
     @Override
     public void onLoginSuccess() {
         Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show();
-        finish();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+//        finish();
     }
 
     @Override
