@@ -24,6 +24,7 @@
         <activity android:name=".ui.boarding.house.create.CreateHouseActivity" />
         <activity android:name=".ui.articledetail.ArticleDetailActivity" />
         <activity android:name=".ui.sign.SignInActivity" />
+        <activity android:name=".ui.forgotpassword.ForgotPasswordActivity" />
         <activity
             android:name=".ui.splash.SplashActivity"
             android:noHistory="true">
