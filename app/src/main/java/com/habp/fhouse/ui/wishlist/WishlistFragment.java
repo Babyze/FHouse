@@ -23,6 +23,7 @@ import com.habp.fhouse.data.datasource.WishListFirestoreRepository;
 import com.habp.fhouse.data.model.Article;
 import com.habp.fhouse.ui.home.HomeFragment;
 import com.habp.fhouse.ui.sign.SignInActivity;
+import com.habp.fhouse.util.DatabaseConstraints;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,7 @@ public class WishlistFragment extends Fragment implements WishlistContract.View 
     private List<Article> articles;
     private TextView txtNoResult;
     private SwipeRefreshLayout swipeArticle;
+    private int totalResume = 0;
 
     @Nullable
     @Override
@@ -127,6 +129,9 @@ public class WishlistFragment extends Fragment implements WishlistContract.View 
     @Override
     public void onResume() {
         super.onResume();
-        wishlistPresenter.checkAuthorize(true);
+        totalResume += 1;
+        if(totalResume == DatabaseConstraints.TOTAL_RESUME_FOR_AUTHORIZATION) {
+            wishlistPresenter.checkAuthorize(true);
+        }
     }
 }

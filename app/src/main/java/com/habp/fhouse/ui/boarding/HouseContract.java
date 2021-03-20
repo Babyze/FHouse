@@ -10,7 +10,7 @@ public interface HouseContract {
 
         void startSignInActivity();
 
-        void redirectToHomeFragment();
+        void redirectToHomePage();
     }
 
     interface Presenter {

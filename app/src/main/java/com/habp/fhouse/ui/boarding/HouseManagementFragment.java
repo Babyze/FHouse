@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.habp.fhouse.R;
@@ -25,7 +26,9 @@ import com.habp.fhouse.data.datasource.HouseFirestoreRepository;
 import com.habp.fhouse.data.model.House;
 import com.habp.fhouse.ui.boarding.house.create.CreateHouseActivity;
 import com.habp.fhouse.ui.boarding.house.housedetail.HouseDetailFragment;
+import com.habp.fhouse.ui.home.HomeFragment;
 import com.habp.fhouse.ui.sign.SignInActivity;
+import com.habp.fhouse.util.DatabaseConstraints;
 
 import java.util.List;
 
@@ -34,6 +37,7 @@ public class HouseManagementFragment extends Fragment implements HouseContract.V
     private ListView lvHomeMamage;
     private HouseAdapter adapter;
     private HousePresenter housePresenter;
+    private int totalResume = 0;
 
     @Nullable
     @Override
@@ -97,14 +101,25 @@ public class HouseManagementFragment extends Fragment implements HouseContract.V
     }
 
     @Override
-    public void redirectToHomeFragment() {
+    public void redirectToHomePage() {
+        Fragment fragment = new HomeFragment();
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
 
+        BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottom_navigation);
+        bottomNavigationView.getMenu().findItem(R.id.nav_Home).setChecked(true);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        housePresenter.loadHouse();
-        housePresenter.checkAuthorize(true);
+        totalResume += 1;
+        if(totalResume == DatabaseConstraints.TOTAL_RESUME_FOR_AUTHORIZATION) {
+            housePresenter.checkAuthorize(true);
+            housePresenter.loadHouse();
+        }
+
     }
 }

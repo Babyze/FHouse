@@ -21,4 +21,5 @@ public class DatabaseConstraints {
     public static final int BED_ARTICLE = 3;
     public static final String GOOGLE_MAP_URL = "http://maps.google.com/maps?q=";
     public static final String HOUSE_ADDRESS_KEY_NAME = "houseAddress";
+    public static final int TOTAL_RESUME_FOR_AUTHORIZATION = 2;
 }

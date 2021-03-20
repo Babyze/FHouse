@@ -12,7 +12,7 @@ public interface ProfileContract {
         void onInvalidName(String message);
         void onInvalidPhoneNumber(String message);
         void startSignInActivity();
-        void closeActivity();
+        void redirectToHomePage();
     }
 
     interface Presenter {

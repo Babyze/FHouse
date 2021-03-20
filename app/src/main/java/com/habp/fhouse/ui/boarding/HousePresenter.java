@@ -31,7 +31,7 @@ public class HousePresenter implements HouseContract.Presenter {
         FirebaseUser user = firebaseAuthRepository.getUser();
         if (user == null) {
             if (isReturn)
-                mView.redirectToHomeFragment();
+                mView.redirectToHomePage();
             else
                 mView.startSignInActivity();
         }

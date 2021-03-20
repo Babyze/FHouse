@@ -1,12 +1,10 @@
 package com.habp.fhouse.ui.profile;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.habp.fhouse.data.datasource.FirebaseAuthRepository;
 import com.habp.fhouse.data.datasource.FirebaseStorageRemote;
 import com.habp.fhouse.data.datasource.UserFirestoreRepository;
-import com.habp.fhouse.data.model.User;
 import com.habp.fhouse.util.DatabaseConstraints;
 
 public class ProfilePresenter implements ProfileContract.Presenter {
@@ -79,13 +77,11 @@ public class ProfilePresenter implements ProfileContract.Presenter {
         FirebaseUser user = firebaseAuthRepository.getUser();
         if(user == null) {
             if(isReturn)
-                mView.closeActivity(); // Chuyển về main
+                mView.redirectToHomePage(); // Chuyển về main
             else
                 mView.startSignInActivity(); // Chuyển sang Sign in
         } else {
-            if (!isReturn) {
-                getUserProfile();
-            }
+            getUserProfile();
         }
     }
 }
