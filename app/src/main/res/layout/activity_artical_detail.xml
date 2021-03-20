@@ -10,36 +10,53 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/shape_article_rectangle_blue"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="50dp"
+        android:background="@color/blue"
+        android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/imageView29"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:onClick="clickToReturn"
             android:src="@mipmap/ic_back"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:onClick="clickToReturn"/>
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/righteous"
+            android:text="Article Detail"
+            android:textColor="@color/white"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/imageWishlist"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
-            android:src="@mipmap/ic_wishlist_unactivate"
             android:onClick="clickToAddUnWishList"
+            android:src="@mipmap/ic_wishlist_unactivate"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <ScrollView
             android:id="@+id/scrlArticle"
             android:layout_width="match_parent"
@@ -74,7 +91,7 @@
                         android:layout_marginTop="15dp"
                         android:text="Article Name"
                         android:textColor="@color/black"
-                        android:textSize="25sp"
+                        android:textSize="20dp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -89,7 +106,7 @@
                         android:layout_marginBottom="15dp"
                         android:text="Price"
                         android:textColor="@color/red_price"
-                        android:textSize="20sp"
+                        android:textSize="15dp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -111,7 +128,7 @@
                         android:text="Description"
                         android:textAllCaps="false"
                         android:textColor="@color/black"
-                        android:textSize="19sp"
+                        android:textSize="18dp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -123,7 +140,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginBottom="10dp"
                         android:text="Article Description"
-                        android:textSize="20sp"
+                        android:textSize="15dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView11"
@@ -151,7 +168,7 @@
                             android:text="Boarding Description"
                             android:textAllCaps="false"
                             android:textColor="@color/black"
-                            android:textSize="19sp"
+                            android:textSize="18dp"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -174,7 +191,7 @@
                             android:layout_marginTop="25dp"
                             android:text="House Address"
                             android:textColor="@color/black"
-                            android:textSize="18sp"
+                            android:textSize="15dp"
                             app:layout_constraintStart_toEndOf="@+id/imageView28"
                             app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
@@ -200,7 +217,7 @@
                             android:onClick="clickToCall"
                             android:text="Phone Number"
                             android:textColor="@color/blue"
-                            android:textSize="18sp"
+                            android:textSize="15dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/imageView31"
                             app:layout_constraintTop_toBottomOf="@+id/txtHouseAddress" />
@@ -209,20 +226,18 @@
 
             </LinearLayout>
         </ScrollView>
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:layout_margin="15dp"
-            android:backgroundTint="@color/blue"
-            android:onClick="clickToShowMap"
-            android:text="Show on Map"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            app:icon="@mipmap/ic_map"
-            app:iconTint="@color/white" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="15dp"
+        android:backgroundTint="@color/blue"
+        android:onClick="clickToShowMap"
+        android:text="Show on Map"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:icon="@mipmap/ic_map"
+        app:iconTint="@color/white" />
 
 </LinearLayout>
