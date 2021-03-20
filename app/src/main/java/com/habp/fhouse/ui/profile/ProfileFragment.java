@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.habp.fhouse.MainActivity;
 import com.habp.fhouse.R;
@@ -169,6 +170,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
+        totalResume--;
     }
 
     private void showUserProfile(User user) {
@@ -199,6 +201,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
         totalResume++;
         if(totalResume == DatabaseConstraints.TOTAL_RESUME_FOR_AUTHORIZATION) {
             profilePresenter.checkAuthorization(true);
+            totalResume++;
         }
     }
 }

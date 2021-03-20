@@ -39,7 +39,6 @@ public class ProfilePresenter implements ProfileContract.Presenter {
         }
 
         userFirestoreRepository.getUserInfo(user -> {
-            System.out.println("UserID: " + user.getPhone());
             user.setFullName(name);
             user.setPhone(phoneNumber);
             String imgPath = DatabaseConstraints.PROFILE_IMAGE_PATH + "/" + user.getUserId() + ".jpg";
@@ -47,7 +46,6 @@ public class ProfilePresenter implements ProfileContract.Presenter {
             // Call API
             FirebaseStorageRemote firebaseStorageRemote = new FirebaseStorageRemote(FirebaseStorage.getInstance());
             firebaseStorageRemote.uploadImage(imageByte, imgPath, isUploadSuccess -> {
-                System.out.println("imgPath: " + imgPath);
                 userFirestoreRepository.updateUser(user, isUpdateSuccess -> {
                     if (isUpdateSuccess) {
                         mView.onUpdateSuccess();
