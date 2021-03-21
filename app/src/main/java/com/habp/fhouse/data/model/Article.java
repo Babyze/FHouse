@@ -1,12 +1,25 @@
 package com.habp.fhouse.data.model;
 
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.ServerTimestamp;
+
 import java.io.Serializable;
+import java.util.Date;
 
 public class Article implements Serializable {
     private String articleId, articleName, articleDescription, houseId, roomId, bedId, userId;
     private String houseAddress, phoneNumber, photoPath, wishListId;
+    private @ServerTimestamp Date createAt;
     private String price;
     private int articleType;
+
+    public Date getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Date createAt) {
+        this.createAt = createAt;
+    }
 
     public String getArticleId() {
         return articleId;
