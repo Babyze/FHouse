@@ -7,6 +7,7 @@ import android.widget.ImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Currency;
 import java.util.HashMap;
@@ -39,10 +40,10 @@ public class ConvertHelper {
         return baos.toByteArray();
     }
 
-    public static String convertToMoneyFormat(float price) {
+    public static String convertToMoneyFormat(String price) {
         NumberFormat format = NumberFormat.getCurrencyInstance(Locale.getDefault());
         format.setCurrency(Currency.getInstance("VND"));
-        return format.format(price);
+        return format.format(new BigDecimal(price));
     }
 
 }

@@ -1,4 +1,4 @@
-package com.habp.fhouse.ui.article;
+package com.habp.fhouse.ui.article.createArticle.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +10,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.habp.fhouse.R;
 import com.habp.fhouse.data.model.Article;
-
-import java.text.NumberFormat;
-import java.util.Currency;
+import com.habp.fhouse.util.ConvertHelper;
+import com.habp.fhouse.util.DatabaseConstraints;
 import java.util.List;
 
 public class ArticleAdapter extends BaseAdapter {
@@ -57,20 +56,17 @@ public class ArticleAdapter extends BaseAdapter {
         TextView txtAddress = convertView.findViewById(R.id.txtAddress);
         TextView txtPrice = convertView.findViewById(R.id.txtPrice);
         TextView txtRequirement = convertView.findViewById(R.id.txtRequirementArticle);
-        if (article.getArticleType() == 1){
+        if (article.getArticleType() == DatabaseConstraints.HOUSE_ARTICLE){
             txtRequirement.setText("House For Rent");
-        }else if (article.getArticleType() == 2){
+        }else if (article.getArticleType() == DatabaseConstraints.ROOM_ARTICLE){
             txtRequirement.setText("Room For Rent");
-        }else if (article.getArticleType() == 3){
+        }else if (article.getArticleType() == DatabaseConstraints.BED_ARTICLE){
             txtRequirement.setText("Bed For Rent");
         }
 
         txtName.setText(article.getArticleName());
         txtAddress.setText(article.getHouseAddress());
-        NumberFormat format = NumberFormat.getCurrencyInstance();
-        format.setMaximumFractionDigits(0);
-        format.setCurrency(Currency.getInstance("VND"));
-        String price = format.format(article.getPrice());
+        String price = ConvertHelper.convertToMoneyFormat(article.getPrice());
         txtPrice.setText(price + " VND");
         return convertView;
     }

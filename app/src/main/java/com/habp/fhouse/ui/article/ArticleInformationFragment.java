@@ -20,7 +20,7 @@ import com.habp.fhouse.data.model.Article;
 public class ArticleInformationFragment extends Fragment {
     private Article currentArticle;
     private TextView updateArticle;
-    private Float price;
+    private String price;
     private String description;
     private Article updateArticleDetail;
 
@@ -33,7 +33,7 @@ public class ArticleInformationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_article_information, container, false);
         EditText editPrice = view.findViewById(R.id.editPrice);
-        editPrice.setText(currentArticle.getPrice()+"");
+        editPrice.setText(currentArticle.getPrice());
         EditText editDescription = view.findViewById(R.id.editDescription);
         editDescription.setText(currentArticle.getArticleDescription());
         updateArticle = view.findViewById(R.id.txtUpdateArticle);
@@ -45,7 +45,7 @@ public class ArticleInformationFragment extends Fragment {
                 updateArticleDetail = currentArticle;
 
                 if(!editPrice.getText().toString().equals("") && !editDescription.getText().toString().equals("")){
-                    price = Float.parseFloat(editPrice.getText().toString());
+                    price = editPrice.getText().toString();
                     description = editDescription.getText().toString();
                     updateArticleDetail.setPrice(price);
                     updateArticleDetail.setArticleDescription(description);

@@ -5,20 +5,17 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.habp.fhouse.R;
-import com.habp.fhouse.data.datasource.HouseFirestoreRepository;
 import com.habp.fhouse.data.model.Bed;
 import com.habp.fhouse.data.model.House;
 import com.habp.fhouse.data.model.Room;
-import com.habp.fhouse.ui.article.ArticleInformationFragment;
 import com.habp.fhouse.ui.article.TabAdapter;
+import com.habp.fhouse.ui.article.createArticle.bed.CreateBedFragment;
+import com.habp.fhouse.ui.article.createArticle.house.CreateHouseFragment;
+import com.habp.fhouse.ui.article.createArticle.room.CreateRoomFragment;
 
 import java.util.ArrayList;
 import java.util.List;

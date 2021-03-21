@@ -62,6 +62,9 @@ public class BedFirestoreRepository {
             List<Bed> beds = new ArrayList<>();
             QuerySnapshot snap = task.getResult();
             if(snap != null) {
+                if(snap.getDocuments().size() == 0) {
+                    callBack.onSuccessListener(beds);
+                }
                 for(DocumentSnapshot documentSnapshot : snap.getDocuments()) {
                     Bed bed = documentSnapshot.toObject(Bed.class);
                     firebaseStorageRemote.getImageURL(bed.getPhotoPath(), imageURL -> {
@@ -92,7 +95,8 @@ public class BedFirestoreRepository {
     }
 
     public void deleteBed(String bedId, CallBack<Boolean> callBack) {
-        ArticleFirestoreRepository articleFirestoreRepository = new ArticleFirestoreRepository(FirebaseFirestore.getInstance());
+        ArticleFirestoreRepository articleFirestoreRepository =
+                new ArticleFirestoreRepository(FirebaseFirestore.getInstance());
         articleFirestoreRepository.getArticleListByBedId(bedId, articleList -> {
             for(Article article : articleList) {
                 articleFirestoreRepository.deleteArticle(article.getArticleId(), task -> {});

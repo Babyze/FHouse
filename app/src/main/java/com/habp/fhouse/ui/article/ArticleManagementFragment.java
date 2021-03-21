@@ -14,34 +14,53 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.habp.fhouse.R;
 import com.habp.fhouse.data.datasource.ArticleFirestoreRepository;
-import com.habp.fhouse.data.datasource.HouseFirestoreRepository;
-import com.habp.fhouse.data.datasource.UserFirestoreRepository;
 import com.habp.fhouse.data.model.Article;
 import com.habp.fhouse.ui.article.createArticle.CreateArticleActivity;
-import com.habp.fhouse.ui.home.HomePresenter;
-import com.habp.fhouse.util.CallBack;
-
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.habp.fhouse.ui.article.createArticle.adapter.ArticleAdapter;
+import com.habp.fhouse.ui.home.HomeFragment;
+import com.habp.fhouse.ui.sign.SignInActivity;
+import com.habp.fhouse.util.DatabaseConstraints;
 
 public class ArticleManagementFragment extends Fragment {
     private ListView lvArticleManagement;
     private ArticleAdapter adapter;
     private TextView empty;
+    private int totalResume = 0;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_article, container, false);
+        checkAuthorize(false);
         loadData(view);
         return view;
+    }
+
+    private void checkAuthorize(boolean isReturn) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
+            if (isReturn) {
+                Fragment fragment = new HomeFragment();
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+
+                BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottom_navigation);
+                bottomNavigationView.getMenu().findItem(R.id.nav_Home).setChecked(true);
+            } else {
+                Intent intent = new Intent(getActivity(), SignInActivity.class);
+                startActivity(intent);
+            }
+        }
     }
 
     private void loadData(View view) {
@@ -87,6 +106,10 @@ public class ArticleManagementFragment extends Fragment {
     public void onResume() {
         super.onResume();
         loadData(this.getView());
+        totalResume += 1;
+        if(totalResume == DatabaseConstraints.TOTAL_RESUME_FOR_AUTHORIZATION) {
+            checkAuthorize(true);
+        }
     }
 
 }

@@ -11,12 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.habp.fhouse.R;
-import com.habp.fhouse.data.model.Article;
-import com.habp.fhouse.data.model.House;
 import com.habp.fhouse.data.model.User;
-import com.habp.fhouse.ui.home.HomeAdapter;
-
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -45,9 +40,7 @@ public class ArticleManagementWishList extends Fragment {
             adapter = new WishListAdapter(listUser);
             lvWishList.setAdapter(adapter);
             empty.setVisibility(View.INVISIBLE);
-
         }else{
-            System.out.println("Wish List Null");
             lvWishList.setVisibility(View.INVISIBLE);
         }
 

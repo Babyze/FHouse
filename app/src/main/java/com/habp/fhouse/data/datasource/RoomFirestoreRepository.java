@@ -63,6 +63,9 @@ public class RoomFirestoreRepository {
                     List<Room> rooms = new ArrayList<>();
                     QuerySnapshot snapshot = task.getResult();
                     if(snapshot != null) {
+                        if(snapshot.getDocuments().size() == 0) {
+                            callBack.onSuccessListener(rooms);
+                        }
                         for(DocumentSnapshot documentSnapshot : snapshot.getDocuments()) {
                             Room room = documentSnapshot.toObject(Room.class);
                             firebaseStorageRemote.getImageURL(room.getPhotoPath(), imageURL -> {
