@@ -48,12 +48,11 @@
         tools:layout_editor_absoluteX="0dp" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/txtUpdateArticle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/blue"
         android:gravity="center"
-        android:onClick="clickToUpdateArticle"
         android:text="Update Article"
         android:textColor="@color/white"
         android:textSize="30dp"

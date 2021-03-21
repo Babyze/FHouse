@@ -57,15 +57,22 @@ public class ArticleAdapter extends BaseAdapter {
         TextView txtAddress = convertView.findViewById(R.id.txtAddress);
         TextView txtPrice = convertView.findViewById(R.id.txtPrice);
         TextView txtRequirement = convertView.findViewById(R.id.txtRequirementArticle);
+        if (article.getArticleType() == 1){
+            txtRequirement.setText("House For Rent");
+        }else if (article.getArticleType() == 2){
+            txtRequirement.setText("Room For Rent");
+        }else if (article.getArticleType() == 3){
+            txtRequirement.setText("Bed For Rent");
+        }
+
         txtName.setText(article.getArticleName());
-        txtAddress.setText("HCM");
-        txtRequirement.setText("Ho Chi Minh");
+        txtAddress.setText(article.getHouseAddress());
         NumberFormat format = NumberFormat.getCurrencyInstance();
         format.setMaximumFractionDigits(0);
         format.setCurrency(Currency.getInstance("VND"));
         String price = format.format(article.getPrice());
         txtPrice.setText(price + " VND");
-
         return convertView;
     }
+
 }

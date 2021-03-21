@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.habp.fhouse.R;
 import com.habp.fhouse.data.model.Article;
@@ -18,17 +19,18 @@ import com.habp.fhouse.ui.home.HomeAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ArticleManagementWishList#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class ArticleManagementWishList extends Fragment {
     private ListView lvWishList;
     private WishListAdapter adapter;
     private List<User> listUser;
+    private TextView empty;
 
-    public ArticleManagementWishList(List<User> listUser) {
+    public ArticleManagementWishList() {
+
+    }
+
+    public  ArticleManagementWishList(List<User> listUser) {
         this.listUser = listUser;
     }
 
@@ -38,8 +40,17 @@ public class ArticleManagementWishList extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_article_wishlist, container, false);
         lvWishList = view.findViewById(R.id.lvWishListArticle);
-        adapter = new WishListAdapter(listUser);
-        lvWishList.setAdapter(adapter);
+        empty = view.findViewById(R.id.txtEmptyWishlist);
+        if(listUser != null){
+            adapter = new WishListAdapter(listUser);
+            lvWishList.setAdapter(adapter);
+            empty.setVisibility(View.INVISIBLE);
+
+        }else{
+            System.out.println("Wish List Null");
+            lvWishList.setVisibility(View.INVISIBLE);
+        }
+
 
         return view;
 

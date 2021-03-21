@@ -29,6 +29,7 @@
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutCreateHouse"
         android:layout_width="match_parent"
         android:layout_height="350dp"
         android:layout_marginBottom="84dp"
@@ -115,6 +116,14 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_editor_absoluteX="16dp" />
+    <TextView
+        android:id="@+id/txtEmptyHouseCreate"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fontFamily="@font/righteous"
+        android:text="You don't have a house to create new article"
+        android:gravity="center"
+        android:textSize="32dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
