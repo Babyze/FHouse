@@ -86,7 +86,7 @@ public class ArticleFirestoreRepository {
                 = new HouseFirestoreRepository(FirebaseFirestore.getInstance(), firebaseAuth);
         ArticleSnap articleSnap = new ArticleSnap();
         List<Article> articleList = new ArrayList<>();
-        collection.orderBy(DatabaseConstraints.ARTICLE_TIME_KEY_NAME, Query.Direction.ASCENDING)
+        collection.orderBy(DatabaseConstraints.ARTICLE_TIME_KEY_NAME, Query.Direction.DESCENDING)
                 .limit(7)
                 .get()
                 .addOnCompleteListener(task -> {
@@ -131,14 +131,14 @@ public class ArticleFirestoreRepository {
                 = new HouseFirestoreRepository(FirebaseFirestore.getInstance(), firebaseAuth);
         ArticleSnap articleSnap = new ArticleSnap();
         List<Article> articleList = new ArrayList<>();
-        collection.orderBy(DatabaseConstraints.ARTICLE_TIME_KEY_NAME, Query.Direction.ASCENDING)
+        collection.orderBy(DatabaseConstraints.ARTICLE_TIME_KEY_NAME, Query.Direction.DESCENDING)
                 .startAfter(lastSnap)
                 .limit(7)
                 .get()
                 .addOnCompleteListener(task -> {
                     QuerySnapshot snap = task.getResult();
                     if(snap != null) {
-                        if(snap.size() > 1) {
+                        if(snap.size() > 0) {
                             DocumentSnapshot lastSnapDB = snap.getDocuments().get(snap.size() - 1);
                             articleSnap.setLastSnap(lastSnapDB);
                         } else {
@@ -336,7 +336,7 @@ public class ArticleFirestoreRepository {
                 .addOnCompleteListener(task -> {
                     QuerySnapshot snap = task.getResult();
                     if(snap != null) {
-                        if(snap.size() > 1) {
+                        if(snap.size() > 0) {
                             DocumentSnapshot lastSnapDB = snap.getDocuments().get(snap.size() - 1);
                             articleSnap.setLastSnap(lastSnapDB);
                         } else {
@@ -382,10 +382,11 @@ public class ArticleFirestoreRepository {
                 .addOnCompleteListener(task -> {
                     QuerySnapshot snap = task.getResult();
                     if(snap != null) {
-                        if(snap.size() > 1) {
+                        if(snap.size() > 0) {
                             DocumentSnapshot lastSnapDB = snap.getDocuments().get(snap.size() - 1);
                             articleSnap.setLastSnap(lastSnapDB);
                         } else {
+                            articleSnap.setLastSnap(lastSnap);
                             articleSnap.setArticleList(articleList);
                             callBack.onSuccessListener(articleSnap);
                         }

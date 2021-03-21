@@ -140,6 +140,7 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
             public void onRefresh() {
                 Toast.makeText(SearchActivity.this, "Please wait", Toast.LENGTH_SHORT).show();
                 searchPresenter.loadArticleResult(null, keyWord);
+                swipeArticle.setRefreshing(false);
             }
         });
 
