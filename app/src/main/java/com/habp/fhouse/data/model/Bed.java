@@ -52,4 +52,9 @@ public class Bed implements Serializable {
     public void setRoomId(String roomId) {
         this.roomId = roomId;
     }
+
+    @Override
+    public String toString() {
+        return this.getBedName();
+    }
 }

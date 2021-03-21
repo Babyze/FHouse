@@ -10,11 +10,14 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.habp.fhouse.ui.article.ArticleFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.habp.fhouse.ui.article.ArticleManagementFragment;
 import com.habp.fhouse.ui.home.HomeFragment;
 import com.habp.fhouse.ui.boarding.HouseManagementFragment;
 import com.habp.fhouse.ui.profile.ProfileFragment;
 import com.habp.fhouse.ui.wishlist.WishlistFragment;
+
+
 
 
 public class MainActivity extends AppCompatActivity {
@@ -23,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        //FirebaseAuth.getInstance().signOut();
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -45,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                             selectedFragment = new HouseManagementFragment();
                             break;
                         case R.id.nav_Article:
-                            selectedFragment = new ArticleFragment();
+                            selectedFragment = new ArticleManagementFragment();
                             break;
                         case R.id.nav_Wishlist:
                             selectedFragment = new WishlistFragment();

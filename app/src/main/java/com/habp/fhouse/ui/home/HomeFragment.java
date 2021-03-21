@@ -42,7 +42,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     private TextView txtFullName;
     private TextView txtNoResult;
     private SwipeRefreshLayout swipeArticle;
-    private ArticleAdapter adapter;
+    private HomeAdapter adapter;
     private HomePresenter homePresenter;
     private ArticleSnap articleSnap;
     private List<Article> listArticleInHomePage;
@@ -70,7 +70,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         btnSearch = view.findViewById(R.id.btnSearch);
 
         listArticleInHomePage = new ArrayList<>();
-        adapter = new ArticleAdapter();
+        adapter = new HomeAdapter();
 
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,7 +191,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     @Override
     public void showUserInfo(User user) {
         if(user != null) {
-            txtFullName.setText("Hi " + user.getFullName());
+            txtFullName.setText("Hi ");
         }
     }
 
