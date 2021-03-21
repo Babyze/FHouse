@@ -64,14 +64,17 @@ public class HouseFirestoreRepository {
                     List<House> houses = new ArrayList<>();
                     QuerySnapshot snapshots = task.getResult();
                     if(snapshots != null) {
-                       for(DocumentSnapshot documentSnapshot : snapshots.getDocuments()) {
-                           House house = documentSnapshot.toObject(House.class);
-                           firebaseStorageRemote.getImageURL(house.getPhotoPath(), imageURL -> {
-                               house.setPhotoPath(imageURL.toString());
-                               houses.add(house);
-                               callBack.onSuccessListener(houses);
-                           });
-                       }
+                        if(snapshots.getDocuments().size() == 0) {
+                            callBack.onSuccessListener(houses);
+                        }
+                        for(DocumentSnapshot documentSnapshot : snapshots.getDocuments()) {
+                            House house = documentSnapshot.toObject(House.class);
+                            firebaseStorageRemote.getImageURL(house.getPhotoPath(), imageURL -> {
+                                house.setPhotoPath(imageURL.toString());
+                                houses.add(house);
+                                callBack.onSuccessListener(houses);
+                            });
+                        }
                     } else {
                         callBack.onSuccessListener(houses);
                     }
@@ -124,10 +127,12 @@ public class HouseFirestoreRepository {
     }
 
     public void deleteHouse(String houseId, CallBack<Boolean> callBack) {
-        RoomFirestoreRepository roomFirestoreRepository = new RoomFirestoreRepository(FirebaseFirestore.getInstance());
-        BedFirestoreRepository bedFirestoreRepository = new BedFirestoreRepository(FirebaseFirestore.getInstance());
-        ArticleFirestoreRepository articleFirestoreRepository = new ArticleFirestoreRepository(FirebaseFirestore.getInstance());
-
+        RoomFirestoreRepository roomFirestoreRepository =
+                new RoomFirestoreRepository(FirebaseFirestore.getInstance());
+        BedFirestoreRepository bedFirestoreRepository =
+                new BedFirestoreRepository(FirebaseFirestore.getInstance());
+        ArticleFirestoreRepository articleFirestoreRepository =
+                new ArticleFirestoreRepository(FirebaseFirestore.getInstance());
         roomFirestoreRepository.getRoomList(houseId, listRoom -> {
             for(Room room : listRoom) {
                 roomFirestoreRepository.deleteRoom(room.getRoomId(), task -> {});

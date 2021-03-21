@@ -51,4 +51,9 @@ public class Room implements Serializable {
     public void setHouseId(String houseId) {
         this.houseId = houseId;
     }
+
+    @Override
+    public String toString() {
+        return this.getRoomName();
+    }
 }

@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Article implements Serializable {
     private String articleId, articleName, articleDescription, houseId, roomId, bedId, userId;
     private String houseAddress, phoneNumber, photoPath, wishListId;
-    private float price;
+    private String price;
     private int articleType;
 
     public String getArticleId() {
@@ -64,8 +64,12 @@ public class Article implements Serializable {
         this.bedId = bedId;
     }
 
-    public float getPrice() {
+    public String getPrice() {
         return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 
     public int getArticleType() {
@@ -74,10 +78,6 @@ public class Article implements Serializable {
 
     public void setArticleType(int articleType) {
         this.articleType = articleType;
-    }
-
-    public void setPrice(float price) {
-        this.price = price;
     }
 
     public String getHouseAddress() {
@@ -113,7 +113,7 @@ public class Article implements Serializable {
     }
 
     public Article(String articleId, String articleName, String articleDescription,
-                   String houseId, String userId, float price, int articleType) {
+                   String houseId, String userId, String price, int articleType) {
         this.articleId = articleId;
         this.articleName = articleName;
         this.articleDescription = articleDescription;
@@ -124,7 +124,7 @@ public class Article implements Serializable {
     }
 
     public Article(String articleId, String articleName, String articleDescription,
-                   String houseId, String roomId, String userId, float price, int articleType) {
+                   String houseId, String roomId, String userId, String price, int articleType) {
         this.articleId = articleId;
         this.articleName = articleName;
         this.articleDescription = articleDescription;
@@ -136,7 +136,7 @@ public class Article implements Serializable {
     }
 
     public Article(String articleId, String articleName, String articleDescription,
-                   String houseId, String roomId, String bedId, String userId, float price, int articleType) {
+                   String houseId, String roomId, String bedId, String userId, String price, int articleType) {
         this.articleId = articleId;
         this.articleName = articleName;
         this.articleDescription = articleDescription;

@@ -80,13 +80,22 @@ public class WishListFirestoreRepository {
         collection.whereEqualTo(DatabaseConstraints.ARTICLE_ID_KEY_NAME, articleId)
                 .get()
                 .addOnCompleteListener(wishlists -> {
-                   for(DocumentSnapshot doc : wishlists.getResult()) {
-                       WishList wishList = doc.toObject(WishList.class);
-                       userFirestoreRepository.getUserInfo(wishList.getUserId(), user -> {
-                           users.add(user);
-                           callBack.onSuccessListener(users);
-                       });
-                   }
+                    QuerySnapshot snap = wishlists.getResult();
+                    if(snap != null) {
+                        List<DocumentSnapshot> ds = snap.getDocuments();
+                        if(ds.size() == 0) {
+                            callBack.onSuccessListener(users);
+                        }
+                        for(DocumentSnapshot doc : ds) {
+                            WishList wishList = doc.toObject(WishList.class);
+                            userFirestoreRepository.getUserInfo(wishList.getUserId(), user -> {
+                                users.add(user);
+                                callBack.onSuccessListener(users);
+                            });
+                        }
+                    } else {
+                        callBack.onSuccessListener(users);
+                    }
                 });
     }
 

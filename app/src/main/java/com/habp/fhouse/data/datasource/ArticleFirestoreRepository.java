@@ -48,7 +48,8 @@ public class ArticleFirestoreRepository {
     }
 
     public void deleteArticle(String articleId, CallBack<Boolean> callback) {
-        WishListFirestoreRepository wishListFirestoreRepository = new WishListFirestoreRepository(firebaseFirestore);
+        WishListFirestoreRepository wishListFirestoreRepository =
+                new WishListFirestoreRepository(FirebaseFirestore.getInstance());
         wishListFirestoreRepository.getWishListByArticleId(articleId, wishlists -> {
             for(WishList wishList : wishlists) {
                 wishListFirestoreRepository.deleteWishList(wishList.getWishListId(), isSuccess -> {});
@@ -233,7 +234,6 @@ public class ArticleFirestoreRepository {
     }
 
     public void getArticleListByBedId(String bedId, CallBack<List<Article>> callBack) {
-        HouseFirestoreRepository houseFirestoreRepository = new HouseFirestoreRepository(FirebaseFirestore.getInstance(), firebaseAuth);
         List<Article> articleList = new ArrayList<>();
         collection.whereEqualTo(DatabaseConstraints.BED_ID_KEY_NAME, bedId)
                 .get().addOnCompleteListener(task -> {
@@ -241,21 +241,8 @@ public class ArticleFirestoreRepository {
                     if(snap != null) {
                         for(DocumentSnapshot doc : snap.getDocuments()) {
                             Article article = doc.toObject(Article.class);
-                            houseFirestoreRepository.getHouse(article.getHouseId(), house -> {
-                                article.setHouseAddress(house.getHouseAddress());
-                                getBoardingImageURL(article.getArticleType(), article, imageURL -> {
-                                    article.setPhotoPath(imageURL);
-                                    if(firebaseAuth.getCurrentUser() != null)
-                                        getWishListId(article.getArticleId(), firebaseAuth.getUid(), wishlistId -> {
-                                            article.setWishListId(wishlistId);
-                                            articleList.add(article);
-                                            callBack.onSuccessListener(articleList);
-                                        });
-                                    else {
-                                        callBack.onSuccessListener(articleList);
-                                    }
-                                });
-                            });
+                            articleList.add(article);
+                            callBack.onSuccessListener(articleList);
                         }
                     } else {
                         callBack.onSuccessListener(articleList);
@@ -264,7 +251,6 @@ public class ArticleFirestoreRepository {
     }
 
     public void getArticleListByRoomId(String roomId, CallBack<List<Article>> callBack) {
-        HouseFirestoreRepository houseFirestoreRepository = new HouseFirestoreRepository(FirebaseFirestore.getInstance(), firebaseAuth);
         List<Article> articleList = new ArrayList<>();
         collection.whereEqualTo(DatabaseConstraints.ROOM_ID_KEY_NAME, roomId)
                 .get().addOnCompleteListener(task -> {
@@ -272,21 +258,8 @@ public class ArticleFirestoreRepository {
                     if(snap != null) {
                         for(DocumentSnapshot doc : snap.getDocuments()) {
                             Article article = doc.toObject(Article.class);
-                            houseFirestoreRepository.getHouse(article.getHouseId(), house -> {
-                                article.setHouseAddress(house.getHouseAddress());
-                                getBoardingImageURL(article.getArticleType(), article, imageURL -> {
-                                    article.setPhotoPath(imageURL);
-                                    if(firebaseAuth.getCurrentUser() != null)
-                                        getWishListId(article.getArticleId(), firebaseAuth.getUid(), wishlistId -> {
-                                            article.setWishListId(wishlistId);
-                                            articleList.add(article);
-                                            callBack.onSuccessListener(articleList);
-                                        });
-                                    else {
-                                        callBack.onSuccessListener(articleList);
-                                    }
-                                });
-                            });
+                            articleList.add(article);
+                            callBack.onSuccessListener(articleList);
                         }
                     } else {
                         callBack.onSuccessListener(articleList);
@@ -295,7 +268,6 @@ public class ArticleFirestoreRepository {
     }
 
     public void getArticleListByHouseId(String houseId, CallBack<List<Article>> callBack) {
-        HouseFirestoreRepository houseFirestoreRepository = new HouseFirestoreRepository(FirebaseFirestore.getInstance(), firebaseAuth);
         List<Article> articleList = new ArrayList<>();
         collection.whereEqualTo(DatabaseConstraints.HOUSE_ID_KEY_NAME, houseId)
                 .get().addOnCompleteListener(task -> {
@@ -303,21 +275,8 @@ public class ArticleFirestoreRepository {
                     if(snap != null) {
                         for(DocumentSnapshot doc : snap.getDocuments()) {
                             Article article = doc.toObject(Article.class);
-                            houseFirestoreRepository.getHouse(article.getHouseId(), house -> {
-                                article.setHouseAddress(house.getHouseAddress());
-                                getBoardingImageURL(article.getArticleType(), article, imageURL -> {
-                                    article.setPhotoPath(imageURL);
-                                    if(firebaseAuth.getCurrentUser() != null)
-                                        getWishListId(article.getArticleId(), firebaseAuth.getUid(), wishlistId -> {
-                                            article.setWishListId(wishlistId);
-                                            articleList.add(article);
-                                            callBack.onSuccessListener(articleList);
-                                        });
-                                    else {
-                                        callBack.onSuccessListener(articleList);
-                                    }
-                                });
-                            });
+                            articleList.add(article);
+                            callBack.onSuccessListener(articleList);
                         }
                     } else {
                         callBack.onSuccessListener(articleList);

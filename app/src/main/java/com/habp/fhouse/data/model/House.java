@@ -61,4 +61,9 @@ public class House implements Serializable {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
+    @Override
+    public String toString() {
+        return this.getHouseName();
+    }
 }

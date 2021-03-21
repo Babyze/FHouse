@@ -23,6 +23,8 @@
         <activity android:name=".ui.boarding.room.create.CreateRoomActivity" />
         <activity android:name=".ui.boarding.house.create.CreateHouseActivity" />
         <activity android:name=".ui.articledetail.ArticleDetailActivity" />
+        <activity android:name=".ui.article.createArticle.CreateArticleActivity" />
+        <activity android:name=".ui.article.ArticleManagementDetailActivity" />
         <activity android:name=".ui.sign.SignInActivity" />
         <activity android:name=".ui.forgotpassword.ForgotPasswordActivity" />
         <activity android:name=".ui.signup.SignUpActivity" />
