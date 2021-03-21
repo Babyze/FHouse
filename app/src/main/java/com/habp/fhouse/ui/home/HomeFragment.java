@@ -191,7 +191,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     @Override
     public void showUserInfo(User user) {
         if(user != null) {
-            txtFullName.setText("Hi ");
+            txtFullName.setText("Hi " + user.getFullName());
         }
     }
 
