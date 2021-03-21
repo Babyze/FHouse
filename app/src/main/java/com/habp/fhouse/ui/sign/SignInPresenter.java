@@ -26,7 +26,7 @@ public class SignInPresenter implements SignInContract.Presenter {
             if (isSuccess) {
                 mView.onLoginSuccess();
             } else {
-                mView.onLoginFailed("LoginActivity Failed");
+                mView.onLoginFailed("Sign in Failed");
             }
         });
     }
