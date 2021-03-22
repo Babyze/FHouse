@@ -22,7 +22,7 @@ public class SearchPresenter implements SearchContract.Presenter {
         if(keyword.isEmpty()) {
             return;
         }
-        houseRep.getHouseListByAddress(keyword, listHouse -> {
+        houseRep.getHouseListByAddress(listHouse -> {
             for(House house : listHouse) {
                 if(house.getHouseAddress().toLowerCase().contains(keyword.toLowerCase())) {
                     if(snapshot == null) {
