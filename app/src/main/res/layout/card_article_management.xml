@@ -33,6 +33,7 @@
         android:ellipsize="end"
         android:fontFamily="sans-serif-medium"
         android:textColor="#F44336"
+        android:text="Price"
         android:textSize="14dp"
         app:layout_constraintStart_toEndOf="@+id/imgHouse"
         app:layout_constraintTop_toBottomOf="@+id/txtName" />
@@ -45,7 +46,7 @@
         android:layout_marginTop="28dp"
         android:ellipsize="end"
         android:fontFamily="sans-serif-medium"
-        android:text=""
+        android:text="House For Rent"
         android:textSize="11dp"
         app:layout_constraintStart_toEndOf="@+id/imgHouse"
         app:layout_constraintTop_toBottomOf="@+id/txtName" />
@@ -63,24 +64,30 @@
 
     <TextView
         android:id="@+id/txtAddress"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="157dp"
+        android:layout_marginTop="5dp"
+        android:ellipsize="end"
         android:fontFamily="sans-serif-medium"
-        android:text="Ho Chi Minh"
+        android:maxLines="1"
+        android:text="House Address"
         android:textSize="14dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView5"
-        app:layout_constraintStart_toEndOf="@+id/imageView5" />
+        app:layout_constraintStart_toEndOf="@+id/imageView5"
+        app:layout_constraintTop_toBottomOf="@+id/txtRequirementArticle" />
 
     <ImageView
         android:id="@+id/imageView5"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="5dp"
         android:layout_marginBottom="7dp"
         android:src="@mipmap/ic_placeholder_black"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imgHouse" />
+        app:layout_constraintStart_toEndOf="@+id/imgHouse"
+        app:layout_constraintTop_toBottomOf="@+id/txtRequirementArticle" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
