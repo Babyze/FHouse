@@ -87,7 +87,7 @@
             android:layout_marginTop="13dp"
             android:ellipsize="end"
             android:fontFamily="sans-serif-medium"
-            android:text="aaa"
+            android:text="Article Type"
             android:textSize="14dp"
             app:layout_constraintStart_toEndOf="@+id/imgHouse"
             app:layout_constraintTop_toBottomOf="@+id/txtNameArticle" />
@@ -106,13 +106,16 @@
 
         <TextView
             android:id="@+id/txtAddress"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="155dp"
+            android:layout_marginBottom="12dp"
             android:fontFamily="sans-serif-medium"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:text="Ho Chi Minh"
             android:textSize="14dp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView5" />
 
         <ImageView
