@@ -92,10 +92,9 @@ public class HouseFirestoreRepository {
                 });
     }
 
-    public void getHouseListByAddress(String address, CallBack<List<House>> callBack) {
+    public void getHouseListByAddress(CallBack<List<House>> callBack) {
         List<House> houses = new ArrayList<>();
-        collection.whereGreaterThanOrEqualTo(DatabaseConstraints.HOUSE_ADDRESS_KEY_NAME, address.toUpperCase())
-                .whereLessThanOrEqualTo(DatabaseConstraints.HOUSE_ADDRESS_KEY_NAME, address + '\uf8ff')
+        collection.orderBy(DatabaseConstraints.HOUSE_ADDRESS_KEY_NAME)
                 .get()
                 .addOnCompleteListener(querySnapShot -> {
                    QuerySnapshot snap = querySnapShot.getResult();

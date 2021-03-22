@@ -97,7 +97,9 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
                             WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
                     );
                     keyWord = edtSearch.getText().toString();
+                    listResult = new ArrayList<>();
                     searchPresenter.loadArticleResult(null, keyWord);
+                    articleAdapter.notifyDataSetChanged();
                     return true;
                 }
                 return false;
@@ -162,10 +164,9 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
         this.articleSnap = articleSnap;
         if(articles != null) {
             if(isLoadMore) {
-                listResult = ListHelper.addCollection(listResult, articles);
-                System.out.println(listResult.size() + " Size Ne");
+                ListHelper.addCollection(listResult, articles);
             } else {
-                listResult = articles;
+                ListHelper.addCollection(listResult, articles);
                 articleAdapter.setListArticle(listResult);
             }
         }

@@ -23,7 +23,7 @@
             android:layout_marginEnd="45dp"
             android:fontFamily="@font/righteous"
             android:gravity="center"
-            android:text="REGISTER"
+            android:text="Register"
             android:textColor="@color/white"
             android:textSize="25dp"
             app:layout_constraintEnd_toEndOf="parent"

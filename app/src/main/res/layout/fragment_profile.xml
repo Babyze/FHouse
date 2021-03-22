@@ -29,23 +29,11 @@
         android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageButton
-            android:id="@+id/btnBack"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:background="@null"
-            android:src="@drawable/abc_vector_test"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:onClick="clickToBack"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/righteous"
-            android:text="EDIT PROFILE"
+            android:text="Edit Profile"
             android:textColor="@color/white"
             android:textSize="20dp"
             android:textStyle="bold"
@@ -131,7 +119,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="clickToResetPassword"
-        android:text="Forgot Password"
+        android:text="Reset Password"
         android:textSize="12dp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="@+id/edtPhoneNumber"
