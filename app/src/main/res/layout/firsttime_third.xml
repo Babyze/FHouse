@@ -302,11 +302,25 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_mono"
         android:gravity="center"
-        android:text="In the end, you will find the lovely, lovely house you have been looking for so long"
+        android:text="In the end, you will find the lovely"
         android:textColor="@color/blue"
         android:textSize="13dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/glHorizontal62" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/roboto_mono"
+        android:gravity="center"
+        android:text="lovely house you have been looking for so long"
+        android:textColor="@color/blue"
+        android:textSize="13dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
