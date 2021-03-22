@@ -52,6 +52,7 @@ public class ArticleInformationFragment extends Fragment {
                     articleFirestoreRepository.updateArticle(updateArticleDetail, task -> {
                         Toast.makeText(getContext(), "Update Article "+updateArticleDetail.getArticleName()+" Successful", Toast.LENGTH_SHORT).show();
                     });
+                    getActivity().finish();
                 }else{
                     Toast.makeText(getContext(), "Update Article "+updateArticleDetail.getArticleName()+" Failed", Toast.LENGTH_SHORT).show();
                 }
