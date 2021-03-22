@@ -29,6 +29,10 @@ public class ArticleManagementWishList extends Fragment {
         this.listUser = listUser;
     }
 
+    public void setListUser(List<User> listUser) {
+        this.listUser = listUser;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -36,6 +40,12 @@ public class ArticleManagementWishList extends Fragment {
         View view = inflater.inflate(R.layout.fragment_article_wishlist, container, false);
         lvWishList = view.findViewById(R.id.lvWishListArticle);
         empty = view.findViewById(R.id.txtEmptyWishlist);
+        showUserWishList();
+        return view;
+
+    }
+
+    public void showUserWishList() {
         if(listUser != null){
             adapter = new WishListAdapter(listUser);
             lvWishList.setAdapter(adapter);
@@ -43,9 +53,5 @@ public class ArticleManagementWishList extends Fragment {
         }else{
             lvWishList.setVisibility(View.INVISIBLE);
         }
-
-
-        return view;
-
     }
 }

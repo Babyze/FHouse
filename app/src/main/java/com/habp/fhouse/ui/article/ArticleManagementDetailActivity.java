@@ -47,20 +47,31 @@ public class ArticleManagementDetailActivity extends AppCompatActivity implement
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         adapter = new TabAdapter(getSupportFragmentManager());
 
+        adapter.addFragment(new ArticleInformationFragment(dto), "Article Information");
+        adapter.addFragment(new ArticleManagementWishList(wishListUser), "Wishlist(0)");
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
+
         //wishlist article management
         WishListFirestoreRepository wishListFirestoreRepository =
                 new WishListFirestoreRepository(FirebaseFirestore.getInstance(), FirebaseAuth.getInstance());
         wishListFirestoreRepository.getUserListByArticleId(dto.getArticleId(), userList -> {
             wishListUser = userList;
-            adapter.addFragment(new ArticleInformationFragment(dto), "Article Information");
-            if (wishListUser.size() == 0) {
-                adapter.addFragment(new ArticleManagementWishList(wishListUser), "Wishlist(0)");
-            }else{
-                adapter.addFragment(new ArticleManagementWishList(wishListUser), "Wishlist(" +wishListUser.size() + ")");
-            }
-            viewPager.setAdapter(adapter);
-            tabLayout.setupWithViewPager(viewPager);
+            checkWishListUserExist(userList);
         });
+    }
+
+    private void checkWishListUserExist(List<User> userList) {
+        if (wishListUser.size() == 0) {
+            adapter.changePageTitle(1, "Wishlist(0)");
+        } else {
+            adapter.changePageTitle(1, "Wishlist(" + wishListUser.size() + ")");
+            ArticleManagementWishList articleMWL = (ArticleManagementWishList) adapter.getItem(1);
+            articleMWL.setListUser(wishListUser);
+            articleMWL.showUserWishList();
+        }
+        wishListUser = userList;
+        adapter.notifyDataSetChanged();
     }
 
     public void clickToBackActivity(View view) {

@@ -29,6 +29,9 @@ import com.habp.fhouse.ui.home.HomeFragment;
 import com.habp.fhouse.ui.sign.SignInActivity;
 import com.habp.fhouse.util.DatabaseConstraints;
 
+import java.util.Collections;
+import java.util.Comparator;
+
 public class ArticleManagementFragment extends Fragment {
     private ListView lvArticleManagement;
     private ArticleAdapter adapter;
@@ -72,6 +75,12 @@ public class ArticleManagementFragment extends Fragment {
             if (listArticle.size() == 0) {
                 Toast.makeText(getContext(), "List Article Management is Empty", Toast.LENGTH_SHORT).show();
             } else {
+                Collections.sort(listArticle, new Comparator<Article>() {
+                    @Override
+                    public int compare(Article o1, Article o2) {
+                        return o2.getCreateAt().compareTo(o1.getCreateAt());
+                    }
+                });
                 adapter = new ArticleAdapter(listArticle);
                 lvArticleManagement.setAdapter(adapter);
                 if (lvArticleManagement.getCount() == 0) {

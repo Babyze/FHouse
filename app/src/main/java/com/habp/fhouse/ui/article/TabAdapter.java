@@ -29,8 +29,19 @@ public class TabAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         return mFragmentTitleList.get(position);
     }
+
     @Override
     public int getCount() {
         return mFragmentList.size();
     }
+
+    public void changePageTitle(int position, String title) {
+        mFragmentTitleList.remove(position);
+        mFragmentTitleList.add(title);
+    }
+
+    public void removeChangePage(int position) {
+        mFragmentList.remove(position);
+    }
+
 }
