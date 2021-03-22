@@ -17,6 +17,10 @@ public class SignUpPresenter implements SignUpContract.Presenter {
             mView.onInvalidEmail("Email is required");
             return;
         }
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            mView.onInvalidEmail("Invalid Email address");
+            return;
+        }
         if (password.length() < 6) {
             mView.onInvalidPassword("Password at least 6 character");
             return;
