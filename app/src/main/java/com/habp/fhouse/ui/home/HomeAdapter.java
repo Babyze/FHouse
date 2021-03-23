@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.habp.fhouse.R;
 import com.habp.fhouse.data.model.Article;
+import com.habp.fhouse.util.ArticleTypeHelper;
 import com.habp.fhouse.util.ConvertHelper;
 
 import java.util.List;
@@ -55,10 +56,13 @@ public class HomeAdapter extends BaseAdapter {
             TextView txtName = convertView.findViewById(R.id.txtName);
             TextView txtAddress = convertView.findViewById(R.id.textPlace);
             TextView txtPrice = convertView.findViewById(R.id.txtPrice);
+            TextView txtArticleType = convertView.findViewById(R.id.txtArticleType);
+
             String price = ConvertHelper.convertToMoneyFormat(article.getPrice());
             txtName.setText(article.getArticleName());
             txtPrice.setText(price + " VND");
             txtAddress.setText(article.getHouseAddress());
+            txtArticleType.setText(ArticleTypeHelper.getArticleType(article.getArticleType()));
 
         return convertView;
     }
