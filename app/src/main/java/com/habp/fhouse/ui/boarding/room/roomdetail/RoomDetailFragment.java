@@ -62,9 +62,10 @@ public class RoomDetailFragment extends Fragment implements BedContract.View {
 
     @Override
     public void showBedList(List<Bed> listBed) {
+        TextView txtEmptyBed = this.getView().findViewById(R.id.txtEmptyBed);
+        adapter = new BedAdapter(listBed);
+        lvBed.setAdapter(adapter);
         if (listBed.size() > 0) {
-            adapter = new BedAdapter(listBed);
-            lvBed.setAdapter(adapter);
             lvBed.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -77,9 +78,10 @@ public class RoomDetailFragment extends Fragment implements BedContract.View {
                     }
                 }
             });
+            txtEmptyBed.setVisibility(View.INVISIBLE);
         } else {
             lvBed.setBackgroundColor(Color.WHITE);
-            TextView txtEmptyBed = this.getView().findViewById(R.id.txtEmptyBed);
+            txtEmptyBed.setVisibility(View.VISIBLE);
             txtEmptyBed.setText("Empty");
         }
     }
